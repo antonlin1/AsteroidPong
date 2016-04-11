@@ -48,12 +48,12 @@ public class MyGdxGame extends ApplicationAdapter implements InputProcessor {
 		shapeRenderer.setColor(Color.WHITE);
 
 		shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-		shapeRenderer.circle(ball.getxPos(), ball.getyPos(), ball.getRadius());
-		shapeRenderer.rect(paddle1.getxPos(), paddle1.getyPos(), paddle1.getLength(), paddle1.getHeight());
-		shapeRenderer.rect(paddle2.getxPos(), paddle2.getyPos(), paddle2.getLength(), paddle2.getHeight());
+		shapeRenderer.circle(ball.getX(), ball.getY(), ball.getRadius());
+		shapeRenderer.rect(paddle1.getX(), paddle1.getY(), paddle1.getLength(), paddle1.getHeight());
+		shapeRenderer.rect(paddle2.getX(), paddle2.getY(), paddle2.getLength(), paddle2.getHeight());
 
 		shapeRenderer.setColor(Color.RED);
-		shapeRenderer.circle(state.getPaddles()[0].getxPos(), state.getPaddles()[0].getyPos(), 10);
+		shapeRenderer.circle(state.getPaddles()[0].getX(), state.getPaddles()[0].getY(), 10);
 		shapeRenderer.end();
 
 		state.update();
@@ -81,15 +81,13 @@ public class MyGdxGame extends ApplicationAdapter implements InputProcessor {
 
 	@Override
 	public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-	//	state.getBalls().get(0).setxPos((float) screenX);
-	//	state.getBalls().get(0).setyPos((float) screenY);
 		return false;
 	}
 
 	@Override
 	public boolean touchDragged(int screenX, int screenY, int pointer) {
-		state.getPaddles()[0].setxPos((float) screenX);
-		state.getPaddles()[1].setxPos((float) screenX);
+		state.getPaddles()[0].setX((float) screenX);
+		state.getPaddles()[1].setX((float) screenX);
 		return false;
 	}
 

@@ -18,23 +18,24 @@ public class Ball {
         this.yPos = yPos;
         this.radius = radius;
 
-        this.xVelocity = 10f;
-        this.yVelocity = 10f;
+        //Somewhat randomize ball start direction
+        this.xVelocity = (Math.random() < 0.5) ? 10f : -10f;
+        this.yVelocity = (Math.random() < 0.5) ? 10f : -10f;;
     }
 
-    public float getxPos() {
+    public float getX() {
         return xPos;
     }
 
-    public void setxPos(float xPos) {
+    public void setX(float xPos) {
         this.xPos = xPos;
     }
 
-    public float getyPos() {
+    public float getY() {
         return yPos;
     }
 
-    public void setyPos(float yPos) {
+    public void setY(float yPos) {
         this.yPos = yPos;
     }
 

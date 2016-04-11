@@ -22,19 +22,19 @@ public class Paddle {
         this.height = GameState.PaddleConstant.HEIGHT.value;
     }
 
-    public float getxPos() {
+    public float getX() {
         return xPos;
     }
 
-    public void setxPos(float xPos) {
+    public void setX(float xPos) {
         this.xPos = xPos;
     }
 
-    public float getyPos() {
+    public float getY() {
         return yPos;
     }
 
-    public void setyPos(float yPos) {
+    public void setY(float yPos) {
         this.yPos = yPos;
     }
 
@@ -44,14 +44,6 @@ public class Paddle {
 
     public void setLength(float length) {
         this.length = length;
-    }
-
-    public int getScore() {
-        return score;
-    }
-
-    public void setScore(int score) {
-        this.score = score;
     }
 
     public float getHeight() {

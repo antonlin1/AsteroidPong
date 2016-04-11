@@ -23,8 +23,8 @@ public class PhysicsHelper {
         }
 
         //Top paddle
-        if(ball.getxPos() + ball.getRadius() > paddle2.getxPos() && ball.getxPos() - ball.getRadius() < paddle2.getxPos() + GameState.PaddleConstant.LENGTH.value
-                && ball.getyPos() - ball.getRadius() < paddle2.getyPos() + GameState.PaddleConstant.HEIGHT.value){
+        if(ball.getX() + ball.getRadius() > paddle2.getX() && ball.getX() - ball.getRadius() < paddle2.getX() + GameState.PaddleConstant.LENGTH.value
+                && ball.getY() - ball.getRadius() < paddle2.getY() + GameState.PaddleConstant.HEIGHT.value){
             ball.yVelocity *= -1;
             GameState.bounces ++;
             if(GameState.bounces % 5 == 0) {
@@ -33,8 +33,8 @@ public class PhysicsHelper {
         }
 
         //Bottom paddle
-        if(ball.getxPos() + ball.getRadius() > paddle1.getxPos() && ball.getxPos() - ball.getRadius() < paddle1.getxPos() + GameState.PaddleConstant.LENGTH.value
-                && ball.getyPos() + ball.getRadius() > paddle1.getyPos()){
+        if(ball.getX() + ball.getRadius() > paddle1.getX() && ball.getX() - ball.getRadius() < paddle1.getX() + GameState.PaddleConstant.LENGTH.value
+                && ball.getY() + ball.getRadius() > paddle1.getY()){
             ball.yVelocity *= -1;
             GameState.bounces ++;
 
@@ -45,9 +45,11 @@ public class PhysicsHelper {
     }
 
     public static void increaseSpeed(ArrayList<Ball> balls){
-        for(Ball ball : balls){
-            ball.xVelocity *= 1.1;
-            ball.yVelocity *= 1.1;
+        if(GameState.bounces < 5 * 10) {
+            for(Ball ball : balls){
+                ball.xVelocity *= 1.1;
+                ball.yVelocity *= 1.1;
+            }
         }
     }
 }
