@@ -3,7 +3,7 @@ package com.mygdx.game.model;
 /**
  * Created by antonlin on 16-04-11.
  */
-public class Player {
+public class Paddle {
 
     //Points out bottom left corner(?)
     protected float xPos;
@@ -15,9 +15,9 @@ public class Player {
     //Rounds won
     protected int score;
 
-    public Player(float xPos, float yPos, float length) {
+    public Paddle(float xPos, float yPos, float length) {
         this.xPos = xPos;
-        this.yPos = yPos;
+        this.yPos = 15;
         this.length = length;
         this.height = 10;
     }

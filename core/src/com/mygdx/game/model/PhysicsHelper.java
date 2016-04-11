@@ -7,7 +7,7 @@ import java.util.ArrayList;
  */
 public class PhysicsHelper {
 
-    public static void ballCollision(float width, float height ,Player[] players, ArrayList<Ball> balls) {
+    public static void ballCollision(float width, float height ,Paddle[] paddles, ArrayList<Ball> balls) {
         Ball ball = balls.get(0);
 
 //        //DEATH!

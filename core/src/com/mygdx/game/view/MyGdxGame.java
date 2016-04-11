@@ -43,6 +43,7 @@ public class MyGdxGame extends ApplicationAdapter implements InputProcessor {
 
 		shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
 		shapeRenderer.circle(state.getBalls().get(0).getxPos(), state.getBalls().get(0).getyPos(), state.getBalls().get(0).getRadius());
+		shapeRenderer.rect(state.getPaddles()[0].getxPos(), state.getPaddles()[0].getyPos(), state.getPaddles()[0].getLength(), state.getPaddles()[0].getHeight());
 		shapeRenderer.end();
 
 		state.update();
@@ -70,8 +71,9 @@ public class MyGdxGame extends ApplicationAdapter implements InputProcessor {
 
 	@Override
 	public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-		state.getBalls().get(0).setxPos((float) screenX);
-		state.getBalls().get(0).setyPos((float) screenY);
+	//	state.getBalls().get(0).setxPos((float) screenX);
+	//	state.getBalls().get(0).setyPos((float) screenY);
+		state.getPaddles()[0].setxPos((float) screenX);
 		return false;
 	}
 
