@@ -9,6 +9,7 @@ public class PhysicsHelper {
 
     public static void ballCollision(float width, float height ,Player[] players, ArrayList<Ball> balls) {
         Ball ball = balls.get(0);
+
 //        //DEATH!
 //        if(_ballY > _screenHeight || _ballY < 0)
 //        {_ballX = 100; 	_ballY = 100;}

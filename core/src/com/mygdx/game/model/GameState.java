@@ -24,6 +24,7 @@ public class GameState {
         balls.add(new Ball(width / 2, height / 2, 32));
     }
 
+
     public Player[] getPlayers() {
         Player[] players = {player1, player2};
         return players;

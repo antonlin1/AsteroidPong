@@ -11,6 +11,10 @@ public class AndroidLauncher extends AndroidApplication {
 	protected void onCreate (Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		AndroidApplicationConfiguration config = new AndroidApplicationConfiguration();
+
+		//hide android nav-buttons
+		config.useImmersiveMode = true;
+
 		initialize(new MyGdxGame(), config);
 	}
 }
