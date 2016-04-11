@@ -17,9 +17,9 @@ public class Paddle {
 
     public Paddle(float xPos, float yPos, float length) {
         this.xPos = xPos;
-        this.yPos = 15;
+        this.yPos = yPos;
         this.length = length;
-        this.height = 10;
+        this.height = GameState.PaddleConstant.HEIGHT.value;
     }
 
     public float getxPos() {

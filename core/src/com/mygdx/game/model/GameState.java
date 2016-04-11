@@ -11,10 +11,20 @@ public class GameState {
     private Paddle paddle2;
     private ArrayList<Ball> balls;
 
-    private int roundsPlayed = 0;
+    protected static int roundsPlayed = 0;
+    protected static int bounces = 0;
 
     //Size of game window
     private float width, height;
+
+    public enum PaddleConstant {
+        HEIGHT(32), LENGTH(64*3), YPOS(64);
+
+        protected int value;
+        private PaddleConstant(int value){
+            this.value = value;
+        }
+    }
 
     public GameState(float width, float height) {
         this.width = width;
@@ -23,8 +33,8 @@ public class GameState {
         balls = new ArrayList<Ball>();
         balls.add(new Ball(width / 2, height / 2, 32));
 
-        paddle1 = new Paddle(width / 2 - 32, 16, 64);
-        paddle2 = new Paddle(width / 2 -32, height - 16, 64);
+        paddle1 = new Paddle(width / 2 - 32, height - PaddleConstant.YPOS.value, (float)PaddleConstant.LENGTH.value);
+        paddle2 = new Paddle(width / 2 - 32, PaddleConstant.YPOS.value, (float)PaddleConstant.LENGTH.value);
 
     }
 

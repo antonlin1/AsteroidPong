@@ -8,7 +8,9 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.mygdx.game.model.Ball;
 import com.mygdx.game.model.GameState;
+import com.mygdx.game.model.Paddle;
 
 public class MyGdxGame extends ApplicationAdapter implements InputProcessor {
 	SpriteBatch batch;
@@ -34,6 +36,10 @@ public class MyGdxGame extends ApplicationAdapter implements InputProcessor {
 		Gdx.gl.glClearColor(0, 0, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
+		Ball ball = state.getBalls().get(0);
+		Paddle paddle1 = state.getPaddles()[0];
+		Paddle paddle2 = state.getPaddles()[1];
+
 		batch.setProjectionMatrix(camera.combined);
 		batch.begin();
 		batch.end();
@@ -42,8 +48,12 @@ public class MyGdxGame extends ApplicationAdapter implements InputProcessor {
 		shapeRenderer.setColor(Color.WHITE);
 
 		shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-		shapeRenderer.circle(state.getBalls().get(0).getxPos(), state.getBalls().get(0).getyPos(), state.getBalls().get(0).getRadius());
-		shapeRenderer.rect(state.getPaddles()[0].getxPos(), state.getPaddles()[0].getyPos(), state.getPaddles()[0].getLength(), state.getPaddles()[0].getHeight());
+		shapeRenderer.circle(ball.getxPos(), ball.getyPos(), ball.getRadius());
+		shapeRenderer.rect(paddle1.getxPos(), paddle1.getyPos(), paddle1.getLength(), paddle1.getHeight());
+		shapeRenderer.rect(paddle2.getxPos(), paddle2.getyPos(), paddle2.getLength(), paddle2.getHeight());
+
+		shapeRenderer.setColor(Color.RED);
+		shapeRenderer.circle(state.getPaddles()[0].getxPos(), state.getPaddles()[0].getyPos(), 10);
 		shapeRenderer.end();
 
 		state.update();
@@ -66,19 +76,20 @@ public class MyGdxGame extends ApplicationAdapter implements InputProcessor {
 
 	@Override
 	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-		return false;
+		return true;
 	}
 
 	@Override
 	public boolean touchUp(int screenX, int screenY, int pointer, int button) {
 	//	state.getBalls().get(0).setxPos((float) screenX);
 	//	state.getBalls().get(0).setyPos((float) screenY);
-		state.getPaddles()[0].setxPos((float) screenX);
 		return false;
 	}
 
 	@Override
 	public boolean touchDragged(int screenX, int screenY, int pointer) {
+		state.getPaddles()[0].setxPos((float) screenX);
+		state.getPaddles()[1].setxPos((float) screenX);
 		return false;
 	}
 
