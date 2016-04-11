@@ -6,17 +6,20 @@ package com.mygdx.game.model;
 public class Player {
 
     //Points out bottom left corner(?)
-    private float xPos;
-    private float yPos;
-    private float size;
+    protected float xPos;
+    protected float yPos;
+    protected float length;
+
+    protected float height;
 
     //Rounds won
-    private int score;
+    protected int score;
 
-    public Player(float xPos, float yPos, float size) {
+    public Player(float xPos, float yPos, float length) {
         this.xPos = xPos;
         this.yPos = yPos;
-        this.size = size;
+        this.length = length;
+        this.height = 10;
     }
 
     public float getxPos() {
@@ -35,12 +38,12 @@ public class Player {
         this.yPos = yPos;
     }
 
-    public float getSize() {
-        return size;
+    public float getLength() {
+        return length;
     }
 
-    public void setSize(float size) {
-        this.size = size;
+    public void setLength(float length) {
+        this.length = length;
     }
 
     public int getScore() {
@@ -49,5 +52,13 @@ public class Player {
 
     public void setScore(int score) {
         this.score = score;
+    }
+
+    public float getHeight() {
+        return height;
+    }
+
+    public void setHeight(float height) {
+        this.height = height;
     }
 }
