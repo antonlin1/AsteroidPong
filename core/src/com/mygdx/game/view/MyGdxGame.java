@@ -109,16 +109,13 @@ public class MyGdxGame extends ApplicationAdapter implements InputProcessor {
 
 	@Override
 	public boolean touchDragged(int screenX, int screenY, int pointer) {
-<<<<<<< Updated upstream
-		input.movePaddleToAbsPos(screenX);
-=======
+	//	input.movePaddleToAbsPos(screenX);
 
 		//	System.out.println("screenX = " + screenX + " screenY = " + screenY);
 		//	state.getPaddles()[0].setX((float) screenX);
 		//state.getPaddles()[1].setX((float) screenX);
 
 
->>>>>>> Stashed changes
 		return false;
 	}
 
@@ -131,13 +128,7 @@ public class MyGdxGame extends ApplicationAdapter implements InputProcessor {
 	public boolean scrolled(int amount) {
 		return false;
 	}
-<<<<<<< Updated upstream
-		public GameState getState() {
-				return  state;
-=======
-
 		public GameState getState() {
 				return state;
->>>>>>> Stashed changes
 		}
 }
