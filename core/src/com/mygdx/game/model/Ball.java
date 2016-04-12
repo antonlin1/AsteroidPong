@@ -35,6 +35,15 @@ public class Ball {
         return yPos;
     }
 
+    public float getXVel() {
+        return xVelocity;
+    }
+
+    public float getYVel() {
+        return yVelocity;
+    }
+
+
     public void setY(float yPos) {
         this.yPos = yPos;
     }

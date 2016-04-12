@@ -18,7 +18,7 @@ public class GameState {
     private float width, height;
 
     public enum PaddleConstant {
-        HEIGHT(32), LENGTH(64*3), YPOS(64);
+        HEIGHT(32), LENGTH(64*3), YPOS(128);
 
         protected int value;
         private PaddleConstant(int value){
@@ -34,7 +34,7 @@ public class GameState {
         balls.add(new Ball(width / 2, height / 2, 32));
 
         paddle1 = new Paddle(width / 2 - 32, height - PaddleConstant.YPOS.value, (float)PaddleConstant.LENGTH.value);
-        paddle2 = new Paddle(width / 2 - 32, PaddleConstant.YPOS.value, (float)PaddleConstant.LENGTH.value);
+        paddle2 = new Paddle(width / 2 - 32, PaddleConstant.YPOS.value -20, (float)PaddleConstant.LENGTH.value);
 
     }
 
@@ -57,5 +57,12 @@ public class GameState {
 
         ball.xPos += ball.xVelocity;
         ball.yPos += ball.yVelocity;
+    }
+
+    public float getWidth() {
+        return width;
+    }
+    public float getHeight() {
+        return height;
     }
 }
