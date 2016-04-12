@@ -9,11 +9,8 @@
 
     <application>
         android:allowBackup="true"
-<<<<<<< Updated upstream
         <!--android:icon="@drawable/ikon1"-->
         android:icon="@drawable/ic_launcher"
-=======
->>>>>>> Stashed changes
         android:label="Asteroid Pong"
         android:theme="@style/GdxTheme" >
         <activity
