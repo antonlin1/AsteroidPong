@@ -28,7 +28,7 @@ public class PhysicsHelper {
             ball.yVelocity *= -1;
             GameState.bounces ++;
             if(GameState.bounces % 5 == 0) {
-                PhysicsHelper.increaseSpeed(balls);
+                //PhysicsHelper.increaseSpeed(balls);
             }
         }
 
@@ -39,7 +39,7 @@ public class PhysicsHelper {
             GameState.bounces ++;
 
             if(GameState.bounces % 5 == 0) {
-                PhysicsHelper.increaseSpeed(balls);
+                //PhysicsHelper.increaseSpeed(balls);
             }
         }
     }
