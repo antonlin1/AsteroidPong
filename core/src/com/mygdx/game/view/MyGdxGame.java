@@ -125,4 +125,7 @@ public class MyGdxGame extends ApplicationAdapter implements InputProcessor {
 	public boolean scrolled(int amount) {
 		return false;
 	}
+		public GameState getState() {
+				return  state;
+		}
 }
