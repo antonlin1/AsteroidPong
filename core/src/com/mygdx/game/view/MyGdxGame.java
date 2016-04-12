@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.mygdx.game.Controller.InputController;
 import com.mygdx.game.model.Ball;
 import com.mygdx.game.model.GameState;
 import com.mygdx.game.model.Paddle;
@@ -26,6 +27,7 @@ public class MyGdxGame extends ApplicationAdapter implements InputProcessor {
 	private OrthographicCamera camera;
 	private Particles particles;
 	private BlinkingStars blinkingStars;
+	private InputController input;
 	@Override
 	public void create () {
 		batch = new SpriteBatch();
@@ -35,6 +37,7 @@ public class MyGdxGame extends ApplicationAdapter implements InputProcessor {
 		camera.setToOrtho(true, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
 		state = new GameState(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+		input = new InputController(state);
 
 		Gdx.input.setInputProcessor(this);
 
@@ -109,8 +112,7 @@ public class MyGdxGame extends ApplicationAdapter implements InputProcessor {
 
 	@Override
 	public boolean touchDragged(int screenX, int screenY, int pointer) {
-		state.getPaddles()[0].setX((float) screenX);
-		state.getPaddles()[1].setX((float) screenX);
+		input.movePaddleToAbsPos(screenX);
 		return false;
 	}
 

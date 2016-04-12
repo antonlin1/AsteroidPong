@@ -20,7 +20,7 @@ public class GameState {
     public enum PaddleConstant {
         HEIGHT(32), LENGTH(64*3), YPOS(128);
 
-        protected int value;
+        public int value;
         private PaddleConstant(int value){
             this.value = value;
         }
