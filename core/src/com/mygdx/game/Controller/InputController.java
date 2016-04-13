@@ -22,7 +22,7 @@ public class InputController {
         validX = (validX < 0) ? 0 : validX;
 
         state.getPaddles()[0].setX(validX);
-        state.getPaddles()[1].setX(validX);
+//        state.getPaddles()[1].setX(validX);
     }
 
     public void movePaddleWithDelta(int x) {

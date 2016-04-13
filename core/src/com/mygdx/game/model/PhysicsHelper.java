@@ -1,5 +1,7 @@
 package com.mygdx.game.model;
 
+
+
 import java.util.ArrayList;
 
 /**
@@ -7,41 +9,57 @@ import java.util.ArrayList;
  */
 public class PhysicsHelper {
 
-    public static void ballCollision(float width, float height ,Paddle[] paddles, ArrayList<Ball> balls) {
-        Ball ball = balls.get(0);
-        Paddle paddle1 = paddles[0];
-        Paddle paddle2 = paddles[1];
 
+    public static boolean wallCollision(float width, float height, ArrayList<Ball> balls) {
+        Ball ball = balls.get(0);
+        boolean collision = false;
         //Collision with sides
         if(ball.xPos>= width - ball.radius|| ball.xPos <= ball.radius) {
             ball.xVelocity *= -1;
+            collision = true;
         }
 
-        //Death(TO BE IMPLEMENTED)
-        if(ball.yPos >= height - ball.radius || ball.yPos <= ball.radius) {
+        //Collision with top
+        if( ball.yPos <= ball.radius) {
             ball.yVelocity *= -1;
+            collision = true;
+        }
+        //Death
+        if(ball.yPos >= height - ball.radius) {
+            ball.yVelocity *= -1;
+            ball.setY(400);
         }
 
         //Top paddle
-        if(ball.getX() + ball.getRadius() > paddle2.getX() && ball.getX() - ball.getRadius() < paddle2.getX() + GameState.PaddleConstant.LENGTH.value
-                && ball.getY() - ball.getRadius() < paddle2.getY() + GameState.PaddleConstant.HEIGHT.value){
-            ball.yVelocity *= -1;
-            GameState.bounces ++;
-            if(GameState.bounces % 5 == 0) {
-                //PhysicsHelper.increaseSpeed(balls);
-            }
-        }
+       // if(ball.getX() + ball.getRadius() > paddle2.getX() && ball.getX() - ball.getRadius() < paddle2.getX() + GameState.PaddleConstant.LENGTH.value
+       //         && ball.getY() - ball.getRadius() < paddle2.getY() + GameState.PaddleConstant.HEIGHT.value){
+       //     ball.yVelocity *= -1;
+       //     GameState.bounces ++;
+       //     if(GameState.bounces % 5 == 0) {
+       //         //PhysicsHelper.increaseSpeed(balls);
+     //       }
+   //     }
 
-        //Bottom paddle
+        return collision;
+
+    }
+    public static boolean paddleCollision(Paddle[] paddles, ArrayList<Ball> balls) {
+        Paddle paddle1 = paddles[0];
+        Paddle paddle2 = paddles[1];
+        Ball ball = balls.get(0);
+        boolean collision = false;
+
         if(ball.getX() + ball.getRadius() > paddle1.getX() && ball.getX() - ball.getRadius() < paddle1.getX() + GameState.PaddleConstant.LENGTH.value
                 && ball.getY() + ball.getRadius() > paddle1.getY()){
             ball.yVelocity *= -1;
             GameState.bounces ++;
-
-            if(GameState.bounces % 5 == 0) {
-                //PhysicsHelper.increaseSpeed(balls);
-            }
+            //GameState.paddleCollision = true;
+            collision = true;
+        //    if(GameState.bounces % 5 == 0) {
+        //        PhysicsHelper.increaseSpeed(balls);
+        //    }
         }
+        return collision;
     }
 
     public static void increaseSpeed(ArrayList<Ball> balls){

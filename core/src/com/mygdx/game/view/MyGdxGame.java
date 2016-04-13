@@ -3,6 +3,7 @@ package com.mygdx.game.view;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
@@ -22,6 +23,7 @@ import javax.xml.soap.Text;
 
 public class MyGdxGame extends ApplicationAdapter implements InputProcessor {
 	SpriteBatch batch;
+	Sound collisionSound;
 
 	private GameState state;
 	private ShapeRenderer shapeRenderer;
@@ -48,6 +50,7 @@ public class MyGdxGame extends ApplicationAdapter implements InputProcessor {
 		blinkingStars = new BlinkingStars(state.getWidth(), state.getHeight());
 		blinkingStars.makeBlinkingStars();
 
+		collisionSound = Gdx.audio.newSound(Gdx.files.internal("bounce1.wav"));
 
 	}
 	@Override
@@ -62,6 +65,10 @@ public class MyGdxGame extends ApplicationAdapter implements InputProcessor {
 
 		Paddle paddle1 = state.getPaddles()[0];
 		Paddle paddle2 = state.getPaddles()[1];
+
+		if(state.isPaddleCollision() || state.isWallCollision()) {
+			collisionSound.play();
+		}
 
 		batch.setProjectionMatrix(camera.combined);
 		batch.begin();
@@ -79,7 +86,7 @@ public class MyGdxGame extends ApplicationAdapter implements InputProcessor {
 		shapeRenderer.setColor(Color.WHITE);
 		shapeRenderer.circle(ball.getX(), ball.getY(), ball.getRadius());
 		shapeRenderer.rect(paddle1.getX(), paddle1.getY(), paddle1.getLength(), paddle1.getHeight());
-		shapeRenderer.rect(paddle2.getX(), paddle2.getY(), paddle2.getLength(), paddle2.getHeight());
+	//	shapeRenderer.rect(paddle2.getX(), paddle2.getY(), paddle2.getLength(), paddle2.getHeight());
 
 		shapeRenderer.end();
 		state.update();
