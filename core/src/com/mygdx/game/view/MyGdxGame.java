@@ -27,7 +27,9 @@ public class MyGdxGame extends ApplicationAdapter implements InputProcessor {
 	private OrthographicCamera camera;
 	private Particles particles;
 	private BlinkingStars blinkingStars;
+
 	private InputController input;
+
 	@Override
 	public void create () {
 		batch = new SpriteBatch();
@@ -47,7 +49,6 @@ public class MyGdxGame extends ApplicationAdapter implements InputProcessor {
 
 
 	}
-
 	@Override
 	public void render() {
 		Gdx.gl.glClearColor(0.075f, 0.059f, 0.188f, 1);
@@ -128,7 +129,8 @@ public class MyGdxGame extends ApplicationAdapter implements InputProcessor {
 	public boolean scrolled(int amount) {
 		return false;
 	}
-		public GameState getState() {
-				return state;
-		}
+
+	public InputController getInput() {
+		return input;
+	}
 }

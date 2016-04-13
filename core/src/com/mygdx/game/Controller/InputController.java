@@ -14,10 +14,12 @@ public class InputController {
         this.state = state;
     }
 
-    public void movePaddleToAbsPos(int x) {
+    public void movePaddleToAbsPos(float x) {
 
-        int validX = (x > Gdx.graphics.getWidth() - GameState.PaddleConstant.LENGTH.value) ?
+        float validX = (x > Gdx.graphics.getWidth() - GameState.PaddleConstant.LENGTH.value) ?
                 Gdx.graphics.getWidth() - GameState.PaddleConstant.LENGTH.value : x;
+
+        validX = (validX < 0) ? 0 : validX;
 
         state.getPaddles()[0].setX(validX);
         state.getPaddles()[1].setX(validX);

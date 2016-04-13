@@ -213,8 +213,8 @@ public class AccelerationConverter {
 				float WIDTH = Gdx.graphics.getWidth();
 				float HEIGHT = Gdx.graphics.getHeight();
 
-				Paddle[] paddles = game.getState().getPaddles();
-				paddles[0].setX((WIDTH / 2 + (float) p[0] * 10000 / 2 )% WIDTH);
+				game.getInput().movePaddleToAbsPos((WIDTH / 2 + (float) p[0] * 10000 / 2 )% WIDTH);
+				//paddles[0].setX((WIDTH / 2 + (float) p[0] * 10000 / 2 )% WIDTH);
 
 				vn = (vn + 1) % vN;
 				an = (an + 1) % aN;
