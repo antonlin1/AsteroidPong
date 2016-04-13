@@ -2,6 +2,8 @@ package com.mygdx.game.model;
 
 
 
+import com.badlogic.gdx.utils.TimeUtils;
+
 import java.util.ArrayList;
 
 /**
@@ -26,8 +28,13 @@ public class PhysicsHelper {
         }
         //Death
         if(ball.yPos >= height - ball.radius) {
-            ball.yVelocity *= -1;
-            ball.setY(400);
+
+           // ball.yVelocity *= -1;
+           // ball.setY(1000);
+           // ball.setX(ball.getRadius() + 1);
+
+
+
         }
 
         //Top paddle
@@ -43,6 +50,17 @@ public class PhysicsHelper {
         return collision;
 
     }
+
+    public static boolean isDead(float width, float height, ArrayList<Ball> balls) {
+        Ball ball = balls.get(0);
+        if(ball.yPos >= height + ball.radius) {
+            //ball.yVelocity *= -1;
+            return true;
+        }
+        return false;
+
+    }
+
     public static boolean paddleCollision(Paddle[] paddles, ArrayList<Ball> balls) {
         Paddle paddle1 = paddles[0];
         Paddle paddle2 = paddles[1];

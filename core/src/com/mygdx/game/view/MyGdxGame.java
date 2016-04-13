@@ -42,6 +42,8 @@ public class MyGdxGame extends ApplicationAdapter implements InputProcessor {
 		camera.setToOrtho(true, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
 		state = new GameState(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+
+
 		input = new InputController(state);
 
 		Gdx.input.setInputProcessor(this);
@@ -62,9 +64,13 @@ public class MyGdxGame extends ApplicationAdapter implements InputProcessor {
 		particles.makeParticles(ball);
 		particles.removeParticles();
 
+		if(state.isDead()) {
+			state.killBall();
+		}
+
 
 		Paddle paddle1 = state.getPaddles()[0];
-		Paddle paddle2 = state.getPaddles()[1];
+		//Paddle paddle2 = state.getPaddles()[1];
 
 		if(state.isPaddleCollision() || state.isWallCollision()) {
 			collisionSound.play();
@@ -109,6 +115,10 @@ public class MyGdxGame extends ApplicationAdapter implements InputProcessor {
 
 	@Override
 	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+		if(state.isDead()) {
+			state.moveBall();
+		}
+
 		return true;
 	}
 

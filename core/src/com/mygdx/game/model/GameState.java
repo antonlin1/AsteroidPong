@@ -1,5 +1,7 @@
 package com.mygdx.game.model;
 
+import com.badlogic.gdx.utils.TimeUtils;
+
 import java.util.ArrayList;
 
 
@@ -19,6 +21,7 @@ public class GameState {
     private float width, height;
 
     private boolean wallCollision;
+    private boolean isDead;
 
 
 
@@ -40,11 +43,34 @@ public class GameState {
         balls = new ArrayList<Ball>();
         balls.add(new Ball(width / 2, height / 2, 32));
 
+
+
         paddle1 = new Paddle(width / 2 - 32, height - PaddleConstant.YPOS.value, (float)PaddleConstant.LENGTH.value);
     //    paddle2 = new Paddle(width / 2 - 32, PaddleConstant.YPOS.value -20, (float)PaddleConstant.LENGTH.value);
 
 
     }
+
+    public boolean isDead() {
+        return isDead;
+    }
+
+    public void killBall() {
+
+        balls.get(0).yVelocity = 0;
+        balls.get(0).xVelocity = 0;
+    }
+
+    public void moveBall() {
+        isDead = false;
+       float x = balls.get(0).getRadius() + 1;
+        balls.get(0).setX(x);
+        balls.get(0).setY(1000);
+        balls.get(0).xVelocity = (Math.random() < 0.5) ? 10f : -10f;
+        balls.get(0).yVelocity = (Math.random() < 0.5) ? 10f : -10f;
+
+    }
+
 
     public Paddle[] getPaddles() {
         Paddle[] paddles = {paddle1, paddle2};
@@ -63,13 +89,15 @@ public class GameState {
         
         wallCollision = false;
         paddleCollision = false;
+        isDead = false;
         wallCollision = PhysicsHelper.wallCollision(width,height, balls);
         paddleCollision = PhysicsHelper.paddleCollision(getPaddles(), balls);
-
-
+        isDead = PhysicsHelper.isDead(width,height, balls);
 
         ball.xPos += ball.xVelocity;
         ball.yPos += ball.yVelocity;
+
+
     }
 
     public float getWidth() {
@@ -85,4 +113,10 @@ public class GameState {
     public boolean isPaddleCollision() {
         return paddleCollision;
     }
+
+    public boolean newBall() {
+        return PhysicsHelper.isDead(width,height, balls);
+    }
+
+
 }
