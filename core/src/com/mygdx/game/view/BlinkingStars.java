@@ -30,7 +30,7 @@ public class BlinkingStars {
     }
 
     public void makeBlinkingStars() {
-        for(int i = 0; i < 20; i++) {
+        for(int i = 0; i < 30; i++) {
 
             float x = width * (float) Math.random();
             float y = height * (float) Math.random();
@@ -44,33 +44,34 @@ public class BlinkingStars {
 
     // three stars are renderd at different times
     public void drawBlinkingStars(ShapeRenderer shapeRenderer) {
-        float size = 6;
+        float size1 = 7;
+        float size2 = 5;
 
-        for(int i = 4; i < stars.size(); i++) {
-            shapeRenderer.rect(stars.get(i).getxPos(), stars.get(i).getyPos(), size, size);
+        for(int i = 6; i < stars.size(); i++) {
+            shapeRenderer.rect(stars.get(i).getxPos(), stars.get(i).getyPos(), size1, size1);
 
         }
 
         if(TimeUtils.timeSinceMillis(time) > 10000) {
             time = TimeUtils.millis();
-
         }
         if(TimeUtils.timeSinceMillis(time) > 0){
-                shapeRenderer.rect(stars.get(0).getxPos(), stars.get(0).getyPos(), size, size);
+                shapeRenderer.rect(stars.get(0).getxPos(), stars.get(0).getyPos(), size2, size2);
         }
-
         if(TimeUtils.timeSinceMillis(time) > 1000) {
-            shapeRenderer.rect(stars.get(1).getxPos(), stars.get(1).getyPos(), size, size);
-
+            shapeRenderer.rect(stars.get(1).getxPos(), stars.get(1).getyPos(), size2, size2);
         }
         if(TimeUtils.timeSinceMillis(time) > 2000) {
-            shapeRenderer.rect(stars.get(2).getxPos(), stars.get(2).getyPos(), size, size);
-
+            shapeRenderer.rect(stars.get(2).getxPos(), stars.get(2).getyPos(), size2, size2);
         }
         if(TimeUtils.timeSinceMillis(time) > 3000) {
-            shapeRenderer.rect(stars.get(3).getxPos(), stars.get(3).getyPos(), size, size);
-
-
+            shapeRenderer.rect(stars.get(3).getxPos(), stars.get(3).getyPos(), size2, size2);
+        }
+        if(TimeUtils.timeSinceMillis(time) > 4000) {
+            shapeRenderer.rect(stars.get(4).getxPos(), stars.get(4).getyPos(), size2, size2);
+        }
+        if(TimeUtils.timeSinceMillis(time) > 5000) {
+            shapeRenderer.rect(stars.get(5).getxPos(), stars.get(5).getyPos(), size2, size2);
         }
 
     }
