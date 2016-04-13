@@ -12,13 +12,12 @@ public class Star {
     private float xPos;
     private float yPos;
     private long timeStamp;
-    private Random rand;
 
-    public Star(float xPos, float yPos) {
+
+    public Star(float xPos, float yPos, long timeStamp) {
         this.xPos = xPos;
         this.yPos = yPos;
-        rand = new Random();
-        timeStamp = (long) rand.nextInt(500);
+        this.timeStamp = timeStamp;
 
     }
 
@@ -33,13 +32,13 @@ public class Star {
         return timeStamp;
     }
 
-    public void updateTimeStamp() {
-        if(timeStamp > 500) {
-            timeStamp = (long) rand.nextInt(500);
-
-        }
+    public void updateTimeStamp(long timeStamp) {
+            this.timeStamp = timeStamp;
 
     }
+
+
+
 
 
 }

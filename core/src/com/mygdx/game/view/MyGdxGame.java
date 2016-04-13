@@ -16,6 +16,7 @@ import com.mygdx.game.model.GameState;
 import com.mygdx.game.model.Paddle;
 
 import java.awt.Image;
+import java.util.Random;
 
 import javax.xml.soap.Text;
 
@@ -69,6 +70,7 @@ public class MyGdxGame extends ApplicationAdapter implements InputProcessor {
 		shapeRenderer.setProjectionMatrix(camera.combined);
 
 		shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+
 
 		blinkingStars.drawBlinkingStars(shapeRenderer);
 
