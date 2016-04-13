@@ -46,7 +46,7 @@ public class GameState {
 
 
         paddle1 = new Paddle(width / 2 - 32, height - PaddleConstant.YPOS.value, (float)PaddleConstant.LENGTH.value);
-    //    paddle2 = new Paddle(width / 2 - 32, PaddleConstant.YPOS.value -20, (float)PaddleConstant.LENGTH.value);
+    //  paddle2 = new Paddle(width / 2 - 32, PaddleConstant.YPOS.value -20, (float)PaddleConstant.LENGTH.value);
 
 
     }
@@ -55,17 +55,19 @@ public class GameState {
         return isDead;
     }
 
+    //stops ball from moving
     public void killBall() {
-
         balls.get(0).yVelocity = 0;
         balls.get(0).xVelocity = 0;
     }
 
+    //move ball object to random position
     public void moveBall() {
         isDead = false;
-       float x = balls.get(0).getRadius() + 1;
+        float x = width/2 * (float) Math.random();
+        float y = height/2 * (float) Math.random();
         balls.get(0).setX(x);
-        balls.get(0).setY(1000);
+        balls.get(0).setY(y);
         balls.get(0).xVelocity = (Math.random() < 0.5) ? 10f : -10f;
         balls.get(0).yVelocity = (Math.random() < 0.5) ? 10f : -10f;
 
