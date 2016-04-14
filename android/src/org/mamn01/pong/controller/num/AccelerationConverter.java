@@ -2,6 +2,7 @@ package org.mamn01.pong.controller.num;
 
 
 import com.badlogic.gdx.Gdx;
+import com.mygdx.game.model.GameState;
 import com.mygdx.game.model.Paddle;
 import com.mygdx.game.view.MyGdxGame;
 
@@ -213,7 +214,17 @@ public class AccelerationConverter {
 				float WIDTH = Gdx.graphics.getWidth();
 				float HEIGHT = Gdx.graphics.getHeight();
 
-				game.getInput().movePaddleToAbsPos((WIDTH / 2 + (float) p[0] * 10000 / 2 )% WIDTH);
+				//TODO: if X pos less than 0. Sett p[0] to zero. If X pos greater than WIDTH set p[0] to WIDTH.
+				// this is already done in InputController, but the logical X pos in the Accelerator is unchanged.
+				// This must be fixed.
+				float xPos = (WIDTH / 2 + (float) p[0] * 20000 / 2 );
+
+//				p[0] = (xPos > WIDTH - GameState.PaddleConstant.LENGTH.value) ?
+//					WIDTH - GameState.PaddleConstant.LENGTH.value : xPos;
+//
+//				p[0] = (xPos < 0) ? 0 : xPos;
+
+				game.getInput().movePaddleToAbsPos(xPos/*% WIDTH*/);
 				//paddles[0].setX((WIDTH / 2 + (float) p[0] * 10000 / 2 )% WIDTH);
 
 				vn = (vn + 1) % vN;
