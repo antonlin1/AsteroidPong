@@ -7,29 +7,30 @@ import com.badlogic.gdx.graphics.Texture;
  */
 public class Particle {
 
-    private float xPos;
-    private float yPos;
-    private long timeStamp;
+		private float xPos;
+		private float yPos;
+		private long timeStamp;
 
 
-    public Particle(float xPos, float yPos, long timeStamp) {
-        this.xPos = xPos;
-        this.yPos = yPos;
-        this.timeStamp = timeStamp;
+		public Particle(float xPos, float yPos, long timeStamp) {
+				this.xPos = xPos;
+				this.yPos = yPos;
+				this.timeStamp = timeStamp;
 
 
-    }
+		}
 
-    public float getX() {
-        return xPos;
-    }
-    public float getY() {
-        return yPos;
-    }
-    public long getTimeStamp() {
-        return timeStamp;
-    }
+		public float getX() {
+				return xPos;
+		}
 
+		public float getY() {
+				return yPos;
+		}
+
+		public long getTimeStamp() {
+				return timeStamp;
+		}
 
 
 }

@@ -12,6 +12,7 @@ import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
 import com.mygdx.game.view.MyGdxGame;
 
 import org.mamn01.pong.controller.num.AccelerationConverter;
+import org.mamn01.pong.controller.num.Converter;
 
 import java.util.Arrays;
 
@@ -21,7 +22,7 @@ public class AndroidLauncher extends AndroidApplication implements SensorEventLi
 
 		private float[] mGData = new float[3];
 
-		private AccelerationConverter accelerationConverter;
+		private Converter accelerationConverter;
 		@Override
 		protected void onCreate(Bundle savedInstanceState) {
 				super.onCreate(savedInstanceState);
@@ -40,7 +41,7 @@ public class AndroidLauncher extends AndroidApplication implements SensorEventLi
 				initialize(game, config);
 
 
-				accelerationConverter = new AccelerationConverter(game);
+				accelerationConverter = new Converter(game);
 
 		}
 
@@ -95,8 +96,6 @@ public class AndroidLauncher extends AndroidApplication implements SensorEventLi
 		protected void onResume() {
 				super.onResume();
 				Log.i(AndroidLauncher.class.getName(), "onResume");
-
-				accelerationConverter.setBiasedDetermined(false);
 
 				mSensorManager.registerListener(this, mSensorManager.getDefaultSensor(
 						Sensor.TYPE_ACCELEROMETER), SensorManager.SENSOR_DELAY_FASTEST);

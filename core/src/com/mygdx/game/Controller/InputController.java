@@ -8,25 +8,59 @@ import com.mygdx.game.model.GameState;
  */
 public class InputController {
 
-    GameState state;
+		private GameState state;
+		private float x;
 
-    public InputController(GameState state) {
-        this.state = state;
-    }
 
-    public void movePaddleToAbsPos(float x) {
+		public InputController(GameState state) {
+				this.state = state;
+		}
 
-        float validX = (x > Gdx.graphics.getWidth() - GameState.PaddleConstant.LENGTH.value) ?
-                Gdx.graphics.getWidth() - GameState.PaddleConstant.LENGTH.value : x;
+		public void movePaddleToAbsPos(float x) {
+				this.x = x;
 
-        validX = (validX < 0) ? 0 : validX;
+				//float validX = (x > Gdx.graphics.getWidth() - GameState.PaddleConstant.LENGTH.value) ?
+				//		Gdx.graphics.getWidth() - GameState.PaddleConstant.LENGTH.value : x;
 
-        state.getPaddles()[0].setX(validX);
+
+				//validX = (validX < 0) ? 0 : validX;
+
+				if(isAtRightBoundary()) {
+						state.getPaddles()[0].setX(Gdx.graphics.getWidth() - GameState.PaddleConstant.LENGTH.value);
+				}else if(isAtLeftBoundary()){
+						state.getPaddles()[0].setX(0);
+				}else {
+						state.getPaddles()[0].setX(x);
+				}
+
 //        state.getPaddles()[1].setX(validX);
-    }
+		}
 
-    public void movePaddleWithDelta(int x) {
+		public void movePaddleWithDelta(int x) {
 
-    }
+		}
+
+		/**
+		 *        GameState.PaddleConstant.LENGTH.value
+		 * o----------------------------------------------o
+		 * x
+		 *
+		 *
+		 * @return
+		 */
+
+		public boolean isAtRightBoundary() {
+
+				return x > (Gdx.graphics.getWidth() - GameState.PaddleConstant.LENGTH.value);
+		}
+
+		public boolean isAtLeftBoundary() {
+
+				return x < 0;
+		}
+
+		public boolean isAtBoundary() {
+				return isAtLeftBoundary() || isAtRightBoundary();
+		}
 
 }

@@ -1,5 +1,4 @@
-
-package org.mamn01.pong.controller.time;
+package org.mamn01.pong.controller.num;
 
 /**
  * Created by hampusballdin on 2016-03-31.
