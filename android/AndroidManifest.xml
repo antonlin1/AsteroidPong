@@ -11,7 +11,7 @@
         android:allowBackup="true"
         android:icon="@drawable/ikon1"
         android:label="Asteroid Pong"
-        android:theme="@style/GdxTheme" >
+        android:theme="@style/GdxTheme">
         <activity
             android:name="com.mygdx.game.AndroidLauncher"
             android:label="Asteroid Pong"

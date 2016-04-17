@@ -16,8 +16,6 @@ public class BlinkingStars {
 
     private ArrayList<Star> stars;
     private float width, height;
-    private Random rand;
-    private int randNumber;
     private long time;
 
 
@@ -25,56 +23,48 @@ public class BlinkingStars {
         stars = new ArrayList<Star>();
         this.width = width;
         this.height = height;
-        rand = new Random();
-        randNumber = 0;
+        time = TimeUtils.millis();
     }
 
     public void makeBlinkingStars() {
         for(int i = 0; i < 30; i++) {
-
-            float x = width * (float) Math.random();
-            float y = height * (float) Math.random();
-
-            stars.add(new Star(x,y, TimeUtils.millis()));
-            time = TimeUtils.millis();
-
-
+            stars.add(makeNewStar());
         }
     }
 
-    // three stars are renderd at different times
-    public void drawBlinkingStars(ShapeRenderer shapeRenderer) {
+    public Star makeNewStar() {
+
+        float x = width * (float) Math.random();
+        float y = height * (float) Math.random();
         float size1 = 7;
         float size2 = 5;
 
-        for(int i = 6; i < stars.size(); i++) {
-            shapeRenderer.rect(stars.get(i).getxPos(), stars.get(i).getyPos(), size1, size1);
-
+        if(Math.random()  <= 0.3) {
+            return new Star(x, y, size1);
         }
 
-        if(TimeUtils.timeSinceMillis(time) > 10000) {
-            time = TimeUtils.millis();
-        }
-        if(TimeUtils.timeSinceMillis(time) > 0){
-                shapeRenderer.rect(stars.get(0).getxPos(), stars.get(0).getyPos(), size2, size2);
-        }
-        if(TimeUtils.timeSinceMillis(time) > 1000) {
-            shapeRenderer.rect(stars.get(1).getxPos(), stars.get(1).getyPos(), size2, size2);
-        }
-        if(TimeUtils.timeSinceMillis(time) > 2000) {
-            shapeRenderer.rect(stars.get(2).getxPos(), stars.get(2).getyPos(), size2, size2);
-        }
-        if(TimeUtils.timeSinceMillis(time) > 3000) {
-            shapeRenderer.rect(stars.get(3).getxPos(), stars.get(3).getyPos(), size2, size2);
-        }
-        if(TimeUtils.timeSinceMillis(time) > 4000) {
-            shapeRenderer.rect(stars.get(4).getxPos(), stars.get(4).getyPos(), size2, size2);
-        }
-        if(TimeUtils.timeSinceMillis(time) > 5000) {
-            shapeRenderer.rect(stars.get(5).getxPos(), stars.get(5).getyPos(), size2, size2);
-        }
+        return new Star(x, y, size2);
+
 
     }
+
+    public void drawBlinkingStars(ShapeRenderer shapeRenderer) {
+
+        for(int i = 0; i < stars.size(); i++) {
+            shapeRenderer.rect(stars.get(i).getxPos(), stars.get(i).getyPos(), stars.get(i).getSize(), stars.get(i).getSize());
+        }
+
+        if(TimeUtils.timeSinceMillis(time) > 2000) {
+            stars.add(makeNewStar());
+            stars.remove(0);
+            time = TimeUtils.millis();
+        }
+
+
+    }
+
+
+
 
 
 

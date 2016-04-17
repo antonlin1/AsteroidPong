@@ -6,6 +6,7 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.WindowManager;
 
 import com.badlogic.gdx.backends.android.AndroidApplication;
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
@@ -27,6 +28,9 @@ public class AndroidLauncher extends AndroidApplication implements SensorEventLi
 		protected void onCreate(Bundle savedInstanceState) {
 				super.onCreate(savedInstanceState);
 				AndroidApplicationConfiguration config = new AndroidApplicationConfiguration();
+
+				//disable screen timeout
+				getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
 				//hide android nav-buttons
 				config.useImmersiveMode = true;

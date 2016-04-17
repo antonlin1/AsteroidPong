@@ -11,13 +11,13 @@ public class Star {
 
     private float xPos;
     private float yPos;
-    private long timeStamp;
+    private float size;
 
 
-    public Star(float xPos, float yPos, long timeStamp) {
+    public Star(float xPos, float yPos, float size) {
         this.xPos = xPos;
         this.yPos = yPos;
-        this.timeStamp = timeStamp;
+        this.size = size;
 
     }
 
@@ -28,13 +28,8 @@ public class Star {
         return yPos;
     }
 
-    public long getTimeStamp() {
-        return timeStamp;
-    }
-
-    public void updateTimeStamp(long timeStamp) {
-            this.timeStamp = timeStamp;
-
+    public float getSize() {
+        return size;
     }
 
 

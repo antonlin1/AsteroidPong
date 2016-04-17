@@ -93,11 +93,12 @@ public class MyGdxGame extends ApplicationAdapter implements InputProcessor {
 				shapeRenderer.setColor(Color.WHITE);
 				shapeRenderer.circle(ball.getX(), ball.getY(), ball.getRadius());
 
-				shapeRenderer.setColor(Color.RED);
-				shapeRenderer.rect(paddle1.getX(), paddle1.getY(), paddle1.getLength(), paddle1.getHeight());
-				//	shapeRenderer.rect(paddle2.getX(), paddle2.getY(), paddle2.getLength(), paddle2.getHeight());
 				shapeRenderer.setColor(Color.WHITE);
+				shapeRenderer.rect(paddle1.getX(), paddle1.getY(), paddle1.getLength(), paddle1.getHeight());
 
+				//	shapeRenderer.rect(paddle2.getX(), paddle2.getY(), paddle2.getLength(), paddle2.getHeight());
+
+				shapeRenderer.setColor(Color.WHITE);
 				shapeRenderer.end();
 				state.update();
 		}

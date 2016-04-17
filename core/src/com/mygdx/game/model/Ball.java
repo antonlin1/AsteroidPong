@@ -12,7 +12,7 @@ public class Ball {
 		private float xVelocity;
 		private float yVelocity;
 
-		private final float VELOCITY = 5f;
+		private final float VELOCITY = 8f;
 
 
 		public Ball(float xPos, float yPos, float radius) {
