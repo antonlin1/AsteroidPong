@@ -82,12 +82,17 @@ public class GameState {
 				paddleCollision = PhysicsHelper.paddleCollision(getPaddles(), balls);
 				isDead = PhysicsHelper.isDead(width, height, balls);
 
-				if(isDead) {
-						isDead = false;
-						ball.randomizePos(width, height);
-				}
+		//		if(isDead) {
+	//					isDead = false;
+	//					ball.randomizePos(width, height);
+//				}
 
 				ball.move();
+		}
+
+		public void randomizePos() {
+			Ball ball = balls.get(0);
+			ball.randomizePos(width,height);
 		}
 
 		public float getWidth() {

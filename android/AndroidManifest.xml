@@ -5,16 +5,11 @@
     android:versionName="1.0" >
 
     <uses-sdk android:minSdkVersion="8" android:targetSdkVersion="23" />
-    <uses-permission android:name="android.permission.SET_DEBUG_APP"></uses-permission>
-    <uses-permission
-        android:required="true"
-        android:name="android.permission.ACCESS_WIFI_STATE"/>
-    <uses-permission
-        android:required="true"
-        android:name="android.permission.CHANGE_WIFI_STATE"/>
-    <uses-permission
-        android:required="true"
-        android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.SET_DEBUG_APP" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+
 
     <application
         android:allowBackup="true"
@@ -25,7 +20,8 @@
             android:name="com.mygdx.game.AndroidLauncher"
             android:label="Asteroid Pong"
             android:screenOrientation="portrait"
-            android:configChanges="keyboard|keyboardHidden|orientation|screenSize">
+            android:configChanges="keyboard|keyboardHidden|orientation|screenSize"
+             >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />

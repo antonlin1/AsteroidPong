@@ -13,7 +13,7 @@ import java.util.List;
 /**
  * Created by hampusballdin on 2016-04-01.
  */
-public class AccelerationConverter {
+ public class AccelerationConverter {
 		double prevTime = 0.0;
 
 		private double Rs = 0;
@@ -224,7 +224,7 @@ public class AccelerationConverter {
 //
 //				p[0] = (xPos < 0) ? 0 : xPos;
 
-				game.getInput().movePaddleToAbsPos(xPos/*% WIDTH*/);
+				//game.getInput().movePaddleToAbsPos(xPos/*% WIDTH*/);
 				//paddles[0].setX((WIDTH / 2 + (float) p[0] * 10000 / 2 )% WIDTH);
 
 				vn = (vn + 1) % vN;

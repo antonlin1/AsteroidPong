@@ -16,14 +16,18 @@ import com.mygdx.game.model.Ball;
 import com.mygdx.game.model.GameState;
 import com.mygdx.game.model.Paddle;
 
+
 import java.awt.Image;
 import java.util.Random;
+
 
 import javax.xml.soap.Text;
 
 public class MyGdxGame extends ApplicationAdapter implements InputProcessor {
 		SpriteBatch batch;
 		Sound collisionSound;
+		Sound gameOverSound;
+
 
 		private GameState state;
 		private ShapeRenderer shapeRenderer;
@@ -32,6 +36,7 @@ public class MyGdxGame extends ApplicationAdapter implements InputProcessor {
 		private BlinkingStars blinkingStars;
 
 		private InputController input;
+
 
 		@Override
 		public void create() {
@@ -53,6 +58,9 @@ public class MyGdxGame extends ApplicationAdapter implements InputProcessor {
 				blinkingStars.makeBlinkingStars();
 
 				collisionSound = Gdx.audio.newSound(Gdx.files.internal("bounce1.wav"));
+				gameOverSound = Gdx.audio.newSound(Gdx.files.internal("missedBall.wav"));
+
+
 
 		}
 
@@ -65,17 +73,24 @@ public class MyGdxGame extends ApplicationAdapter implements InputProcessor {
 				particles.makeParticles(ball);
 				particles.removeParticles();
 
-				if (state.isDead()) {
+			if (state.isDead()) {
+						gameOverSound.play();
 						state.killBall();
+						state.randomizePos();
 				}
 
 
 				Paddle paddle1 = state.getPaddles()[0];
 				//Paddle paddle2 = state.getPaddles()[1];
 
-				if (state.isPaddleCollision() || state.isWallCollision()) {
+				if (state.isPaddleCollision())  {
 						collisionSound.play();
+						Gdx.input.vibrate(300);
 				}
+				if (state.isWallCollision()) {
+				collisionSound.play();
+			}
+
 
 				batch.setProjectionMatrix(camera.combined);
 				batch.begin();

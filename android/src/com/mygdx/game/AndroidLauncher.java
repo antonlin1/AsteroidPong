@@ -21,6 +21,7 @@ import java.util.Arrays;
 public class AndroidLauncher extends AndroidApplication implements SensorEventListener {
 		private SensorManager mSensorManager;
 
+
 		private float[] mGData = new float[3];
 
 		private Converter accelerationConverter;
@@ -46,6 +47,8 @@ public class AndroidLauncher extends AndroidApplication implements SensorEventLi
 
 
 				accelerationConverter = new Converter(game);
+
+
 
 		}
 
@@ -113,6 +116,7 @@ public class AndroidLauncher extends AndroidApplication implements SensorEventLi
 
 				// to stop the listener and save battery
 				mSensorManager.unregisterListener(this);
+
 		}
 
 		protected float[] lowPass(float[] input, float[] output, final float ALPHA) {
