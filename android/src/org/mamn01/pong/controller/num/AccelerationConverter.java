@@ -224,7 +224,7 @@ import java.util.List;
 //
 //				p[0] = (xPos < 0) ? 0 : xPos;
 
-				//game.getInput().movePaddleToAbsPos(xPos/*% WIDTH*/);
+				game.getInput().movePaddleToAbsPos(xPos/*% WIDTH*/);
 				//paddles[0].setX((WIDTH / 2 + (float) p[0] * 10000 / 2 )% WIDTH);
 
 				vn = (vn + 1) % vN;
