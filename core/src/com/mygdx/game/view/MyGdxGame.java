@@ -16,6 +16,7 @@ import com.mygdx.game.Controller.InputController;
 import com.mygdx.game.PeerHelperInterface;
 import com.mygdx.game.model.Ball;
 import com.mygdx.game.model.GameState;
+import com.mygdx.game.model.MenuState;
 import com.mygdx.game.model.Paddle;
 import com.mygdx.game.model.State;
 import com.mygdx.game.model.StateManager;
@@ -28,11 +29,13 @@ import java.util.Random;
 import javax.xml.soap.Text;
 
 public class MyGdxGame extends ApplicationAdapter implements InputProcessor {
-		SpriteBatch batch;
+		private SpriteBatch batch;
+		private ShapeRenderer shapeRenderer;
 
 		private StateManager stateManager;
 		private GameState state;
-		private ShapeRenderer shapeRenderer;
+		private MenuState menuState;
+
 		private OrthographicCamera camera;
 
 		private BlinkingStars blinkingStars;
@@ -57,17 +60,22 @@ public class MyGdxGame extends ApplicationAdapter implements InputProcessor {
 				camera.setToOrtho(true, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
 				stateManager = new StateManager();
+
 				state = new GameState(stateManager,Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 				stateManager.push(state);
+
+				menuState = new MenuState(stateManager);
+				stateManager.push(menuState);
 
 
 				input = new InputController(state);
 
 				Gdx.input.setInputProcessor(this);
 
-
 				blinkingStars = new BlinkingStars(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 				blinkingStars.makeBlinkingStars();
+
+
 
 
 
@@ -81,8 +89,6 @@ public class MyGdxGame extends ApplicationAdapter implements InputProcessor {
 			input.movePaddleToAbsPos((float) accelerometerInput.getNormalizedPosition(this));
 
 			batch.setProjectionMatrix(camera.combined);
-			batch.begin();
-			batch.end();
 
 			shapeRenderer.setProjectionMatrix(camera.combined);
 
@@ -91,8 +97,11 @@ public class MyGdxGame extends ApplicationAdapter implements InputProcessor {
 			blinkingStars.drawBlinkingStars(shapeRenderer);
 			shapeRenderer.end();
 
+			batch.setProjectionMatrix(camera.combined);
 			stateManager.render(batch, shapeRenderer);
 			stateManager.update();
+
+
 
 		}
 

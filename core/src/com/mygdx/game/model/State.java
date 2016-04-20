@@ -2,6 +2,8 @@ package com.mygdx.game.model;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.mygdx.game.AccelerometerInputInterface;
+import com.mygdx.game.view.MyGdxGame;
 
 
 /**
@@ -9,17 +11,22 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
  */
 public abstract class State {
 
-    private StateManager stateManager;
+    protected StateManager stateManager;
+    protected AccelerometerInputInterface accelerometerInput;
+    protected MyGdxGame game;
 
     public State(StateManager stateManager) {
 
         this.stateManager = stateManager;
 
 
+
     }
+
 
     public abstract void update();
     public abstract void render(SpriteBatch spriteBatch, ShapeRenderer shapeRenderer);
+
 
 
 

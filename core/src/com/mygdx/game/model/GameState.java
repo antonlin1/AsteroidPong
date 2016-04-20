@@ -3,8 +3,12 @@ package com.mygdx.game.model;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.mygdx.game.AccelerometerInputInterface;
+import com.mygdx.game.Controller.InputController;
+import com.mygdx.game.view.MyGdxGame;
 import com.mygdx.game.view.Particles;
 
 import java.util.ArrayList;
@@ -30,8 +34,12 @@ public class GameState extends State {
     private boolean paddleCollision;
     private Particles particles;
 
-    Sound collisionSound;
-    Sound gameOverSound;
+    private InputController input;
+
+    private Sound collisionSound;
+    private Sound gameOverSound;
+
+    private Texture cancel;
 
 
     public GameState(StateManager stateManager, float width, float height) {
@@ -51,8 +59,10 @@ public class GameState extends State {
         collisionSound = Gdx.audio.newSound(Gdx.files.internal("bounce1.wav"));
         gameOverSound = Gdx.audio.newSound(Gdx.files.internal("missedBall.wav"));
 
+        cancel = new Texture("cancel.png");
 
     }
+
 
 
     public void update() {
@@ -71,13 +81,18 @@ public class GameState extends State {
 //				}
 
         ball.move();
+
+        handleInput();
+
     }
 
     public void render(SpriteBatch spriteBatch, ShapeRenderer shapeRenderer) {
 
+
         Ball ball = getBalls().get(0);
         particles.makeParticles(ball);
         particles.removeParticles();
+
 
         if (isDead()) {
             gameOverSound.play();
@@ -112,10 +127,36 @@ public class GameState extends State {
 
         shapeRenderer.end();
 
-
+        spriteBatch.begin();
+        spriteBatch.draw(cancel, 10, 10, 129, 129);
+        spriteBatch.end();
 
 
     }
+
+    public void handleInput() {
+
+        if(Gdx.input.justTouched()) {
+            float x = Gdx.input.getX();
+            float y = Gdx.input.getY();
+
+            float x1 = 10;
+            float x2 = 128 + 10;
+            float y1 = 10;
+            float y2 = 128 + 10;
+
+            if(x > x1 && x < x2 && y > y1 && y < y2) {
+                System.out.println("Button pressed");
+                stateManager.push(new MenuState(stateManager));
+
+
+            }
+
+        }
+
+    }
+
+
 
     public enum PaddleConstant {
         HEIGHT(32), LENGTH(64 * 3), YPOS(128);
