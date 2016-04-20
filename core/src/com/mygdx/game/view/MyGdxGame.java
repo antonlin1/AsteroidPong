@@ -17,6 +17,8 @@ import com.mygdx.game.PeerHelperInterface;
 import com.mygdx.game.model.Ball;
 import com.mygdx.game.model.GameState;
 import com.mygdx.game.model.Paddle;
+import com.mygdx.game.model.State;
+import com.mygdx.game.model.StateManager;
 
 
 import java.awt.Image;
@@ -26,18 +28,17 @@ import java.util.Random;
 import javax.xml.soap.Text;
 
 public class MyGdxGame extends ApplicationAdapter implements InputProcessor {
-		private SpriteBatch batch;
-		private Sound collisionSound;
-		private Sound gameOverSound;
+		SpriteBatch batch;
 
+		private StateManager stateManager;
 		private GameState state;
 		private ShapeRenderer shapeRenderer;
 		private OrthographicCamera camera;
-		private Particles particles;
+
 		private BlinkingStars blinkingStars;
+		private AccelerometerInputInterface accelerometerInput;
 
 		private InputController input;
-		private AccelerometerInputInterface accelerometerInput;
 
 		private PeerHelperInterface peerHelper;
 
@@ -45,6 +46,7 @@ public class MyGdxGame extends ApplicationAdapter implements InputProcessor {
 			this.accelerometerInput = accelerometerInput;
 			this.peerHelper = peerHelper;
 		}
+
 
 		@Override
 		public void create() {
@@ -54,19 +56,21 @@ public class MyGdxGame extends ApplicationAdapter implements InputProcessor {
 				camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 				camera.setToOrtho(true, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
-				state = new GameState(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+				stateManager = new StateManager();
+				state = new GameState(stateManager,Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+				stateManager.push(state);
 
 
 				input = new InputController(state);
 
 				Gdx.input.setInputProcessor(this);
 
-				particles = new Particles();
-				blinkingStars = new BlinkingStars(state.getWidth(), state.getHeight());
+
+				blinkingStars = new BlinkingStars(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 				blinkingStars.makeBlinkingStars();
 
-				collisionSound = Gdx.audio.newSound(Gdx.files.internal("bounce1.wav"));
-				gameOverSound = Gdx.audio.newSound(Gdx.files.internal("missedBall.wav"));
+
+
 		}
 
 		@Override
@@ -76,54 +80,23 @@ public class MyGdxGame extends ApplicationAdapter implements InputProcessor {
 
 			input.movePaddleToAbsPos((float) accelerometerInput.getNormalizedPosition(this));
 
-				Ball ball = state.getBalls().get(0);
-				particles.makeParticles(ball);
-				particles.removeParticles();
+			batch.setProjectionMatrix(camera.combined);
+			batch.begin();
+			batch.end();
 
-				if (state.isDead()) {
-						gameOverSound.play();
-						state.killBall();
-						state.randomizePos();
-				}
+			shapeRenderer.setProjectionMatrix(camera.combined);
 
+			shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+			shapeRenderer.setColor(Color.WHITE);
+			blinkingStars.drawBlinkingStars(shapeRenderer);
+			shapeRenderer.end();
 
-				Paddle paddle1 = state.getPaddles()[0];
-				//Paddle paddle2 = state.getPaddles()[1];
+			stateManager.render(batch, shapeRenderer);
+			stateManager.update();
 
-				if (state.isPaddleCollision())  {
-						collisionSound.play();
-						Gdx.input.vibrate(300);
-				}
-				if (state.isWallCollision()) {
-				collisionSound.play();
-			}
-
-
-				batch.setProjectionMatrix(camera.combined);
-				batch.begin();
-				batch.end();
-
-				shapeRenderer.setProjectionMatrix(camera.combined);
-
-				shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-
-
-				blinkingStars.drawBlinkingStars(shapeRenderer);
-
-				particles.drawParticles(shapeRenderer);
-
-				shapeRenderer.setColor(Color.WHITE);
-				shapeRenderer.circle(ball.getX(), ball.getY(), ball.getRadius());
-
-				shapeRenderer.setColor(Color.WHITE);
-				shapeRenderer.rect(paddle1.getX(), paddle1.getY(), paddle1.getLength(), paddle1.getHeight());
-
-				//	shapeRenderer.rect(paddle2.getX(), paddle2.getY(), paddle2.getLength(), paddle2.getHeight());
-
-				shapeRenderer.setColor(Color.WHITE);
-				shapeRenderer.end();
-				state.update();
 		}
+
+
 
 		@Override
 		public boolean keyDown(int keycode) {
