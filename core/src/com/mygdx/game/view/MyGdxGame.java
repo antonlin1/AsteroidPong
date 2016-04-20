@@ -13,6 +13,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.mygdx.game.AccelerometerInputInterface;
 import com.mygdx.game.Controller.InputController;
+import com.mygdx.game.PeerHelperInterface;
 import com.mygdx.game.model.Ball;
 import com.mygdx.game.model.GameState;
 import com.mygdx.game.model.Paddle;
@@ -38,8 +39,11 @@ public class MyGdxGame extends ApplicationAdapter implements InputProcessor {
 		private InputController input;
 		private AccelerometerInputInterface accelerometerInput;
 
-		public MyGdxGame(AccelerometerInputInterface accelerometerInput) {
+		private PeerHelperInterface peerHelper;
+
+		public MyGdxGame(AccelerometerInputInterface accelerometerInput, PeerHelperInterface peerHelper) {
 			this.accelerometerInput = accelerometerInput;
+			this.peerHelper = peerHelper;
 		}
 
 		@Override
@@ -139,6 +143,7 @@ public class MyGdxGame extends ApplicationAdapter implements InputProcessor {
 
 		@Override
 		public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+				peerHelper.discover();
 				return false;
 		}
 
