@@ -62,7 +62,7 @@ public class MyGdxGame extends ApplicationAdapter implements InputProcessor {
 				Gdx.input.setInputProcessor(this);
 
 
-				blinkingStars = new BlinkingStars(state.getWidth(), state.getHeight());
+				blinkingStars = new BlinkingStars(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 				blinkingStars.makeBlinkingStars();
 
 
