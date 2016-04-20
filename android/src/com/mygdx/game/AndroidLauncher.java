@@ -23,6 +23,7 @@ public class AndroidLauncher extends AndroidApplication implements SensorEventLi
 
 
 		private float[] mGData = new float[3];
+		private MyGdxGame game;
 
 		private Converter accelerationConverter;
 		@Override
@@ -41,26 +42,16 @@ public class AndroidLauncher extends AndroidApplication implements SensorEventLi
 				mSensorManager.registerListener(this, mSensorManager.getDefaultSensor(
 						Sensor.TYPE_LINEAR_ACCELERATION), SensorManager.SENSOR_DELAY_FASTEST);
 
+				accelerationConverter = new Converter();
 
-				MyGdxGame game = new MyGdxGame();
+				game = new MyGdxGame(accelerationConverter);
 				initialize(game, config);
-
-
-				accelerationConverter = new Converter(game);
-
-
-
 		}
 
 
 		@Override
 		public void onSensorChanged(SensorEvent event) {
 				float[] data = event.values;
-				// Perform LP-Filtering
-
-				//final float alpha = 0.025f;
-
-				//mGData = lowPass(data, mGData);
 
 				if (event.sensor.getType() == Sensor.TYPE_LINEAR_ACCELERATION) {
 
@@ -80,15 +71,13 @@ public class AndroidLauncher extends AndroidApplication implements SensorEventLi
 								accelerationConverter.receiveData(data, event.timestamp);
 						}*/
 
-					//	System.out.println("mGData: " + Arrays.toString(mGData));
-
 						final float ALPHA = 1.0f;
 						mGData = lowPass(data, mGData, ALPHA);
 
 						//	if (!accelerationConverter.getBiasedDetermined()) {
 						//			accelerationConverter.calibrateErrors(mGData, event.timestamp);
 						//	} else {
-						accelerationConverter.convert(mGData, event.timestamp);
+						accelerationConverter.convert(mGData, event.timestamp, game);
 						//	}
 				}
 

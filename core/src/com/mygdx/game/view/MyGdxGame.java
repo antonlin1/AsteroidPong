@@ -11,6 +11,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.mygdx.game.AccelerometerInputInterface;
 import com.mygdx.game.Controller.InputController;
 import com.mygdx.game.model.Ball;
 import com.mygdx.game.model.GameState;
@@ -24,10 +25,9 @@ import java.util.Random;
 import javax.xml.soap.Text;
 
 public class MyGdxGame extends ApplicationAdapter implements InputProcessor {
-		SpriteBatch batch;
-		Sound collisionSound;
-		Sound gameOverSound;
-
+		private SpriteBatch batch;
+		private Sound collisionSound;
+		private Sound gameOverSound;
 
 		private GameState state;
 		private ShapeRenderer shapeRenderer;
@@ -36,7 +36,11 @@ public class MyGdxGame extends ApplicationAdapter implements InputProcessor {
 		private BlinkingStars blinkingStars;
 
 		private InputController input;
+		private AccelerometerInputInterface accelerometerInput;
 
+		public MyGdxGame(AccelerometerInputInterface accelerometerInput) {
+			this.accelerometerInput = accelerometerInput;
+		}
 
 		@Override
 		public void create() {
@@ -59,21 +63,20 @@ public class MyGdxGame extends ApplicationAdapter implements InputProcessor {
 
 				collisionSound = Gdx.audio.newSound(Gdx.files.internal("bounce1.wav"));
 				gameOverSound = Gdx.audio.newSound(Gdx.files.internal("missedBall.wav"));
-
-
-
 		}
 
 		@Override
 		public void render() {
-				Gdx.gl.glClearColor(0.075f, 0.059f, 0.188f, 1);
-				Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+			Gdx.gl.glClearColor(0.075f, 0.059f, 0.188f, 1);
+			Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
+			input.movePaddleToAbsPos((float) accelerometerInput.getNormalizedPosition(this));
 
 				Ball ball = state.getBalls().get(0);
 				particles.makeParticles(ball);
 				particles.removeParticles();
 
-			if (state.isDead()) {
+				if (state.isDead()) {
 						gameOverSound.play();
 						state.killBall();
 						state.randomizePos();

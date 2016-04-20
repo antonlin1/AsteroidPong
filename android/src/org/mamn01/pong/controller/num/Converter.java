@@ -1,6 +1,7 @@
 package org.mamn01.pong.controller.num;
 
 import com.badlogic.gdx.Gdx;
+import com.mygdx.game.AccelerometerInputInterface;
 import com.mygdx.game.Controller.InputController;
 import com.mygdx.game.view.MyGdxGame;
 
@@ -8,17 +9,17 @@ import com.mygdx.game.view.MyGdxGame;
  * Created by hampusballdin on 2016-04-12.
  * Converts Acceleration to position
  */
-public class Converter {
+public class Converter implements AccelerometerInputInterface {
 		private Sampler sampler;
 
 		private Acceleration acceleration;
 		private Velocity velocity;
 		private Position position;
-		private MyGdxGame game;
+		//private MyGdxGame game;
 
-		public Converter(MyGdxGame game) {
+		public Converter() {
 				sampler = new Sampler();
-				this.game = game;
+				//this.game = game;
 
 				acceleration = new Acceleration(sampler);
 				velocity = new Velocity(acceleration);
@@ -28,7 +29,7 @@ public class Converter {
 				sampler.init();
 		}
 
-		public void convert(float[] accelerationData, long time) {
+		public void convert(float[] accelerationData, long time, MyGdxGame game) {
 				// Only interested in vertical movement
 				double dt = sampler.gatherSample(accelerationData[0], time);
 				if (dt == 0.0)
@@ -57,10 +58,7 @@ public class Converter {
 								position.onVelocityUpdate(dt);
 						}
 
-						float WIDTH = Gdx.graphics.getWidth();
-						float xPos = (WIDTH / 2 + (float) position.getValue() * 200000 / 4);
-
-						controller.movePaddleToAbsPos(xPos);
+						//controller.movePaddleToAbsPos(xPos);
 				}
 		}
 
@@ -83,6 +81,20 @@ public class Converter {
 		public double getPosition() {
 				return position.getValue();
 		}
+
+	@Override
+	public double getRawPosition() {
+		return 0;
+	}
+
+	@Override
+	public double getNormalizedPosition(MyGdxGame game) {
+
+		float WIDTH = Gdx.graphics.getWidth();
+		float xPos = (WIDTH / 2 + (float) position.getValue() * 200000 / 4);
+
+		return xPos;
+	}
 
 		/*
 		public double[] getAcceleration() {
