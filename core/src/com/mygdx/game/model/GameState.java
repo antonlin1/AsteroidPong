@@ -128,7 +128,7 @@ public class GameState extends State {
         shapeRenderer.end();
 
         spriteBatch.begin();
-        spriteBatch.draw(cancel, 10, 10, 129, 129);
+        spriteBatch.draw(cancel, Gdx.graphics.getWidth() - cancel.getWidth() - 20, 20);
         spriteBatch.end();
 
 
@@ -140,10 +140,10 @@ public class GameState extends State {
             float x = Gdx.input.getX();
             float y = Gdx.input.getY();
 
-            float x1 = 10;
-            float x2 = 128 + 10;
-            float y1 = 10;
-            float y2 = 128 + 10;
+            float x1 = Gdx.graphics.getWidth() - cancel.getWidth() - 20;
+            float x2 = Gdx.graphics.getWidth() + cancel.getWidth() - 20;
+            float y1 = 20;
+            float y2 = cancel.getHeight() + 20;
 
             if(x > x1 && x < x2 && y > y1 && y < y2) {
                 System.out.println("Button pressed");
