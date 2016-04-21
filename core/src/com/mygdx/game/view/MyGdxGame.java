@@ -24,6 +24,7 @@ import com.mygdx.game.model.StateManager;
 
 import java.awt.Image;
 import java.util.Random;
+import java.util.concurrent.TimeoutException;
 
 
 import javax.xml.soap.Text;
@@ -44,6 +45,9 @@ public class MyGdxGame extends ApplicationAdapter implements InputProcessor {
 		private InputController input;
 
 		private PeerHelperInterface peerHelper;
+
+		private Texture planet1;
+		private Texture planet2;
 
 		public MyGdxGame(AccelerometerInputInterface accelerometerInput, PeerHelperInterface peerHelper) {
 			this.accelerometerInput = accelerometerInput;
@@ -75,6 +79,9 @@ public class MyGdxGame extends ApplicationAdapter implements InputProcessor {
 				blinkingStars = new BlinkingStars(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 				blinkingStars.makeBlinkingStars();
 
+				planet1 = new Texture("planet1.png");
+				planet2 = new Texture("planet2.png");
+
 
 
 
@@ -101,6 +108,10 @@ public class MyGdxGame extends ApplicationAdapter implements InputProcessor {
 			stateManager.render(batch, shapeRenderer);
 			stateManager.update();
 
+			batch.begin();
+			batch.draw(planet1, Gdx.graphics.getWidth() - planet1.getWidth(), Gdx.graphics.getHeight() - planet1.getHeight());
+			batch.draw(planet2, 0, 0);
+			batch.end();
 
 
 		}
