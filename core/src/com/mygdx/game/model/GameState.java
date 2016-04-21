@@ -59,7 +59,7 @@ public class GameState extends State {
         collisionSound = Gdx.audio.newSound(Gdx.files.internal("bounce1.wav"));
         gameOverSound = Gdx.audio.newSound(Gdx.files.internal("missedBall.wav"));
 
-        cancel = new Texture("cancel.png");
+        cancel = new Texture("cancel2.png");
 
     }
 
