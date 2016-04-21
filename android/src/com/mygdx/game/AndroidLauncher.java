@@ -7,6 +7,8 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.net.wifi.WifiInfo;
+import android.net.wifi.WifiManager;
 import android.net.wifi.p2p.WifiP2pManager;
 import android.os.Bundle;
 import android.util.Log;
@@ -47,8 +49,8 @@ public class AndroidLauncher extends AndroidApplication implements SensorEventLi
 
         mManager = (WifiP2pManager) getSystemService(Context.WIFI_P2P_SERVICE);
         mChannel = mManager.initialize(this, getMainLooper(), null);
-        mReceiver = new WifiDirectBroadcastReceiver(mManager, mChannel, this);
-        peerHelper = new PeerHelper(mManager,mChannel, mReceiver);
+        peerHelper = new PeerHelper(mManager,mChannel);
+        mReceiver = new WifiDirectBroadcastReceiver(mManager, mChannel, this, peerHelper, this);
 
         mIntentFilter = new IntentFilter();
         mIntentFilter.addAction(WifiP2pManager.WIFI_P2P_STATE_CHANGED_ACTION);
@@ -61,7 +63,10 @@ public class AndroidLauncher extends AndroidApplication implements SensorEventLi
 
         //hide android nav-buttons
         config.useImmersiveMode = true;
-
+        // First:
+        //      7a:f8:82:ed:21:73
+        // Second:
+        //      7a:f8:82:ed:2a:88
         mSensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
 
         mSensorManager.registerListener(this, mSensorManager.getDefaultSensor(
@@ -71,8 +76,18 @@ public class AndroidLauncher extends AndroidApplication implements SensorEventLi
 
         game = new MyGdxGame(accelerationConverter, peerHelper);
         initialize(game, config);
+
+        System.out.println("DEVICE MAC: "+ getMacAddress(this));
     }
 
+    private String getMacAddress(Context context) {
+        WifiManager wimanager = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
+        String macAddress = wimanager.getConnectionInfo().getMacAddress();
+        if (macAddress == null) {
+            macAddress = "Device don't have mac address or wi-fi is disabled";
+        }
+        return macAddress;
+    }
 
     @Override
     public void onSensorChanged(SensorEvent event) {
