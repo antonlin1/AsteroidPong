@@ -28,9 +28,9 @@ public class Particles  {
     }
 
     public void makeParticles(Ball ball) {
-        for(int i = 0; i < 20; i++) {
-            float x = ball.getX() + ((float) Math.random() * ball.getRadius()) -15;
-            float y = ball.getY() + ((float) Math.random() * ball.getRadius() -15);
+        for(int i = 0; i < 10; i++) {
+            float x = ball.getX() + ((float) Math.random() * ball.getRadius()) -25;
+            float y = ball.getY() + ((float) Math.random() * ball.getRadius()) -25;
 
             particles.add(new Particle(x, y, TimeUtils.millis()));
 
@@ -38,15 +38,15 @@ public class Particles  {
     }
 
     public void drawParticles(ShapeRenderer shapeRenderer) {
-        float size1 = 15;
-        float size2 = 10;
-        float size3 = 5;
+        float size1 = 10;
+        float size2 = 7;
+        float size3 = 4;
 
         for(int i = 0; i < particles.size(); i++) {
             shapeRenderer.setColor(Color.YELLOW);
-            if(TimeUtils.timeSinceMillis(particles.get(i).getTimeStamp()) > 200) {
+            if(TimeUtils.timeSinceMillis(particles.get(i).getTimeStamp()) > 300) {
                 shapeRenderer.rect(particles.get(i).getX(), particles.get(i).getY(), size3, size3);
-            } else if(TimeUtils.timeSinceMillis(particles.get(i).getTimeStamp()) > 100) {
+            } else if(TimeUtils.timeSinceMillis(particles.get(i).getTimeStamp()) > 150) {
                 shapeRenderer.rect(particles.get(i).getX(), particles.get(i).getY(), size2, size2);
             } else {
                 shapeRenderer.rect(particles.get(i).getX(), particles.get(i).getY(), size1, size1);
@@ -58,7 +58,7 @@ public class Particles  {
 
     public void removeParticles() {
         for(int i = 0; i < particles.size(); i++) {
-            if(TimeUtils.timeSinceMillis(particles.get(i).getTimeStamp()) > 300) {
+            if(TimeUtils.timeSinceMillis(particles.get(i).getTimeStamp()) > 350) {
                 particles.remove(i);
             }
         }
