@@ -17,20 +17,6 @@ public class Position {
 				p += v * dt;
 		}
 
-		public void onVelocityUpdatePositive(double dt) {
-				double v = velocity.getValue();
-				if(v > 0) {
-						p += v * dt;
-				}
-
-		}
-		public void onVelocityUpdateNegative(double dt) {
-				double v = velocity.getValue();
-				if(v < 0) {
-						p += v * dt;
-				}
-		}
-
 		double getValue() {
 				return p;
 		}

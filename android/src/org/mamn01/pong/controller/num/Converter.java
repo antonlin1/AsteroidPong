@@ -41,23 +41,17 @@ public class Converter implements AccelerometerInputInterface {
 				if (controller != null) {
 
 						if (controller.isAtLeftBoundary()) {
-								position.onVelocityUpdatePositive(dt);
-
 								if(acceleration.getValue() < 0)
-										acceleration.reset();
+										acceleration.resetAcceleration();
 								if(velocity.getValue() < 0)
 										velocity.reset();
 						}else if(controller.isAtRightBoundary()) {
-								position.onVelocityUpdateNegative(dt);
-
 								if(acceleration.getValue() > 0)
-										acceleration.reset();
+										acceleration.resetAcceleration();
 								if(velocity.getValue() > 0)
 										velocity.reset();
-						}else {
-								position.onVelocityUpdate(dt);
 						}
-
+						position.onVelocityUpdate(dt);
 						//controller.movePaddleToAbsPos(xPos);
 				}
 		}
@@ -91,7 +85,7 @@ public class Converter implements AccelerometerInputInterface {
 	public double getNormalizedPosition(MyGdxGame game) {
 
 		float WIDTH = Gdx.graphics.getWidth();
-		float xPos = (WIDTH / 2 + (float) position.getValue() * 200000 / 4);
+		float xPos = (WIDTH / 2 + (float) position.getValue() * 200000 / 20);
 
 		return xPos;
 	}

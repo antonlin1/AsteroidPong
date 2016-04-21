@@ -13,7 +13,7 @@ public class Acceleration implements Sampler.SampleGatheredCallback{
 		private Filter rateOfChange;
 		private Sampler sampler;
 
-		private static final int ACCELERATION_NUMBER_INPUT = 30;
+		private static final int ACCELERATION_NUMBER_INPUT = 55;
 		private static final int ACCELERATION_ROC_NUMBER_INPUT = 30;
 
 		public Acceleration(Sampler sampler) {
@@ -40,7 +40,6 @@ public class Acceleration implements Sampler.SampleGatheredCallback{
 				return rateOfChange.getAbsoluteAverageInput();
 		}
 
-		double previous = 0.0;
 		@Override
 		public void onSampleGathered(double dt, double sample) {
 				this.value = sample;
@@ -49,11 +48,10 @@ public class Acceleration implements Sampler.SampleGatheredCallback{
 				filter.update(filter.getValue());
 
 				if(dt > 0)
-					rateOfChange.update( ((getInputHistory(1) - getInputHistory(2)) / dt) / 50);
-				previous = filter.getValue();
+						rateOfChange.update( ((getInputHistory(1) - getInputHistory(2)) / dt) / 50);
 
 				if(isDeaccelerated()) {
-						filter.resetValues();
+						resetAcceleration();
 				}
 				//System.out.println(filter.getAbsoluteAverageOutput());
 		}
@@ -72,18 +70,17 @@ public class Acceleration implements Sampler.SampleGatheredCallback{
 
 				for(int i = 2; i < 15 + 2; i++) {
 
-							if(Math.abs(rateOfChange.getInputHistory(i)) > threshold) {
+						if(Math.abs(rateOfChange.getInputHistory(i)) > threshold) {
 								deaccelerated = false;
 								break;
-							}
+						}
 
 				}
 				return deaccelerated;
 		}
 
-		public void reset() {
+		public void resetAcceleration() {
 				filter.resetValues();
-				rateOfChange.resetValues();
 		}
 
 }

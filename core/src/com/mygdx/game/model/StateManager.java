@@ -2,6 +2,7 @@ package com.mygdx.game.model;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.mygdx.game.AccelerometerInputInterface;
 
 import java.util.Stack;
 
@@ -37,6 +38,16 @@ public class StateManager {
     public void render(SpriteBatch spriteBatch,  ShapeRenderer shapeRenderer){
         states.peek().render(spriteBatch, shapeRenderer);
     }
+
+    public boolean lastItem() {
+        if(states.size() == 1) {
+            return true;
+        }
+        return false;
+    }
+
+
+
 
 
 }

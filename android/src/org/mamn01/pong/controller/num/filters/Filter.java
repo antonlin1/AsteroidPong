@@ -116,12 +116,10 @@ public abstract class Filter {
 		}
 
 		public void resetValues() {
-				if(XN > 0) {
-						x = new double[XN];
-				}
-				if(YN > 0) {
-						y = new double[YN];
-				}
+				x = new double[XN];
+				y = new double[YN];
+				xn = 0;
+				n = 0;
 		}
 
 		public double getInputHistory(int k) {

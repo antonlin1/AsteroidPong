@@ -16,6 +16,7 @@ import com.mygdx.game.Controller.InputController;
 import com.mygdx.game.PeerHelperInterface;
 import com.mygdx.game.model.Ball;
 import com.mygdx.game.model.GameState;
+import com.mygdx.game.model.MenuState;
 import com.mygdx.game.model.Paddle;
 import com.mygdx.game.model.State;
 import com.mygdx.game.model.StateManager;
@@ -23,16 +24,19 @@ import com.mygdx.game.model.StateManager;
 
 import java.awt.Image;
 import java.util.Random;
+import java.util.concurrent.TimeoutException;
 
 
 import javax.xml.soap.Text;
 
 public class MyGdxGame extends ApplicationAdapter implements InputProcessor {
-		SpriteBatch batch;
+		private SpriteBatch batch;
+		private ShapeRenderer shapeRenderer;
 
 		private StateManager stateManager;
 		private GameState state;
-		private ShapeRenderer shapeRenderer;
+		private MenuState menuState;
+
 		private OrthographicCamera camera;
 
 		private BlinkingStars blinkingStars;
@@ -41,6 +45,9 @@ public class MyGdxGame extends ApplicationAdapter implements InputProcessor {
 		private InputController input;
 
 		private PeerHelperInterface peerHelper;
+
+		private Texture planet1;
+		private Texture planet2;
 
 		public MyGdxGame(AccelerometerInputInterface accelerometerInput, PeerHelperInterface peerHelper) {
 			this.accelerometerInput = accelerometerInput;
@@ -57,17 +64,25 @@ public class MyGdxGame extends ApplicationAdapter implements InputProcessor {
 				camera.setToOrtho(true, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
 				stateManager = new StateManager();
+
 				state = new GameState(stateManager,Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 				stateManager.push(state);
+
+				menuState = new MenuState(stateManager);
+				stateManager.push(menuState);
 
 
 				input = new InputController(state);
 
 				Gdx.input.setInputProcessor(this);
 
-
 				blinkingStars = new BlinkingStars(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 				blinkingStars.makeBlinkingStars();
+
+				planet1 = new Texture("planet1.png");
+				planet2 = new Texture("planet2.png");
+
+
 
 
 
@@ -81,8 +96,6 @@ public class MyGdxGame extends ApplicationAdapter implements InputProcessor {
 			input.movePaddleToAbsPos((float) accelerometerInput.getNormalizedPosition(this));
 
 			batch.setProjectionMatrix(camera.combined);
-			batch.begin();
-			batch.end();
 
 			shapeRenderer.setProjectionMatrix(camera.combined);
 
@@ -91,8 +104,15 @@ public class MyGdxGame extends ApplicationAdapter implements InputProcessor {
 			blinkingStars.drawBlinkingStars(shapeRenderer);
 			shapeRenderer.end();
 
+			batch.setProjectionMatrix(camera.combined);
 			stateManager.render(batch, shapeRenderer);
 			stateManager.update();
+
+			batch.begin();
+			batch.draw(planet1, Gdx.graphics.getWidth() - planet1.getWidth(), Gdx.graphics.getHeight() - planet1.getHeight());
+			batch.draw(planet2, 0, 0);
+			batch.end();
+
 
 		}
 
