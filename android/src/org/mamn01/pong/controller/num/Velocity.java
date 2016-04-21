@@ -35,7 +35,7 @@ public class Velocity {
 		public double getValue() {
 				//double display = Math.exp(20 * Math.abs(v)) - 1;
 				//display = v < 0 ? display * -1 : display;
-				return v;//display / 10;//filter.getValue();
+				return 10 * v;//display / 10;//filter.getValue();
 		}
 
 		public void reset() {

@@ -1,8 +1,8 @@
 package org.mamn01.pong.controller.num;
 
-import org.mamn01.pong.controller.time.MeasureTime;
-
 import java.util.ArrayList;
+
+import org.mamn01.pong.controller.time.MeasureTime;
 
 /**
  * Created by hampusballdin on 2016-03-31.

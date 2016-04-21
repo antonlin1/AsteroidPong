@@ -106,7 +106,7 @@ public class GameState extends State {
 
         if (isPaddleCollision())  {
             collisionSound.play();
-            Gdx.input.vibrate(300);
+            Gdx.input.vibrate(50);
         }
         if (isWallCollision()) {
             collisionSound.play();

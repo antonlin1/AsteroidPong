@@ -77,33 +77,10 @@ public class AndroidLauncher extends AndroidApplication implements SensorEventLi
     @Override
     public void onSensorChanged(SensorEvent event) {
         float[] data = event.values;
-
         if (event.sensor.getType() == Sensor.TYPE_LINEAR_ACCELERATION) {
-
-            //		TextView[] tmp = {xView, yView, zView};
-            //		for (int i = 0; i < 3; i++) {
-            //				setText(tmp[i], getNbrs(mGData[i], 10));
-            //		}
-
-            //		System.out.println("data: " + Arrays.toString(data));
-            //		System.out.println("mGData: " + Arrays.toString(mGData));
-
-				/*		if(!accelerationConverter.getBiasedAccelerationDetermined()) {
-                                accelerationConverter.determineBiasAcceleration(data, event.timestamp);
-						}else if(!accelerationConverter.getBiasVelocityDetermined()) {
-								accelerationConverter.determineBiasVelocity(data, event.timestamp);
-						}else {
-								accelerationConverter.receiveData(data, event.timestamp);
-						}*/
-
             final float ALPHA = 1.0f;
             mGData = lowPass(data, mGData, ALPHA);
-
-            //	if (!accelerationConverter.getBiasedDetermined()) {
-            //			accelerationConverter.calibrateErrors(mGData, event.timestamp);
-            //	} else {
             accelerationConverter.convert(mGData, event.timestamp, game);
-            //	}
         }
     }
 
