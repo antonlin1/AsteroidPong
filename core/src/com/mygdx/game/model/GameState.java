@@ -41,6 +41,9 @@ public class GameState extends State {
 
     private Texture cancel;
 
+    private Texture[] scores;
+    private int score;
+
 
     public GameState(StateManager stateManager, float width, float height) {
         super(stateManager);
@@ -60,6 +63,17 @@ public class GameState extends State {
         gameOverSound = Gdx.audio.newSound(Gdx.files.internal("missedBall.wav"));
 
         cancel = new Texture("cancel2.png");
+
+        scores = new Texture[6];
+
+        scores[0] = new Texture("score0.png");
+        scores[1] = new Texture("score20.png");
+        scores[2] = new Texture("score40.png");
+        scores[3] = new Texture("score60.png");
+        scores[4] = new Texture("score80.png");
+        scores[5] = new Texture("score100.png");
+
+        score = 5;
 
     }
 
@@ -98,6 +112,13 @@ public class GameState extends State {
             gameOverSound.play();
             killBall();
             randomizePos();
+            if(score > 0) {
+                score--;
+            }
+        }
+
+        if(score == 0) {
+            score = 5;
         }
 
 
@@ -129,6 +150,9 @@ public class GameState extends State {
 
         spriteBatch.begin();
         spriteBatch.draw(cancel, Gdx.graphics.getWidth() - cancel.getWidth() - 20, 20);
+        spriteBatch.draw(scores[score], 20, height - PaddleConstant.YPOS.value - 175, 170, 75);
+        spriteBatch.draw(scores[5], 20, PaddleConstant.YPOS.value + 100, 170, 75);
+
         spriteBatch.end();
 
 
