@@ -13,10 +13,8 @@ public class HowToPlayState extends State {
     private Texture cancel;
 
     public HowToPlayState(StateManager stateManager) {
-        super(stateManager);
+        super(stateManager, StateManager.STATES.HOW_TO_PLAY_STATE);
         cancel = new Texture("cancel2.png");
-
-
     }
 
 
@@ -53,7 +51,10 @@ public class HowToPlayState extends State {
             }
 
         }
+    }
 
-
+    @Override
+    public boolean isActive(){
+        return (this.stateManager.getActiveState().equals(this.stateName));
     }
 }

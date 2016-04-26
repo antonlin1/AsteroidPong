@@ -24,29 +24,29 @@ public class PhysicsHelper {
 				}
 
 				//Collision with top
-				if (ball.getY() <= ball.getRadius()) {
-						ball.reverseYVelocity();
-						collision = true;
-				}
+//				if (ball.getY() <= ball.getRadius()) {
+//						ball.reverseYVelocity();
+//						collision = true;
+//				}
 				//Death
-				//	if (ball.getY() >= height - ball.radius) {
-
-				// ball.yVelocity *= -1;
-				// ball.setY(1000);
-				// ball.setX(ball.getRadius() + 1);
-
-
-				//	}
-
-				//Top paddle
-				// if(ball.getX() + ball.getRadius() > paddle2.getX() && ball.getX() - ball.getRadius() < paddle2.getX() + GameState.PaddleConstant.LENGTH.value
-				//         && ball.getY() - ball.getRadius() < paddle2.getY() + GameState.PaddleConstant.HEIGHT.value){
-				//     ball.yVelocity *= -1;
-				//     GameState.bounces ++;
-				//     if(GameState.bounces % 5 == 0) {
-				//         //PhysicsHelper.increaseSpeed(balls);
-				//       }
-				//     }
+//				if (ball.getY() >= height - ball.getRadius()) {
+//
+//				 ball.reverseYVelocity();
+//				 ball.setY(1000);
+//				 ball.setX(ball.getRadius() + 1);
+//
+//
+//				}
+//
+//				//Top paddle
+//				 if(ball.getX() + ball.getRadius() > paddle2.getX() && ball.getX() - ball.getRadius() < paddle2.getX() + GameState.PaddleConstant.LENGTH.value
+//				         && ball.getY() - ball.getRadius() < paddle2.getY() + GameState.PaddleConstant.HEIGHT.value){
+//				     ball.yVelocity *= -1;
+//				     GameState.bounces ++;
+//				     if(GameState.bounces % 5 == 0) {
+//				         //PhysicsHelper.increaseSpeed(balls);
+//				       }
+//				     }
 
 				return collision;
 
@@ -54,7 +54,7 @@ public class PhysicsHelper {
 
 		public static boolean isDead(float width, float height, ArrayList<Ball> balls) {
 				Ball ball = balls.get(0);
-				if (ball.getY() >= height + ball.getRadius()) {
+				if (ball.getY() >= height + ball.getRadius() || ball.getY() <=  - ball.getRadius()) {
 						//ball.yVelocity *= -1;
 						return true;
 				}
@@ -93,8 +93,10 @@ public class PhysicsHelper {
 		public static boolean isCollision(Ball ball, Paddle paddle) {
 				return ball.getX() + ball.getRadius() >= paddle.getX() &&
 						ball.getX() - ball.getRadius() <= paddle.getX() + GameState.PaddleConstant.LENGTH.value
-						&& ball.getY() + ball.getRadius() >= paddle.getY()
-						&& ball.getY() -ball.getRadius() <= paddle.getY()-paddle.getHeight();
+						&& ((ball.getY() + ball.getRadius() >= paddle.getY()
+						&& ball.getY() - ball.getRadius() <= paddle.getY() - paddle.getHeight())
+						/*|| (ball.getY() + ball.getRadius() <= paddle.getY()
+						&& ball.getY() - ball.getRadius() >= paddle.getY() + paddle.getHeight())*/);
 		}
 
 

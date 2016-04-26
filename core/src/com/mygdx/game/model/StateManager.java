@@ -11,7 +11,13 @@ import java.util.Stack;
  */
 public class StateManager {
 
+    public enum STATES {
+        HOW_TO_PLAY_STATE, GAME_STATE, MENU_STATE;
+    }
+
     private Stack<State> states;
+
+    private STATES activeState;
 
     public StateManager(){
         states = new Stack<State>();
@@ -19,16 +25,28 @@ public class StateManager {
 
     public void push(State state){
         states.push(state);
+        setActiveState(states.peek().getStateName());
     }
 
     public void pop(){
         states.pop();
+        setActiveState(states.peek().getStateName());
     }
 
 
-    public void set(State state){
+    public void set(State state) {
         states.pop();
         states.push(state);
+        setActiveState(states.peek().getStateName());
+    }
+
+    private void setActiveState(STATES state) {
+        activeState = state;
+        System.out.println("STAAATE: "+activeState);
+    }
+
+    public STATES getActiveState() {
+        return activeState;
     }
 
     public void update(){

@@ -21,7 +21,7 @@ public class MenuState extends State {
 
 
     public MenuState(StateManager stateManager) {
-        super(stateManager);
+        super(stateManager, StateManager.STATES.MENU_STATE);
         button1 = new Texture("button3.png");
         button2 = new Texture("button4.png");
         text1 = new Texture("text1.png");
@@ -64,7 +64,6 @@ public class MenuState extends State {
                 System.out.println("Button1 pressed");
                 stateManager.pop();
 
-
             }
 
             float x21 = (Gdx.graphics.getWidth() / 2) - (button2.getWidth() / 2);
@@ -80,5 +79,9 @@ public class MenuState extends State {
 
         }
 
+    }
+    @Override
+    public boolean isActive(){
+        return (this.stateManager.getActiveState().equals(this.stateName));
     }
 }

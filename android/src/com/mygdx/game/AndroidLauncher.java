@@ -2,6 +2,7 @@ package com.mygdx.game;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
 import android.content.IntentFilter;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
@@ -26,7 +27,7 @@ import org.mamn01.pong.controller.num.Converter;
 import java.util.Arrays;
 
 
-public class AndroidLauncher extends AndroidApplication implements SensorEventListener {
+public class AndroidLauncher extends AndroidApplication implements SensorEventListener{
     private SensorManager mSensorManager;
 
 
@@ -36,7 +37,7 @@ public class AndroidLauncher extends AndroidApplication implements SensorEventLi
     //Network stuff
     private WifiP2pManager mManager;
     private WifiP2pManager.Channel mChannel;
-    private BroadcastReceiver mReceiver;
+    private WifiDirectBroadcastReceiver mReceiver;
     private IntentFilter mIntentFilter;
     private PeerHelper peerHelper;
 
@@ -49,14 +50,16 @@ public class AndroidLauncher extends AndroidApplication implements SensorEventLi
 
         mManager = (WifiP2pManager) getSystemService(Context.WIFI_P2P_SERVICE);
         mChannel = mManager.initialize(this, getMainLooper(), null);
-        peerHelper = new PeerHelper(mManager,mChannel);
-        mReceiver = new WifiDirectBroadcastReceiver(mManager, mChannel, this, peerHelper, this);
+        peerHelper = new PeerHelper(mManager, mChannel);
+        mReceiver = new WifiDirectBroadcastReceiver(mManager, mChannel, peerHelper);
 
         mIntentFilter = new IntentFilter();
+
         mIntentFilter.addAction(WifiP2pManager.WIFI_P2P_STATE_CHANGED_ACTION);
         mIntentFilter.addAction(WifiP2pManager.WIFI_P2P_PEERS_CHANGED_ACTION);
         mIntentFilter.addAction(WifiP2pManager.WIFI_P2P_CONNECTION_CHANGED_ACTION);
         mIntentFilter.addAction(WifiP2pManager.WIFI_P2P_THIS_DEVICE_CHANGED_ACTION);
+        mIntentFilter.addAction(Intent.ACTION_SHUTDOWN);
 
         //disable screen timeout
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
@@ -74,10 +77,13 @@ public class AndroidLauncher extends AndroidApplication implements SensorEventLi
 
         accelerationConverter = new Converter();
 
-        game = new MyGdxGame(accelerationConverter, peerHelper);
+        game = new MyGdxGame(accelerationConverter, peerHelper, mReceiver);
         initialize(game, config);
 
         System.out.println("DEVICE MAC: "+ getMacAddress(this));
+        mReceiver.resetNetwork();
+
+        peerHelper.discover();
     }
 
     private String getMacAddress(Context context) {
@@ -134,5 +140,4 @@ public class AndroidLauncher extends AndroidApplication implements SensorEventLi
         }
         return output;
     }
-
 }

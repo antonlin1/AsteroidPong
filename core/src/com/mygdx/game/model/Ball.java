@@ -12,8 +12,7 @@ public class Ball {
 		private float xVelocity;
 		private float yVelocity;
 
-		private final float VELOCITY = 8f;
-
+	private final float VELOCITY = 8f;
 
 		public Ball(float xPos, float yPos, float radius) {
 
@@ -24,6 +23,7 @@ public class Ball {
 				//Somewhat randomize ball start direction
 				randomizeVelocity();
 		}
+
 
 		public float getX() {
 				return xPos;
@@ -45,10 +45,10 @@ public class Ball {
 				return yVelocity;
 		}
 
-
 		public void setY(float yPos) {
 				this.yPos = yPos;
 		}
+
 
 		public float getRadius() {
 				return radius;
@@ -106,4 +106,20 @@ public class Ball {
 		public void reverseXVelocity(){
 				xVelocity *= -1;
 		}
+
+	public void setxPos(float xPos) {
+		this.xPos = xPos;
+	}
+
+	public void setyPos(float yPos) {
+		this.yPos = yPos;
+	}
+
+	public void setxVelocity(float xVelocity) {
+		this.xVelocity = xVelocity;
+	}
+
+	public void setyVelocity(float yVelocity) {
+		this.yVelocity = yVelocity;
+	}
 }

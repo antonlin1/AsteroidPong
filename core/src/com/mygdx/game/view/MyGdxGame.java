@@ -14,6 +14,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.mygdx.game.AccelerometerInputInterface;
 import com.mygdx.game.Controller.InputController;
 import com.mygdx.game.PeerHelperInterface;
+import com.mygdx.game.WifiDirectInterface;
 import com.mygdx.game.model.Ball;
 import com.mygdx.game.model.GameState;
 import com.mygdx.game.model.MenuState;
@@ -45,13 +46,15 @@ public class MyGdxGame extends ApplicationAdapter implements InputProcessor {
 		private InputController input;
 
 		private PeerHelperInterface peerHelper;
+		private WifiDirectInterface wifiDirect;
 
 		private Texture planet1;
 		private Texture planet2;
 
-		public MyGdxGame(AccelerometerInputInterface accelerometerInput, PeerHelperInterface peerHelper) {
+		public MyGdxGame(AccelerometerInputInterface accelerometerInput, PeerHelperInterface peerHelper, WifiDirectInterface wifiDirect) {
 			this.accelerometerInput = accelerometerInput;
 			this.peerHelper = peerHelper;
+			this.wifiDirect = wifiDirect;
 		}
 
 
@@ -65,7 +68,7 @@ public class MyGdxGame extends ApplicationAdapter implements InputProcessor {
 
 				stateManager = new StateManager();
 
-				state = new GameState(stateManager,Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+				state = new GameState(stateManager,Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), peerHelper, wifiDirect);
 				stateManager.push(state);
 
 				menuState = new MenuState(stateManager);
@@ -81,10 +84,6 @@ public class MyGdxGame extends ApplicationAdapter implements InputProcessor {
 
 				planet1 = new Texture("planet1.png");
 				planet2 = new Texture("planet2.png");
-
-
-
-
 
 		}
 
@@ -114,8 +113,8 @@ public class MyGdxGame extends ApplicationAdapter implements InputProcessor {
 			stateManager.update();
 
 			batch.begin();
-			batch.draw(planet1, Gdx.graphics.getWidth() - planet1.getWidth(), Gdx.graphics.getHeight() - planet1.getHeight());
-			batch.draw(planet2, 0, 0);
+			//batch.draw(planet1, Gdx.graphics.getWidth() - planet1.getWidth(), Gdx.graphics.getHeight() - planet1.getHeight());
+			//batch.draw(planet2, 0, 0);
 			batch.end();
 
 
@@ -141,7 +140,7 @@ public class MyGdxGame extends ApplicationAdapter implements InputProcessor {
 
 		@Override
 		public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-				peerHelper.discover();
+				//peerHelper.discover();
 				return false;
 		}
 
