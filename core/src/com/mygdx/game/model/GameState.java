@@ -15,6 +15,8 @@ import com.mygdx.game.view.Particles;
 
 import java.util.ArrayList;
 
+import static com.mygdx.game.model.GameState.PaddleConstant.*;
+
 
 public class GameState extends State {
 
@@ -72,8 +74,8 @@ public class GameState extends State {
         balls.add(new Ball(width / 2, height / 2, 32));
 
 
-        paddle1 = new Paddle(width / 2 - 32, height - PaddleConstant.YPOS.value - 100, (float) PaddleConstant.LENGTH.value);
-        paddle2 = new Paddle(width / 2 - 32, PaddleConstant.YPOS.value -20, (float)PaddleConstant.LENGTH.value);
+        paddle1 = new Paddle(width / 2 - 32, height - YPOS.value - 100, (float) LENGTH.value);
+        paddle2 = new Paddle(width / 2 - 32, YPOS.value -20, (float) LENGTH.value);
 
         particles = new Particles();
         collisionSound = Gdx.audio.newSound(Gdx.files.internal("bounce1.wav"));
@@ -209,8 +211,8 @@ public class GameState extends State {
 
         spriteBatch.begin();
         spriteBatch.draw(cancel, Gdx.graphics.getWidth() - cancel.getWidth() - 20, 20);
-        spriteBatch.draw(scores[score], 20, height - PaddleConstant.YPOS.value - 175, 170, 75);
-        spriteBatch.draw(scores[5], 20, PaddleConstant.YPOS.value + 100, 170, 75);
+        spriteBatch.draw(scores[score], 20, height - YPOS.value - 175, 170, 75);
+        spriteBatch.draw(scores[5], 20, YPOS.value + 100, 170, 75);
 
         spriteBatch.end();
 
@@ -270,7 +272,7 @@ public class GameState extends State {
 
     // OpponentPadle, will mirror xPos
     public void setPaddle2(float xPos) {
-        paddle2.setX(this.width - xPos);
+        paddle2.setX(this.width - (xPos - LENGTH.value));
     }
 
     public float getWidth() {

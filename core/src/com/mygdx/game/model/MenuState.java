@@ -76,7 +76,6 @@ public class MenuState extends State {
                 //stateManager.push(new HowToPlayState(stateManager));
             }
 
-
         }
 
     }

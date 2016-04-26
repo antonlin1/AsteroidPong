@@ -63,9 +63,4 @@ public class StateManager {
         }
         return false;
     }
-
-
-
-
-
 }
