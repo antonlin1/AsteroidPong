@@ -270,7 +270,7 @@ public class GameState extends State {
 
     // OpponentPadle, will mirror xPos
     public void setPaddle2(float xPos) {
-        paddle2.setX(this.width - (xPos - LENGTH.value));
+        paddle2.setX(this.width - (xPos + LENGTH.value));
     }
 
     public float getWidth() {

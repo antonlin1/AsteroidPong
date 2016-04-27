@@ -70,7 +70,8 @@ public class PhysicsHelper {
 				Ball ball = balls.get(0);
 
 				boolean makeCollisionSound = false;
-				if (isCollision(ball, paddle1) && !isCollision) {
+
+				if ((isCollision(ball, paddle1) || isCollision(ball, paddle2)) && !isCollision) {
 
 						ball.reverseYVelocity();
 						GameState.bounces++;
@@ -83,7 +84,7 @@ public class PhysicsHelper {
 
 				}
 
-				if (!isCollision(ball, paddle1)) {
+				if (!isCollision(ball, paddle1) && !isCollision(ball, paddle2)) {
 						isCollision = false;
 				}
 
@@ -95,8 +96,8 @@ public class PhysicsHelper {
 						ball.getX() - ball.getRadius() <= paddle.getX() + GameState.PaddleConstant.LENGTH.value
 						&& ((ball.getY() + ball.getRadius() >= paddle.getY()
 						&& ball.getY() - ball.getRadius() <= paddle.getY() - paddle.getHeight())
-						/*|| (ball.getY() + ball.getRadius() <= paddle.getY()
-						&& ball.getY() - ball.getRadius() >= paddle.getY() + paddle.getHeight())*/);
+						|| (ball.getY() - ball.getRadius() <= paddle.getY()
+						&& ball.getY() + ball.getRadius() >= paddle.getY() + paddle.getHeight()));
 		}
 
 
