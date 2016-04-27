@@ -19,6 +19,8 @@ import com.badlogic.gdx.backends.android.AndroidApplication;
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
 import com.mygdx.game.Network.PeerHelper;
 import com.mygdx.game.Network.WifiDirectBroadcastReceiver;
+import com.mygdx.game.SpeechRecognizer.ListenerActivity;
+import com.mygdx.game.SpeechRecognizer.SpeechListener;
 import com.mygdx.game.view.MyGdxGame;
 
 import org.mamn01.pong.controller.num.AccelerationConverter;
@@ -27,9 +29,9 @@ import org.mamn01.pong.controller.num.Converter;
 import java.util.Arrays;
 
 
-public class AndroidLauncher extends AndroidApplication implements SensorEventListener{
+public class AndroidLauncher extends ListenerActivity implements SensorEventListener{
     private SensorManager mSensorManager;
-
+    private SpeechListener sl;
 
     private float[] mGData = new float[3];
     private MyGdxGame game;
@@ -40,6 +42,8 @@ public class AndroidLauncher extends AndroidApplication implements SensorEventLi
     private WifiDirectBroadcastReceiver mReceiver;
     private IntentFilter mIntentFilter;
     private PeerHelper peerHelper;
+
+    protected static boolean pause;
 
     private Converter accelerationConverter;
 
@@ -54,6 +58,13 @@ public class AndroidLauncher extends AndroidApplication implements SensorEventLi
         mReceiver = new WifiDirectBroadcastReceiver(mManager, mChannel, peerHelper);
 
         mIntentFilter = new IntentFilter();
+
+        // Launches speech recognition
+        context = getApplicationContext();
+        SpeechListener.getInstance().setListener(this);
+        startListening();
+        pause = false;
+
 
         mIntentFilter.addAction(WifiP2pManager.WIFI_P2P_STATE_CHANGED_ACTION);
         mIntentFilter.addAction(WifiP2pManager.WIFI_P2P_PEERS_CHANGED_ACTION);
@@ -119,6 +130,8 @@ public class AndroidLauncher extends AndroidApplication implements SensorEventLi
         mSensorManager.registerListener(this, mSensorManager.getDefaultSensor(
                 Sensor.TYPE_ACCELEROMETER), SensorManager.SENSOR_DELAY_FASTEST);
 
+        startListening();
+
     }
 
     @Override
@@ -130,6 +143,26 @@ public class AndroidLauncher extends AndroidApplication implements SensorEventLi
         // to stop the listener and save battery
         mSensorManager.unregisterListener(this);
 
+        //Stops speech recognition
+        stopListening();
+
+    }
+
+    @Override
+    public void processVoiceCommands(String... voiceCommands) {
+
+        for (String c : voiceCommands) {
+            if (c.contains("start") || c.contains("play")) {
+                pause = false;
+                c = "";
+
+            } else if (c.contains("stop") || c.contains("pause") || c.contains("paws")) {
+                pause = true;
+                c = "";
+
+            }
+            startListening();
+        }
     }
 
     protected float[] lowPass(float[] input, float[] output, final float ALPHA) {
