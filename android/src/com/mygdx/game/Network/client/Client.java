@@ -92,13 +92,6 @@ public class Client extends Thread implements NetworkInterface{
             while (IS_CONNECTION_OPEN && !isInterrupted() ) {
                 String msg = messageHolder.withdraw(); // Blocks until message
                 connection.write(msg);
-
-                try {
-                    Thread.sleep(1);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                //messageHolder.deposit("A");
             }
         }catch(IOException e) {
             e.printStackTrace();
