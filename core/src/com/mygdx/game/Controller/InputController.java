@@ -25,6 +25,8 @@ public class InputController {
 
 				//validX = (validX < 0) ? 0 : validX;
 
+
+
 				if(isAtRightBoundary()) {
 						state.getPaddles()[0].setX(Gdx.graphics.getWidth() - GameState.PaddleConstant.LENGTH.value);
 				}else if(isAtLeftBoundary()){

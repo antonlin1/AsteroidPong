@@ -48,8 +48,8 @@ public class MyGdxGame extends ApplicationAdapter implements InputProcessor {
 		private PeerHelperInterface peerHelper;
 		private WifiDirectInterface wifiDirect;
 
-		private Texture planet1;
-		private Texture planet2;
+		//private Texture planet1;
+		//private Texture planet2;
 
 		public MyGdxGame(AccelerometerInputInterface accelerometerInput, PeerHelperInterface peerHelper, WifiDirectInterface wifiDirect) {
 			this.accelerometerInput = accelerometerInput;
@@ -81,8 +81,8 @@ public class MyGdxGame extends ApplicationAdapter implements InputProcessor {
 				blinkingStars = new BlinkingStars(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 				blinkingStars.makeBlinkingStars();
 
-				planet1 = new Texture("planet1.png");
-				planet2 = new Texture("planet2.png");
+				//planet1 = new Texture("planet1.png");
+				//planet2 = new Texture("planet2.png");
 
 		}
 
@@ -91,12 +91,7 @@ public class MyGdxGame extends ApplicationAdapter implements InputProcessor {
 			Gdx.gl.glClearColor(0.075f, 0.059f, 0.188f, 1);
 			Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-
-			//only move paddle if screen is not touched
-			if(!Gdx.input.isTouched()) {
-				input.movePaddleToAbsPos((float) accelerometerInput.getNormalizedPosition(this));
-
-			}
+			input.movePaddleToAbsPos((float) accelerometerInput.getNormalizedPosition(this));
 
 			batch.setProjectionMatrix(camera.combined);
 

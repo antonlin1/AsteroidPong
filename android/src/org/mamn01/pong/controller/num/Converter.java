@@ -85,6 +85,7 @@ public class Converter implements AccelerometerInputInterface {
 	public double getNormalizedPosition(MyGdxGame game) {
 
 		float WIDTH = Gdx.graphics.getWidth();
+
 		float xPos = (WIDTH / 2 + (float) position.getValue() * 200000 / 20);
 
 		return xPos;
