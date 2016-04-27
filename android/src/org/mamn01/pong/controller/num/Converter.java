@@ -50,6 +50,8 @@ public class Converter implements AccelerometerInputInterface {
 										acceleration.resetAcceleration();
 								if(velocity.getValue() > 0)
 										velocity.reset();
+
+
 						}
 						position.onVelocityUpdate(dt);
 						//controller.movePaddleToAbsPos(xPos);

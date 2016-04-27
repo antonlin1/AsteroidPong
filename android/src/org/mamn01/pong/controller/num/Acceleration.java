@@ -16,6 +16,8 @@ public class Acceleration implements Sampler.SampleGatheredCallback{
 		private static final int ACCELERATION_NUMBER_INPUT = 55;
 		private static final int ACCELERATION_ROC_NUMBER_INPUT = 30;
 
+		private static final double DEACCELERATION_THRESHOLD = 3.0;
+
 		public Acceleration(Sampler sampler) {
 				// 20 = XN, ALPHA = 0.025f
 				this.sampler = sampler;
@@ -66,11 +68,11 @@ public class Acceleration implements Sampler.SampleGatheredCallback{
 
 		public boolean isDeaccelerated() {
 				boolean deaccelerated = true;
-				double threshold = 1.2;
+				//double threshold = 1.2;
 
 				for(int i = 2; i < 15 + 2; i++) {
 
-						if(Math.abs(rateOfChange.getInputHistory(i)) > threshold) {
+						if(Math.abs(rateOfChange.getInputHistory(i)) > DEACCELERATION_THRESHOLD) {
 								deaccelerated = false;
 								break;
 						}
