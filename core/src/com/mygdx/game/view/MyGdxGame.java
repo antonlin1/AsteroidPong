@@ -71,9 +71,8 @@ public class MyGdxGame extends ApplicationAdapter implements InputProcessor {
 				state = new GameState(stateManager,Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), peerHelper, wifiDirect);
 				stateManager.push(state);
 
-				menuState = new MenuState(stateManager);
+				menuState = new MenuState(stateManager, wifiDirect);
 				stateManager.push(menuState);
-
 
 				input = new InputController(state);
 

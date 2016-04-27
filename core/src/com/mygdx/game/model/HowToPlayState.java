@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.mygdx.game.WifiDirectInterface;
 
 /**
  * Created by johanmansson on 16-04-26.
@@ -12,8 +13,8 @@ public class HowToPlayState extends State {
 
     private Texture cancel;
 
-    public HowToPlayState(StateManager stateManager) {
-        super(stateManager, StateManager.STATES.HOW_TO_PLAY_STATE);
+    public HowToPlayState(StateManager stateManager, WifiDirectInterface wifiDirect) {
+        super(stateManager, StateManager.STATE_NAME.HOW_TO_PLAY_STATE, wifiDirect);
         cancel = new Texture("cancel2.png");
     }
 

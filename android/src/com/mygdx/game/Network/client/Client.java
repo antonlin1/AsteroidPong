@@ -3,7 +3,7 @@ package com.mygdx.game.Network.client;
 import com.mygdx.game.Network.InetUtil;
 import com.mygdx.game.Network.MessageHolder;
 import com.mygdx.game.Network.WifiDirectBroadcastReceiver;
-import com.mygdx.game.NetworkInterface;
+import com.mygdx.game.NetworkComponentInterface;
 import com.mygdx.game.model.ClientToServerMessage;
 import com.mygdx.game.model.ServerToClientMessage;
 
@@ -21,7 +21,7 @@ import java.net.Socket;
 /**
  * Created by hampusballdin on 2016-04-20.
  */
-public class Client extends Thread implements NetworkInterface{
+public class Client extends Thread implements NetworkComponentInterface {
 
     private Socket socket;
     private InetAddress address;

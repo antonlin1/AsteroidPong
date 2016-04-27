@@ -5,8 +5,10 @@ package com.mygdx.game;
  */
 public interface WifiDirectInterface {
 
-    public NetworkInterface getNetworkComponent();
+    public NetworkComponentInterface getNetworkComponent();
 
     public boolean isServer();
+
+    public boolean isConnected();
 
 }

@@ -6,11 +6,9 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.mygdx.game.AccelerometerInputInterface;
 import com.mygdx.game.Controller.InputController;
 import com.mygdx.game.PeerHelperInterface;
 import com.mygdx.game.WifiDirectInterface;
-import com.mygdx.game.view.MyGdxGame;
 import com.mygdx.game.view.Particles;
 
 import java.util.ArrayList;
@@ -44,7 +42,7 @@ public class GameState extends State {
     private int score;
 
     private PeerHelperInterface peerHelper;
-    private WifiDirectInterface wifiDirect;
+    //private WifiDirectInterface wifiDirect;
 
     /**
      * Created by antonlin on 16-04-11.
@@ -62,13 +60,13 @@ public class GameState extends State {
 
     public GameState(StateManager stateManager, float width, float height,
                      PeerHelperInterface peerHelper, WifiDirectInterface wifiDirect) {
-        super(stateManager, StateManager.STATES.GAME_STATE);
+        super(stateManager, StateManager.STATE_NAME.GAME_STATE, wifiDirect);
 
         this.width = width;
         this.height = height;
 
         this.peerHelper = peerHelper;
-        this.wifiDirect = wifiDirect;
+        //this.wifiDirect = wifiDirect;
 
         balls = new ArrayList<Ball>();
         balls.add(new Ball(width / 2, height / 2, 32));
@@ -234,7 +232,7 @@ public class GameState extends State {
 
             if(x > x1 && x < x2 && y > y1 && y < y2) {
                 System.out.println("Button pressed");
-                stateManager.push(new MenuState(stateManager));
+                stateManager.push(new MenuState(stateManager, wifiDirect));
             }
         }
 

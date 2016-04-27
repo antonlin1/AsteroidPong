@@ -12,7 +12,7 @@ import android.net.wifi.p2p.WifiP2pManager;
 
 import com.mygdx.game.Network.client.Client;
 import com.mygdx.game.Network.server.Server;
-import com.mygdx.game.NetworkInterface;
+import com.mygdx.game.NetworkComponentInterface;
 import com.mygdx.game.WifiDirectInterface;
 
 import java.lang.reflect.Method;
@@ -47,7 +47,7 @@ public class WifiDirectBroadcastReceiver extends BroadcastReceiver implements Wi
     private String thisDeviceName;
 
     // Client or server
-    private NetworkInterface networkComponent;
+    private NetworkComponentInterface networkComponent;
     private boolean actAsServer = false;
 
     public WifiDirectBroadcastReceiver(WifiP2pManager manager, WifiP2pManager.Channel channel, final PeerHelper peerHelper) {
@@ -289,12 +289,17 @@ public class WifiDirectBroadcastReceiver extends BroadcastReceiver implements Wi
     }
 
     @Override
-    public NetworkInterface getNetworkComponent() {
+    public NetworkComponentInterface getNetworkComponent() {
         return networkComponent;
     }
 
     @Override
     public boolean isServer() {
         return actAsServer;
+    }
+
+    @Override
+    public boolean isConnected() {
+        return NetworkState.IS_CONNECTED;
     }
 }

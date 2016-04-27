@@ -1,14 +1,11 @@
 package com.mygdx.game.model;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
-import com.mygdx.game.AccelerometerInputInterface;
-import com.mygdx.game.view.MyGdxGame;
+import com.mygdx.game.WifiDirectInterface;
 
 /**
  * Created by johanmansson on 16-04-20.
@@ -18,15 +15,11 @@ public class MenuState extends State {
     private Texture button2;
     private Texture text1;
 
-
-
-    public MenuState(StateManager stateManager) {
-        super(stateManager, StateManager.STATES.MENU_STATE);
+    public MenuState(StateManager stateManager, WifiDirectInterface wifiDirect) {
+        super(stateManager, StateManager.STATE_NAME.MENU_STATE, wifiDirect);
         button1 = new Texture("button3.png");
         button2 = new Texture("button4.png");
         text1 = new Texture("text1.png");
-
-
     }
 
 
@@ -41,12 +34,15 @@ public class MenuState extends State {
     public void render(SpriteBatch spriteBatch, ShapeRenderer shapeRenderer) {
 
         spriteBatch.begin();
+        Color c = spriteBatch.getColor();
         spriteBatch.draw(text1, (Gdx.graphics.getWidth() / 2) - (text1.getWidth() / 2), (Gdx.graphics.getHeight() / 2) - (text1.getHeight() / 2) - 150);
+        if(!wifiDirect.isConnected()) {
+            spriteBatch.setColor(c.r, c.g, c.b, 0.3f);
+        }
         spriteBatch.draw(button1, (Gdx.graphics.getWidth() / 2) - (button1.getWidth() / 2), (Gdx.graphics.getHeight() / 2) - (button1.getHeight() / 2) + 300);
+        spriteBatch.setColor(c.r, c.g, c.b, 1f);
         spriteBatch.draw(button2, (Gdx.graphics.getWidth() / 2) - (button2.getWidth() / 2), (Gdx.graphics.getHeight() / 2) + 340 + (button1.getHeight()/2));
         spriteBatch.end();
-
-
     }
 
     public void handleInput() {
@@ -60,10 +56,9 @@ public class MenuState extends State {
             float y1 = (Gdx.graphics.getHeight() / 2) - (button1.getHeight() / 2) + 300;
             float y2 = (Gdx.graphics.getHeight() / 2) + (button1.getHeight() / 2) + 300;
 
-            if(x > x1 && x < x2 && y > y1 && y < y2) {
+            if(x > x1 && x < x2 && y > y1 && y < y2 && wifiDirect.isConnected()) {
                 System.out.println("Button1 pressed");
                 stateManager.pop();
-
             }
 
             float x21 = (Gdx.graphics.getWidth() / 2) - (button2.getWidth() / 2);
@@ -75,9 +70,7 @@ public class MenuState extends State {
                 System.out.println("Button2 pressed");
                 //stateManager.push(new HowToPlayState(stateManager));
             }
-
         }
-
     }
     @Override
     public boolean isActive(){

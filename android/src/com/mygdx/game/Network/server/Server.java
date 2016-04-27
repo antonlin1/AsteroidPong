@@ -1,12 +1,9 @@
 package com.mygdx.game.Network.server;
 
-import android.app.Activity;
-
 import com.mygdx.game.Network.InetUtil;
 import com.mygdx.game.Network.MessageHolder;
-import com.mygdx.game.NetworkInterface;
+import com.mygdx.game.NetworkComponentInterface;
 import com.mygdx.game.model.ClientToServerMessage;
-import com.mygdx.game.model.GameState;
 import com.mygdx.game.model.ServerToClientMessage;
 
 import java.io.BufferedReader;
@@ -16,14 +13,13 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
-import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 
 /**
  * Created by hampusballdin on 2016-04-20.
  */
-public class Server extends Thread implements NetworkInterface{
+public class Server extends Thread implements NetworkComponentInterface {
     private ServerSocket serverSocket;
     private Socket clientSocket;
     private MessageHolder messageHolder;

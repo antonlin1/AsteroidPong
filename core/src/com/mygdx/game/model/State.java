@@ -3,6 +3,7 @@ package com.mygdx.game.model;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.mygdx.game.AccelerometerInputInterface;
+import com.mygdx.game.WifiDirectInterface;
 import com.mygdx.game.view.MyGdxGame;
 
 
@@ -14,15 +15,16 @@ public abstract class State {
     protected StateManager stateManager;
     protected AccelerometerInputInterface accelerometerInput;
     protected MyGdxGame game;
-    protected StateManager.STATES stateName;
+    protected StateManager.STATE_NAME stateName;
+    protected WifiDirectInterface wifiDirect;
 
-    public State(StateManager stateManager, StateManager.STATES stateName) {
-
+    public State(StateManager stateManager, StateManager.STATE_NAME stateName, WifiDirectInterface wifiDirect) {
         this.stateManager = stateManager;
         this.stateName = stateName;
+        this.wifiDirect = wifiDirect;
     }
 
-    public StateManager.STATES getStateName() {
+    public StateManager.STATE_NAME getStateName() {
         return  stateName;
     }
 

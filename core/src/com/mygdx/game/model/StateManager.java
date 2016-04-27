@@ -2,7 +2,6 @@ package com.mygdx.game.model;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.mygdx.game.AccelerometerInputInterface;
 
 import java.util.Stack;
 
@@ -11,13 +10,13 @@ import java.util.Stack;
  */
 public class StateManager {
 
-    public enum STATES {
+    public enum STATE_NAME {
         HOW_TO_PLAY_STATE, GAME_STATE, MENU_STATE;
     }
 
     private Stack<State> states;
 
-    private STATES activeState;
+    private STATE_NAME activeState;
 
     public StateManager(){
         states = new Stack<State>();
@@ -40,12 +39,12 @@ public class StateManager {
         setActiveState(states.peek().getStateName());
     }
 
-    private void setActiveState(STATES state) {
+    private void setActiveState(STATE_NAME state) {
         activeState = state;
         System.out.println("STAAATE: "+activeState);
     }
 
-    public STATES getActiveState() {
+    public STATE_NAME getActiveState() {
         return activeState;
     }
 

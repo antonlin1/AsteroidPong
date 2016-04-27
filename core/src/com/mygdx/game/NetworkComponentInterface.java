@@ -6,7 +6,7 @@ import com.mygdx.game.model.ServerToClientMessage;
 /**
  * Created by antonlin on 16-04-26.
  */
-public interface NetworkInterface {
+public interface NetworkComponentInterface {
 
     public void setClientToServerData(float paddleX);
 
