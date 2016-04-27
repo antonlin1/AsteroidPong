@@ -168,4 +168,13 @@ public class MyGdxGame extends ApplicationAdapter implements InputProcessor {
 		public boolean touchDown(int screenX, int screenY, int pointer, int button) {
 				return false;
 		}
+
+
+		public double getWidth() {
+				return Gdx.graphics.getWidth();
+		}
+
+		public double getHeight() {
+				return Gdx.graphics.getHeight();
+		}
 }

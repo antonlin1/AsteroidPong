@@ -8,19 +8,26 @@ import com.mygdx.game.model.ServerToClientMessage;
  */
 public interface NetworkComponentInterface {
 
-    public void setClientToServerData(float paddleX);
+		public void setClientToServerData(float paddleX, float paddleY);
 
-    public void setServerToClientData(boolean gameActive, boolean paddleCollision, boolean wallCollision, float paddleX, float ballX, float ballY,
-                                      float ballXVelocity, float ballYVelocity, float ballVelocity);
+		public void setServerToClientData(boolean gameActive, boolean paddleCollision, boolean wallCollision, float paddleX, float paddleY, float ballX, float ballY,
+										  float ballXVelocity, float ballYVelocity, float ballVelocity, double screenWidth, double screenHeight);
 
-    // Get data received from other peer to update gamestate
-    public String getData();
+		// Get data received from other peer to update gamestate
+		public String getData();
 
-    public ClientToServerMessage getClientData();
+		public ClientToServerMessage getClientData();
 
-    public ServerToClientMessage getServerData();
+		public ServerToClientMessage getServerData();
 
-    public float getOpponentPaddleX();
+		public float getOpponentPaddleX();
 
-    public boolean isConnectionOpen();
+		public float getOpponentPaddleY();
+
+		public boolean isConnectionOpen();
+
+		public boolean isClientUpdated();
+
+		public boolean isServerUpdated();
+
 }

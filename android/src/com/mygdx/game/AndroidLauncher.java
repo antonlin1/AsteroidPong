@@ -31,7 +31,7 @@ import java.util.Arrays;
 
 public class AndroidLauncher extends ListenerActivity implements SensorEventListener{
     private SensorManager mSensorManager;
-    private SpeechListener sl;
+   // private SpeechListener sl;
 
     private float[] mGData = new float[3];
     private MyGdxGame game;
@@ -61,8 +61,8 @@ public class AndroidLauncher extends ListenerActivity implements SensorEventList
 
         // Launches speech recognition
         context = getApplicationContext();
-        SpeechListener.getInstance().setListener(this);
-        startListening();
+        //SpeechListener.getInstance().setListener(this);
+       // startListening();
         pause = false;
 
 

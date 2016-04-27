@@ -12,7 +12,7 @@ public class Ball {
 		private float xVelocity;
 		private float yVelocity;
 
-	private final float VELOCITY = 8f;
+		private final float VELOCITY = 8f;
 
 		public Ball(float xPos, float yPos, float radius) {
 
@@ -75,8 +75,6 @@ public class Ball {
 				setX(x);
 				setY(y);
 				randomizeVelocity();
-
-
 		}
 
 		public void randomizeVelocity() {
@@ -94,32 +92,32 @@ public class Ball {
 				yPos += yVelocity / Math.abs(yVelocity) * dy;
 		}
 
-		public void kill() {
+		/*public void kill() {
 				yVelocity = 0;
 				xVelocity = 0;
-		}
+		}*/
 
-		public void reverseYVelocity(){
+		public void reverseYVelocity() {
 				yVelocity *= -1;
 		}
 
-		public void reverseXVelocity(){
+		public void reverseXVelocity() {
 				xVelocity *= -1;
 		}
 
-	public void setxPos(float xPos) {
-		this.xPos = xPos;
-	}
+		public void setxPos(float xPos) {
+				this.xPos = xPos;
+		}
 
-	public void setyPos(float yPos) {
-		this.yPos = yPos;
-	}
+		public void setyPos(float yPos) {
+				this.yPos = yPos;
+		}
 
-	public void setxVelocity(float xVelocity) {
-		this.xVelocity = xVelocity;
-	}
+		public void setxVelocity(float xVelocity) {
+				this.xVelocity = xVelocity;
+		}
 
-	public void setyVelocity(float yVelocity) {
-		this.yVelocity = yVelocity;
-	}
+		public void setyVelocity(float yVelocity) {
+				this.yVelocity = yVelocity;
+		}
 }

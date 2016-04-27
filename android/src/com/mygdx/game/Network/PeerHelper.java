@@ -259,6 +259,13 @@ public class PeerHelper implements PeerHelperInterface {
             String[] thisSubStr = thisDeviceName.split(":");
             String[] peerSubStr = peerDeviceName.split(":");
 
+				if(thisSubStr.length < 2 || peerSubStr.length < 2)
+						return;
+
+				/**
+				 *
+				 *  THIS CODE IS BUGGY MAY GENERATE java.lang.ArrayIndexOutOfBoundsException: length=1; index=1
+				 */
             System.out.println("thisSubStr[0]: "+thisSubStr[0] + " [1]:"+ thisSubStr[1].substring(1));
             System.out.println("peerSubStr[0]: "+peerSubStr[0] + " [1]:"+ peerSubStr[1].substring(1));
 

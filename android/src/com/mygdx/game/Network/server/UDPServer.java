@@ -13,96 +13,106 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
+import java.net.DatagramPacket;
+import java.net.DatagramSocket;
+import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.SocketException;
 
 /**
  * Created by hampusballdin on 2016-04-20.
  */
-public class Server extends Thread implements NetworkComponentInterface {
-		private ServerSocket serverSocket;
-		private Socket clientSocket;
+public class UDPServer extends Thread implements NetworkComponentInterface {
+		private DatagramSocket socket;
 		private MessageHolder messageHolder;
 		private ClientToServerMessage clientToServerMessage = new ClientToServerMessage(0.0f, 0.0f);
 		private static boolean IS_CONNECTION_OPEN = false;
+		private static InetAddress clientAddress = null;
+		private static final Object clientAddressLock = new Object();
 
 		//private GameState gameState;
-		public Server(MessageHolder messageHolder/*, GameState gameState*/) {
+		public UDPServer(MessageHolder messageHolder/*, GameState gameState*/) {
 				this.messageHolder = messageHolder;
 //        this.gameState = gameState;
+				try {
+						socket = new DatagramSocket(InetUtil.PORT);
+				} catch (SocketException e) {
+						e.printStackTrace();
+				}
 		}
 
 		@Override
 		public void run() {
 				System.out.print("Server Start");
 
-				try {
+				ClientMessageReader clientMessageReader = new ClientMessageReader(messageHolder, this, socket);
+				clientMessageReader.start();
 
-						serverSocket = new ServerSocket(InetUtil.PORT);
-						serverSocket.setSoTimeout(Integer.MAX_VALUE);
+				while (!isInterrupted()) {
 
-						String serverAddress = serverSocket.getInetAddress().getHostAddress();
-						int port = serverSocket.getLocalPort();
-						System.out.println(" bound at IP: " + serverAddress + ", PORT: " + port);
-						clientSocket = serverSocket.accept();
-						clientSocket.setSoTimeout(100000);
+						System.out.println("Waiting for a new line");
 
-						System.out.println("New Connection from IP " + clientSocket.getInetAddress().getHostAddress());
+						//Message from either self or other phone
+						String message = messageHolder.withdraw();
+						System.out.println("Server sending: " + message);
 
-						InputStream in = clientSocket.getInputStream();
-						OutputStream out = clientSocket.getOutputStream();
+						synchronized (clientAddressLock) {
+								while (clientAddress == null) {
+										try {
+												clientAddressLock.wait();
+										} catch (InterruptedException e) {
+												e.printStackTrace();
+										}
+								}
 
-						BufferedReader br = new BufferedReader(new InputStreamReader(in));
-						BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(out));
-
-						ClientMessageReader cMReader = new ClientMessageReader(messageHolder, this, br);
-						cMReader.start();
-
-						IS_CONNECTION_OPEN = true;
-
-						while (!isInterrupted()) {
-
-								System.out.println("Waiting for a new line");
-
-								//Message from either self or other phone
-								String message = messageHolder.withdraw();
-								System.out.println("Server sending: " + message);
-
-								//viewModifier.setTextView(concatenatedString);
-								bw.write(message + "\n"); // Line feed ...
-								bw.flush();
+								clientAddressLock.notifyAll();
 						}
 
-				} catch (IOException e) {
-						e.printStackTrace();
-				} finally {
-						System.out.println("Closing Server Socket ... ");
+						byte[] bytes = message.getBytes();
+						DatagramPacket dp = new DatagramPacket(bytes, bytes.length, clientAddress, InetUtil.PORT);
+
 						try {
-								serverSocket.close();
+								socket.send(dp);
 						} catch (IOException e) {
 								e.printStackTrace();
 						}
 				}
+
+				socket.close();
+
 		}
 
 		private static class ClientMessageReader extends Thread {
 
 				private MessageHolder messageHolder;
 
-				private Server server;
-				private BufferedReader br;
+				private UDPServer server;
+				private DatagramSocket socket;
 
-				public ClientMessageReader(MessageHolder messageHolder, Server server, BufferedReader br) {
+
+				public ClientMessageReader(MessageHolder messageHolder, UDPServer server, DatagramSocket socket) {
 						this.messageHolder = messageHolder;
 						this.server = server;
-						this.br = br;
+						this.socket = socket;
 				}
 
 				@Override
 				public void run() {
 						try {
 								while (!isInterrupted()) {
-										String message = br.readLine().toString();
+										byte[] data = new byte[InetUtil.UDP_RECEIVE_BUFFER_SIZE];
+										DatagramPacket dp = new DatagramPacket(data, data.length);
+										socket.receive(dp);
+										String message = new String(dp.getData(), 0, dp.getLength());
+										System.out.println("Server Receive: " + message);
+
+										synchronized (clientAddressLock) {
+												if (clientAddress == null) {
+														clientAddress = dp.getAddress();
+														clientAddressLock.notifyAll();
+												}
+										}
 										server.clientToServerMessage = new ClientToServerMessage(message);
 								}
 						} catch (IOException e) {
@@ -118,9 +128,10 @@ public class Server extends Thread implements NetworkComponentInterface {
 		}
 
 		@Override
-		public void setServerToClientData(boolean gameActive, boolean paddleCollision, boolean wallCollision, float paddleX, float paddleY,
+		public void setServerToClientData(boolean gameActive, boolean paddleCollision, boolean wallCollision, float paddleX,float paddleY,
 										  float ballX, float ballY, float ballXVelocity, float ballYVelocity, float ballVelocity,
 										  double screenWidth, double screenHeight) {
+
 				ServerToClientMessage serverToClientMessage = new ServerToClientMessage(gameActive, paddleCollision,
 						wallCollision, paddleX,paddleY, ballX, ballY, ballXVelocity, ballYVelocity, ballVelocity, screenWidth, screenHeight);
 				messageHolder.deposit(serverToClientMessage.toString());
@@ -155,7 +166,6 @@ public class Server extends Thread implements NetworkComponentInterface {
 
 
 		/**
-		 *
 		 * Not yet implemented
 		 */
 		@Override
@@ -164,7 +174,6 @@ public class Server extends Thread implements NetworkComponentInterface {
 		}
 
 		/**
-		 *
 		 * Do nothing
 		 */
 		@Override

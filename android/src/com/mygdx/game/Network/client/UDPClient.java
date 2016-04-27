@@ -14,67 +14,42 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
+import java.net.DatagramPacket;
+import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.Socket;
+import java.net.SocketException;
 
 /**
  * Created by hampusballdin on 2016-04-20.
  */
-public class Client extends Thread implements NetworkComponentInterface {
+public class UDPClient extends Thread implements NetworkComponentInterface {
 
-		private Socket socket;
+		private DatagramSocket socket;
 		private InetAddress address;
 		private Connection connection;
 		private MessageHolder messageHolder;
 		private ServerToClientMessage serverToClientMessage = new ServerToClientMessage();
-
 		private static boolean IS_CONNECTION_OPEN = false;
-
 		private WifiDirectBroadcastReceiver wifiDirectBroadcastReceiver;
-
-		private static final int MAX_NUMBER_CONNECTION_RETRY = 10;
-		private int nbrConnectionRetry = 0;
-
 		private static boolean isUpdated = false;
 
-		public Client(InetAddress address, MessageHolder messageHolder, WifiDirectBroadcastReceiver wifiDirectBroadcastReceiver) {
+		public UDPClient(InetAddress address, MessageHolder messageHolder, WifiDirectBroadcastReceiver wifiDirectBroadcastReceiver) {
 				this.address = address;
 				this.messageHolder = messageHolder;
-				socket = new Socket();
+				try {
+						socket = new DatagramSocket(InetUtil.PORT);
+				} catch (SocketException e) {
+						e.printStackTrace();
+				}
 				this.wifiDirectBroadcastReceiver = wifiDirectBroadcastReceiver;
 
 		}
 
 		public void connect(InetAddress server) {
-				nbrConnectionRetry++;
-
-				if (nbrConnectionRetry > MAX_NUMBER_CONNECTION_RETRY) {
-						IS_CONNECTION_OPEN = false;
-						return;
-				}
-				try {
-						socket.connect(new InetSocketAddress(address, InetUtil.PORT));
-				} catch (IOException e) {
-						try {
-								Thread.sleep(300);
-						} catch (InterruptedException e1) {
-								e1.printStackTrace();
-						}
-						System.out.println(e);
-						System.out.println("Attempt Socket Connection Again ... ");
-						connect(server);
-				}
-
-				try {
-						InputStream in = socket.getInputStream();
-						OutputStream out = socket.getOutputStream();
-						connection = new Connection(in, out, this);
-						IS_CONNECTION_OPEN = true;
-
-				} catch (IOException e) {
-						e.printStackTrace();
-				}
+				connection = new Connection(this, socket, server);
+				IS_CONNECTION_OPEN = true;
 		}
 
 		// Write from this thread, read from new Thread ...
@@ -98,12 +73,7 @@ public class Client extends Thread implements NetworkComponentInterface {
 				} catch (IOException e) {
 						e.printStackTrace();
 				} finally {
-						connection.close();
-						try {
-								socket.close();
-						} catch (IOException e) {
-								e.printStackTrace();
-						}
+						socket.close();
 				}
 				wifiDirectBroadcastReceiver.reconnectToServer();
 
@@ -111,13 +81,13 @@ public class Client extends Thread implements NetworkComponentInterface {
 
 		private static class Connection {
 
-				private Client.Reader reader;
-				private Client.Writer writer;
+				private UDPClient.Reader reader;
+				private UDPClient.Writer writer;
 				private boolean IS_READ_START = false;
 
-				public Connection(InputStream in, OutputStream out, Client client) {
-						reader = new Client.Reader(in, new ReaderCallback(), client);
-						writer = new Client.Writer(out);
+				public Connection(UDPClient client, DatagramSocket socket, InetAddress server) {
+						reader = new UDPClient.Reader(new ReaderCallback(), client, socket);
+						writer = new UDPClient.Writer(socket, server);
 				}
 
 				/**
@@ -133,40 +103,34 @@ public class Client extends Thread implements NetworkComponentInterface {
 				public void write(String line) throws IOException {
 						writer.writeLine(line);
 				}
-
-				public void close() {
-						System.out.println("Closing Connection ... ");
-						reader.close();
-						writer.close();
-				}
-
 		}
 
 		private static class Reader extends Thread {
-
-				private InputStream in;
-
-				private Client client;
+				private UDPClient client;
 				private ReaderCallback readerCallback;
 				private boolean isClosed = false;
+				DatagramSocket socket;
 
-				public Reader(InputStream in, ReaderCallback readerCallback, Client client) {
-						this.in = in;
+				public Reader(ReaderCallback readerCallback, UDPClient client, DatagramSocket socket) {
 						this.readerCallback = readerCallback;
 						this.client = client;
+						this.socket = socket;
 				}
 
 				@Override
 				public void run() {
-						BufferedReader br = new BufferedReader(new InputStreamReader(in));
 						try {
 								while (true && !isInterrupted()) {
 										if (!isClosed) {
-												String line = br.readLine();
-										//		System.out.println("Client Received from server: " + line);
+												//String line = br.readLine();
 
+												byte[] data = new byte[InetUtil.UDP_RECEIVE_BUFFER_SIZE];
+												DatagramPacket dp = new DatagramPacket(data, data.length);
+												socket.receive(dp);
+												//		System.out.println("Client Received from server: " + line);
+
+												String line = new String(dp.getData(), 0, dp.getLength());
 												client.serverToClientMessage = new ServerToClientMessage(line);
-
 												readerCallback.onLineRead(line);
 										}
 								}
@@ -175,24 +139,12 @@ public class Client extends Thread implements NetworkComponentInterface {
 								IS_CONNECTION_OPEN = false;
 						}
 				}
-
-				public void close() {
-						if (in != null) {
-								try {
-										in.close();
-								} catch (IOException e) {
-										e.printStackTrace();
-								}
-								isClosed = true;
-						}
-				}
-
 		}
 
 		private static class ReaderCallback {
 
 				public void onLineRead(String line) throws IOException {
-						System.out.println("Client Read Line: " + line);
+			//			System.out.println("Client Read Line: " + line);
 						isUpdated = true;
 						if (line == null) {
 								throw new IOException("Socket probably closed");
@@ -201,35 +153,25 @@ public class Client extends Thread implements NetworkComponentInterface {
 		}
 
 		private static class Writer {
-
-				private BufferedWriter bw;
 				private boolean isClosed = false;
+				private DatagramSocket socket;
+				private InetAddress server;
 
-				public Writer(OutputStream out) {
-						this.bw = new BufferedWriter(new OutputStreamWriter(out));
+				public Writer(DatagramSocket socket, InetAddress server) {
+						this.socket = socket;
+						this.server = server;
 				}
 
 				public void writeLine(String line) throws IOException {
 						if (!isClosed) {
-								System.out.println("Client Write: " + line);
-								bw.write(line + "\n"); // Note linefeed ...
-								bw.flush();
+					//			System.out.println("Client Write: " + line);
+								byte[] bytes = line.getBytes();
+								DatagramPacket dp = new DatagramPacket(bytes, bytes.length, server, InetUtil.PORT);
+								socket.send(dp);
 						} else {
 								System.err.println("Is Closed!");
 						}
 				}
-
-				public void close() {
-						if (bw != null) {
-								try {
-										bw.close();
-								} catch (IOException e) {
-										e.printStackTrace();
-								}
-								isClosed = true;
-						}
-				}
-
 		}
 
 		@Override
@@ -289,6 +231,7 @@ public class Client extends Thread implements NetworkComponentInterface {
 
 		@Override
 		public float getOpponentPaddleY() {
-				return serverToClientMessage.getPaddleY();
+				return serverToClientMessage.getPaddleY()
+						;
 		}
 }

@@ -8,131 +8,183 @@ import java.util.IllegalFormatException;
  */
 
 public class ServerToClientMessage {
-    private boolean gameActive;
-    private boolean paddleCollision;
-    private boolean wallCollision;
-    // Server device's x position
-    private float   paddleX;
+		private boolean gameActive;
+		private boolean paddleCollision;
+		private boolean wallCollision;
+		// Server device's x position
+		private float paddleX;
+		private float paddleY;
 
-    private float   ballX;
-    private float   ballY;
+		private float ballX;
+		private float ballY;
 
-    private float   ballXVelocity;
+		private float ballXVelocity;
 
-    private float   ballYVelocity;
-    private float   ballVelocity;
+		private float ballYVelocity;
 
-    public ServerToClientMessage() {
-        this.gameActive = false;
-        this.paddleCollision = false;
-        this.wallCollision = false;
-        this.paddleX = 0;
-        this.ballX = 0;
-        this.ballY = 0;
+		private float ballVelocity;
 
-        this.ballXVelocity = 0;
-        this.ballYVelocity = 0;
-        this.ballYVelocity = 0;
-    }
+		private double screenWidth;
+		private double screenHeight;
 
-    public ServerToClientMessage(boolean gameActive, boolean paddleCollision, boolean wallCollision, float paddleX, float ballX, float ballY,
-                                 float ballXVelocity, float ballYVelocity, float ballVelocity) {
 
-        this.gameActive = gameActive;
-        this.paddleCollision = paddleCollision;
-        this.wallCollision = wallCollision;
-        this.paddleX = paddleX;
-        this.ballX = ballX;
-        this.ballY = ballY;
+		private long nanoTime;
 
-        this.ballXVelocity = ballXVelocity;
-        this.ballYVelocity = ballYVelocity;
-        this.ballYVelocity = ballVelocity;
-    }
+		public ServerToClientMessage() {
+				this.gameActive = false;
+				this.paddleCollision = false;
+				this.wallCollision = false;
+				this.paddleX = 0;
+				this.ballX = 0;
+				this.ballY = 0;
 
-    public ServerToClientMessage(String data) {
-        parse(data);
-    }
+				this.ballXVelocity = 0;
+				this.ballYVelocity = 0;
+				this.ballYVelocity = 0;
 
-    public boolean isGameActive() {
-        return gameActive;
-    }
+				this.screenWidth = 0;
+				this.screenHeight = 0;
 
-    public boolean isPaddleCollision() {
-        return paddleCollision;
-    }
+		}
 
-    public boolean isWallCollision() {
-        return wallCollision;
-    }
+		public ServerToClientMessage(boolean gameActive, boolean paddleCollision, boolean wallCollision,
+									 float paddleX, float paddleY, float ballX, float ballY,
+									 float ballXVelocity, float ballYVelocity, float ballVelocity,
+									 double screenWidth, double screenHeight) {
 
-    public float getPaddleX() {
-        return paddleX;
-    }
+				this.gameActive = gameActive;
+				this.paddleCollision = paddleCollision;
+				this.wallCollision = wallCollision;
+				this.paddleX = paddleX;
+				this.paddleY = paddleY;
+				this.ballX = ballX;
+				this.ballY = ballY;
 
-    public float getBallX() {
-        return ballX;
-    }
+				this.ballXVelocity = ballXVelocity;
+				this.ballYVelocity = ballYVelocity;
+				this.ballVelocity = ballVelocity;
 
-    public float getBallY() {
-        return ballY;
-    }
+				this.screenWidth = screenWidth;
+				this.screenHeight = screenHeight;
+		}
 
-    public float getBallXVelocity() {
-        return ballXVelocity;
-    }
+		public ServerToClientMessage(String data) {
+				parse(data);
+		}
 
-    public float getBallYVelocity() {
-        return ballYVelocity;
-    }
+		public boolean isGameActive() {
+				return gameActive;
+		}
 
-    public float getBallVelocity() {
-        return ballVelocity;
-    }
-    //Every attribute separated by ':'
-    public String toString() {
-        StringBuilder returnString = new StringBuilder("");
+		public boolean isPaddleCollision() {
+				return paddleCollision;
+		}
 
-        returnString.append((gameActive) ? "1":"0");
-        returnString.append(":");
-        returnString.append((paddleCollision) ? "1":"0");
-        returnString.append(":");
-        returnString.append((wallCollision) ? "1":"0");
-        returnString.append(":");
-        returnString.append(paddleX);
-        returnString.append(":");
-        returnString.append(ballX);
-        returnString.append(":");
-        returnString.append(ballY);
-        returnString.append(":");
-        returnString.append(ballXVelocity);
-        returnString.append(":");
-        returnString.append(ballYVelocity);
-        returnString.append(":");
-        returnString.append(ballVelocity);
+		public boolean isWallCollision() {
+				return wallCollision;
+		}
 
-        System.out.print(returnString.toString());
+		public float getPaddleX() {
+				return paddleX;
+		}
 
-        return returnString.toString();
-    }
+		public float getPaddleY() {
+				return paddleY;
+		}
 
-    private void parse(String data) throws IllegalFormatException{
-        String[] attributes = data.split(":");
+		public float getBallX() {
+				return ballX;
+		}
 
-        try {
-            gameActive = (Integer.parseInt(attributes[0]) == 1) ? true : false;
-            paddleCollision = (Integer.parseInt(attributes[1]) == 1) ? true : false;
-            wallCollision = (Integer.parseInt(attributes[2]) == 1) ? true : false;
+		public float getBallY() {
+				return ballY;
+		}
 
-            paddleX = Float.parseFloat(attributes[3]);
-            ballX = Float.parseFloat(attributes[4]);
-            ballY = Float.parseFloat(attributes[5]);
+		public float getBallXVelocity() {
+				return ballXVelocity;
+		}
 
-            ballXVelocity = Float.parseFloat(attributes[6]);
-            ballYVelocity = Float.parseFloat(attributes[7]);
-            ballVelocity = Float.parseFloat(attributes[8]);
-        } catch (Exception e) {
-           throw new IllegalFormatConversionException('b', this.getClass());
-        }
-    }
+		public float getBallYVelocity() {
+				return ballYVelocity;
+		}
+
+		public float getBallVelocity() {
+				return ballVelocity;
+		}
+
+		public double getScreenWidth() {
+				return screenWidth;
+		}
+
+		public double getScreenHeight() {
+				return screenHeight;
+		}
+
+		public long getNanoTime() {
+				return nanoTime;
+		}
+		//Every attribute separated by ':'
+		public String toString() {
+				StringBuilder returnString = new StringBuilder("");
+
+				returnString.append((gameActive) ? "1" : "0");
+				returnString.append(":");
+				returnString.append((paddleCollision) ? "1" : "0");
+				returnString.append(":");
+				returnString.append((wallCollision) ? "1" : "0");
+				returnString.append(":");
+				returnString.append(paddleX);
+				returnString.append(":");
+				returnString.append(paddleY);
+				returnString.append(":");
+				returnString.append(ballX);
+				returnString.append(":");
+				returnString.append(ballY);
+				returnString.append(":");
+				returnString.append(ballXVelocity);
+				returnString.append(":");
+				returnString.append(ballYVelocity);
+				returnString.append(":");
+				returnString.append(ballVelocity);
+				returnString.append(":");
+				returnString.append(System.nanoTime());
+				returnString.append(":");
+				returnString.append(screenWidth);
+				returnString.append(":");
+				returnString.append(screenHeight);
+				System.out.print(returnString.toString());
+
+				return returnString.toString();
+		}
+
+		private void parse(String data) throws IllegalFormatException {
+				String[] attributes = data.split(":");
+
+				try {
+
+						/*
+						 * Unnecessary syntax
+						 */
+						gameActive = (Integer.parseInt(attributes[0]) == 1) ? true : false;
+						paddleCollision = (Integer.parseInt(attributes[1]) == 1) ? true : false;
+						wallCollision = (Integer.parseInt(attributes[2]) == 1) ? true : false;
+
+						paddleX = Float.parseFloat(attributes[3]);
+						paddleY = Float.parseFloat(attributes[4]);
+
+						ballX = Float.parseFloat(attributes[5]);
+						ballY = Float.parseFloat(attributes[6]);
+
+						ballXVelocity = Float.parseFloat(attributes[7]);
+						ballYVelocity = Float.parseFloat(attributes[8]);
+						ballVelocity = Float.parseFloat(attributes[9]);
+						nanoTime = Long.parseLong(attributes[10]);
+
+						screenWidth = Double.parseDouble(attributes[11]);
+						screenHeight = Double.parseDouble(attributes[12]);
+
+				} catch (Exception e) {
+						throw new IllegalFormatConversionException('b', this.getClass());
+				}
+		}
 }
