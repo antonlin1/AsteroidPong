@@ -3,32 +3,18 @@ package com.mygdx.game.view;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
-import com.badlogic.gdx.audio.Sound;
-import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.mygdx.game.AccelerometerInputInterface;
 import com.mygdx.game.Controller.InputController;
 import com.mygdx.game.PeerHelperInterface;
 import com.mygdx.game.WifiDirectInterface;
-import com.mygdx.game.model.Ball;
-import com.mygdx.game.model.GameState;
-import com.mygdx.game.model.MenuState;
-import com.mygdx.game.model.Paddle;
-import com.mygdx.game.model.State;
-import com.mygdx.game.model.StateManager;
-
-
-import java.awt.Image;
-import java.util.Random;
-import java.util.concurrent.TimeoutException;
-
-
-import javax.xml.soap.Text;
+import com.mygdx.game.view.States.GameState;
+import com.mygdx.game.view.States.MenuState;
+import com.mygdx.game.view.States.StateManager;
 
 public class MyGdxGame extends ApplicationAdapter implements InputProcessor {
 		private SpriteBatch batch;

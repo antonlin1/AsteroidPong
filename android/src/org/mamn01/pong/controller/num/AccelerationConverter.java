@@ -2,13 +2,10 @@ package org.mamn01.pong.controller.num;
 
 
 import com.badlogic.gdx.Gdx;
-import com.mygdx.game.model.GameState;
-import com.mygdx.game.model.Paddle;
 import com.mygdx.game.view.MyGdxGame;
 
 import org.mamn01.pong.controller.time.Units;
 import java.util.Arrays;
-import java.util.List;
 
 /**
  * Created by hampusballdin on 2016-04-01.

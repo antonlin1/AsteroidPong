@@ -1,7 +1,7 @@
 package com.mygdx.game.Controller;
 
 import com.badlogic.gdx.Gdx;
-import com.mygdx.game.model.GameState;
+import com.mygdx.game.view.States.GameState;
 
 /**
  * Created by antonlin on 16-04-12.

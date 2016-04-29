@@ -1,4 +1,4 @@
-package com.mygdx.game.model;
+package com.mygdx.game.view.States;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
@@ -9,21 +9,25 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.mygdx.game.Controller.InputController;
 import com.mygdx.game.PeerHelperInterface;
 import com.mygdx.game.WifiDirectInterface;
+import com.mygdx.game.model.Ball;
+import com.mygdx.game.model.Paddle;
+import com.mygdx.game.model.PhysicsHelper;
+import com.mygdx.game.model.ServerToClientMessage;
 import com.mygdx.game.view.Particles;
 
 import java.util.ArrayList;
 
-import static com.mygdx.game.model.GameState.PaddleConstant.*;
+import static com.mygdx.game.view.States.GameState.PaddleConstant.*;
 
 
-public class GameState extends State {
+public class GameState extends com.mygdx.game.view.States.State {
 
 		private Paddle paddle1;
 		private Paddle paddle2;
 		private ArrayList<Ball> balls;
 
 		protected static int roundsPlayed = 0;
-		protected static int bounces = 0;
+		public static int bounces = 0;
 		private float width, height;
 
 		private boolean wallCollision;

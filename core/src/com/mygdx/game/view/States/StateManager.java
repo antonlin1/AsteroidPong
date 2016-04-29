@@ -1,4 +1,4 @@
-package com.mygdx.game.model;
+package com.mygdx.game.view.States;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -14,15 +14,15 @@ public class StateManager {
         HOW_TO_PLAY_STATE, GAME_STATE, MENU_STATE;
     }
 
-    private Stack<State> states;
+    private Stack<com.mygdx.game.view.States.State> states;
 
     private STATE_NAME activeState;
 
     public StateManager(){
-        states = new Stack<State>();
+        states = new Stack<com.mygdx.game.view.States.State>();
     }
 
-    public void push(State state){
+    public void push(com.mygdx.game.view.States.State state){
         states.push(state);
         setActiveState(states.peek().getStateName());
     }
@@ -33,7 +33,7 @@ public class StateManager {
     }
 
 
-    public void set(State state) {
+    public void set(com.mygdx.game.view.States.State state) {
         states.pop();
         states.push(state);
         setActiveState(states.peek().getStateName());

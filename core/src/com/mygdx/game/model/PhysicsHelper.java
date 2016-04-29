@@ -1,12 +1,7 @@
 package com.mygdx.game.model;
 
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.utils.TimeUtils;
-
 import java.util.ArrayList;
-
-import javax.print.attribute.standard.PDLOverrideSupported;
 
 /**
  * Created by antonlin on 16-04-11.
@@ -74,7 +69,7 @@ public class PhysicsHelper {
 				if ((isCollision(ball, paddle1) || isCollision(ball, paddle2)) && !isCollision) {
 
 						ball.reverseYVelocity();
-						GameState.bounces++;
+						com.mygdx.game.view.States.GameState.bounces++;
 						//GameState.paddleCollision = true;
 						isCollision = true;
 						makeCollisionSound = true;
@@ -93,7 +88,7 @@ public class PhysicsHelper {
 
 		public static boolean isCollision(Ball ball, Paddle paddle) {
 				return ball.getX() + ball.getRadius() >= paddle.getX() &&
-						ball.getX() - ball.getRadius() <= paddle.getX() + GameState.PaddleConstant.LENGTH.value
+						ball.getX() - ball.getRadius() <= paddle.getX() + com.mygdx.game.view.States.GameState.PaddleConstant.LENGTH.value
 						&& ((ball.getY() + ball.getRadius() >= paddle.getY()
 						&& ball.getY() - ball.getRadius() <= paddle.getY() - paddle.getHeight())
 						|| (ball.getY() - ball.getRadius() <= paddle.getY()

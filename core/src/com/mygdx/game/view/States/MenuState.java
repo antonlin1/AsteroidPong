@@ -1,21 +1,16 @@
-package com.mygdx.game.model;
+package com.mygdx.game.view.States;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
-import com.mygdx.game.AccelerometerInputInterface;
 import com.mygdx.game.WifiDirectInterface;
-import com.mygdx.game.view.MyGdxGame;
 
 /**
  * Created by johanmansson on 16-04-20.
  */
-public class MenuState extends State {
+public class MenuState extends com.mygdx.game.view.States.State {
     private Texture button1;
     private Texture button2;
     private Texture text1;

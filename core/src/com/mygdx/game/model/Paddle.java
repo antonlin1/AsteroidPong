@@ -19,7 +19,7 @@ public class Paddle {
         this.xPos = xPos;
         this.yPos = yPos;
         this.length = length;
-        this.height = GameState.PaddleConstant.HEIGHT.value;
+        this.height = com.mygdx.game.view.States.GameState.PaddleConstant.HEIGHT.value;
     }
 
     public float getX() {

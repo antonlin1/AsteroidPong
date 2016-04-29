@@ -1,4 +1,4 @@
-package com.mygdx.game.model;
+package com.mygdx.game.view.States;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
@@ -10,7 +10,7 @@ import com.mygdx.game.WifiDirectInterface;
 /**
  * Created by johanmansson on 16-04-26.
  */
-public class HowToPlayState extends State {
+public class HowToPlayState extends com.mygdx.game.view.States.State {
 
     private Texture cancel;
     private Texture text;
