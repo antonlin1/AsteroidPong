@@ -128,12 +128,18 @@ public class UDPServer extends Thread implements NetworkComponentInterface {
 		}
 
 		@Override
-		public void setServerToClientData(boolean gameActive, boolean paddleCollision, boolean wallCollision, float paddleX,float paddleY,
-										  float ballX, float ballY, float ballXVelocity, float ballYVelocity, float ballVelocity,
+		public void setServerToClientData(boolean gameActive, boolean paddleCollision,
+										  boolean wallCollision, float paddleX,float paddleY,
+										  float ballX, float ballY, float ballXVelocity,
+										  float ballYVelocity, float ballVelocity,
 										  double screenWidth, double screenHeight) {
 
-				ServerToClientMessage serverToClientMessage = new ServerToClientMessage(gameActive, paddleCollision,
-						wallCollision, paddleX,paddleY, ballX, ballY, ballXVelocity, ballYVelocity, ballVelocity, screenWidth, screenHeight);
+				ServerToClientMessage serverToClientMessage =
+						new ServerToClientMessage(gameActive, paddleCollision, wallCollision,
+								paddleX,paddleY, ballX, ballY, ballXVelocity,
+						ballYVelocity, ballVelocity, screenWidth, screenHeight);
+
+
 				messageHolder.deposit(serverToClientMessage.toString());
 //        ClientToServerMessage clientMessage = new ClientToServerMessage(data);
 //        gameState.setPaddle2(clientMessage.getPaddleX());

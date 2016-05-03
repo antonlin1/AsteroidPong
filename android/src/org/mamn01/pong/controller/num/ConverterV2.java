@@ -16,7 +16,7 @@ public class ConverterV2 implements AccelerometerInputInterface {
 		private VelocityV2 velocity;
 		private PositionV2 position;
 
-		private int N = 16;
+		private int N = 8;
 
 		public ConverterV2() {
 				sampler = new SamplerV2(N);

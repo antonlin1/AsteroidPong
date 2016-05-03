@@ -24,7 +24,7 @@ public class AccelerationV2 implements SamplerV2.SampleGatheredCallback{
 		/**
 		 * Number derivative samples to save for history
 		 */
-		private static final int N_DERIVATIVE = 8;
+		private static final int N_DERIVATIVE = 6;
 
 		/**
 		 * Current index of the derivative

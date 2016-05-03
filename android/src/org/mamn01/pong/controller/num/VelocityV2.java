@@ -52,7 +52,7 @@ public class VelocityV2 {
 		/**
 		 * S
 		 */
-		private static final double PEAK_DOMINANCE_SCALE = 1.7;
+		private static final double PEAK_DOMINANCE_SCALE = 1.9;
 		private double minVal = 0.0;
 		private double maxVal = 0.0;
 		private double maxPeak = 0.0;

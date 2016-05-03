@@ -51,7 +51,6 @@ public class ServerToClientMessage {
 									 float paddleX, float paddleY, float ballX, float ballY,
 									 float ballXVelocity, float ballYVelocity, float ballVelocity,
 									 double screenWidth, double screenHeight) {
-
 				this.gameActive = gameActive;
 				this.paddleCollision = paddleCollision;
 				this.wallCollision = wallCollision;
