@@ -108,8 +108,6 @@ public class VelocityV2 {
 
 				/**
 				 * DO ACTUAL TRIMMING
-				 *
-				 *
 				 */
 				if (zeroTrim == 0) { // Zero VelocityV2
 						isLastZero = true;

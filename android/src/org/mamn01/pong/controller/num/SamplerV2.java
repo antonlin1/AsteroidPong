@@ -10,7 +10,7 @@ import java.util.Arrays;
  */
 public class SamplerV2 {
 		private MeasureTime measureTime;
-		private static int N = 64; // Number of samples to gather
+		private static int N = 16; // Number of samples to gather
 		private int n = 0; // Current entry
 		private int nbrSamplesGathered = 0; // Total number of samples gathered
 		private double[] samples = new double[N]; // All Collected samples
