@@ -65,4 +65,16 @@ public class InputController {
 				return isAtLeftBoundary() || isAtRightBoundary();
 		}
 
+		public double getRightBoundary() {
+
+				return Gdx.graphics.getWidth() - GameState.PaddleConstant.LENGTH.value;
+
+		}
+
+		public double getLeftBoundary() {
+
+				return 0.0;
+
+		}
+
 }

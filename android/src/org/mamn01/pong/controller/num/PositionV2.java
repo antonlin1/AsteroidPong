@@ -17,21 +17,12 @@ public class PositionV2 {
 				p += v * dt;
 		}
 
-		double getValue() {
+		public double getValue() {
 				return p;
 		}
 
-		public void onVelocityUpdateLeftBoundary(double dt) {
-				double v = velocity.getValue();
-				if(v > 0)
-						p += v * dt;
+		public void setValue(double p) {
+				this.p = p;
 		}
-
-		public void onVelocityUpdateRightBoundary(double dt) {
-				double v = velocity.getValue();
-				if(v < 0)
-						p += v * dt;
-		}
-
 
 }

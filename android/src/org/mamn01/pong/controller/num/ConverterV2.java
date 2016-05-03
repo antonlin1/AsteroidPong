@@ -44,22 +44,18 @@ public class ConverterV2 implements AccelerometerInputInterface {
 				InputController controller = game.getInput();
 
 				if (controller != null) {
-
-						if (controller.isAtLeftBoundary()) {
-								if(velocity.getValue() < 0) {
-										velocity.reset();
-										//acceleration.reset();
-										//sampler.reset();
-								}
-
-						}else if(controller.isAtRightBoundary()) {
-								if(velocity.getValue() > 0) {
-										velocity.reset();
-										//acceleration.reset();
-										//sampler.reset();
-								}
-						}
+						double currentPos = getNormalizedPosition(null);
 						position.onVelocityUpdate(dt);
+
+						if (currentPos < controller.getLeftBoundary()) {
+								position.setValue(getPositionFromNormalized(controller.getLeftBoundary() + 5));
+						}else if(currentPos > controller.getRightBoundary()) {
+								position.setValue(getPositionFromNormalized(controller.getRightBoundary() - 5));
+						}
+
+						System.out.println("controller.getLeftBoundary() = " + controller.getLeftBoundary());
+						System.out.println("controller.getRightBoundary() = " + controller.getRightBoundary());
+						System.out.println("currentPos = " + currentPos);
 						//controller.movePaddleToAbsPos(xPos);
 				}
 		}
@@ -90,13 +86,17 @@ public class ConverterV2 implements AccelerometerInputInterface {
 				return 0;
 		}
 
+		private static final double SCALE = 200000 / 100;
 		@Override
 		public double getNormalizedPosition(MyGdxGame game) {
-
-				float WIDTH = Gdx.graphics.getWidth();
-
-				float xPos = (WIDTH / 2 + (float) position.getValue() * 200000 / 100);
-
+				double WIDTH = Gdx.graphics.getWidth();
+				double xPos = (WIDTH / 2 + position.getValue() * SCALE);
 				return xPos;
 		}
+
+		public double getPositionFromNormalized(double normalizedPosition) {
+				double WIDTH = Gdx.graphics.getWidth();
+				return (normalizedPosition - WIDTH / 2) / SCALE;
+		}
+
 }

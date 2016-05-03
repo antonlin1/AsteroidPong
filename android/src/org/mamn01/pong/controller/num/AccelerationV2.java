@@ -82,8 +82,4 @@ public class AccelerationV2 implements SamplerV2.SampleGatheredCallback{
 				return sum < N_DERIVATIVE * AVERAGE_LIMIT;
 		}
 
-		public void reset() {
-				value = 0.0;
-		}
-
 }

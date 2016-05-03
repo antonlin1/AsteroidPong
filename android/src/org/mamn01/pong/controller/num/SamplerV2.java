@@ -96,10 +96,5 @@ public class SamplerV2 {
 
 		private static final int MAX_NUMBER_DISCARD = 8;
 		private int nbrDiscarded = 0;
-		public void reset() {
-				nbrSamplesGathered = 0;
-				n = 0;
-				Arrays.fill(samples, 0);
-		}
 
 }
