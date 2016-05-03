@@ -25,6 +25,7 @@ import com.mygdx.game.view.MyGdxGame;
 
 import org.mamn01.pong.controller.num.AccelerationConverter;
 import org.mamn01.pong.controller.num.Converter;
+import org.mamn01.pong.controller.num.ConverterV2;
 
 import java.util.Arrays;
 
@@ -45,7 +46,7 @@ public class AndroidLauncher extends ListenerActivity implements SensorEventList
 
     protected static boolean pause;
 
-    private Converter accelerationConverter;
+    private ConverterV2 accelerationConverter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,7 +87,7 @@ public class AndroidLauncher extends ListenerActivity implements SensorEventList
         mSensorManager.registerListener(this, mSensorManager.getDefaultSensor(
                 Sensor.TYPE_LINEAR_ACCELERATION), SensorManager.SENSOR_DELAY_FASTEST);
 
-        accelerationConverter = new Converter();
+        accelerationConverter = new ConverterV2();
 
         game = new MyGdxGame(accelerationConverter, peerHelper, mReceiver);
         initialize(game, config);

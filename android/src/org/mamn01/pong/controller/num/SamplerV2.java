@@ -1,25 +1,27 @@
 package org.mamn01.pong.controller.num;
 
-import java.util.ArrayList;
-
 import org.mamn01.pong.controller.time.MeasureTime;
+
+import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  * Created by hampusballdin on 2016-03-31.
  */
-public class Sampler {
+public class SamplerV2 {
 		private MeasureTime measureTime;
-		private int N = 1; // Number of samples to gather
+		private static int N = 64; // Number of samples to gather
 		private int n = 0; // Current entry
 		private int nbrSamplesGathered = 0; // Total number of samples gathered
-		private float[] samples = new float[N]; // All Collected samples
+		private double[] samples = new double[N]; // All Collected samples
 		private boolean IS_INITIALIZED = false;
 
 		private ArrayList<SampleGatheredCallback> callbacks =
 				new ArrayList<SampleGatheredCallback>();
 
 
-		public Sampler() {
+		public SamplerV2(int N) {
+				SamplerV2.N = N;
 				measureTime = new MeasureTime();
 		}
 
@@ -30,7 +32,7 @@ public class Sampler {
 				measureTime.onInvocation(0); // Start
 				nbrSamplesGathered = 0;
 				IS_INITIALIZED = true;
-				samples = new float[N];
+				samples = new double[N];
 		}
 
 		/**
@@ -40,11 +42,16 @@ public class Sampler {
 		public double gatherSample(double sample, long time) {
 				if(!IS_INITIALIZED)
 						throw new IllegalStateException("Must initialize before use!");
+				nbrSamplesGathered++;
 				double dt = measureTime.onInvocation((double)time);
 				samples[n] = (float)sample;
 
-				performCallBacks(dt, sample);
+				if(nbrSamplesGathered > N) {
+						performCallBacks(dt, sample);
+				}
+
 				n = (n + 1) % N;
+
 				return dt;
 		}
 
@@ -68,7 +75,7 @@ public class Sampler {
 				void onSampleGathered(double dt, double sample);
 		}
 
-		public float[] getSamples() {
+		public double[] getSamples() {
 				return samples;
 		}
 
@@ -83,5 +90,16 @@ public class Sampler {
 				return samples[si];
 		}
 
+		public int getNbrSamples() {
+				return N;
+		}
+
+		private static final int MAX_NUMBER_DISCARD = 8;
+		private int nbrDiscarded = 0;
+		public void reset() {
+				nbrSamplesGathered = 0;
+				n = 0;
+				Arrays.fill(samples, 0);
+		}
 
 }
