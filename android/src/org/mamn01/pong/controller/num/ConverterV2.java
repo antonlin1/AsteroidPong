@@ -53,9 +53,9 @@ public class ConverterV2 implements AccelerometerInputInterface {
 								position.setValue(getPositionFromNormalized(controller.getRightBoundary() - 5));
 						}
 
-						System.out.println("controller.getLeftBoundary() = " + controller.getLeftBoundary());
-						System.out.println("controller.getRightBoundary() = " + controller.getRightBoundary());
-						System.out.println("currentPos = " + currentPos);
+					//	System.out.println("controller.getLeftBoundary() = " + controller.getLeftBoundary());
+					//	System.out.println("controller.getRightBoundary() = " + controller.getRightBoundary());
+					//	System.out.println("currentPos = " + currentPos);
 						//controller.movePaddleToAbsPos(xPos);
 				}
 		}

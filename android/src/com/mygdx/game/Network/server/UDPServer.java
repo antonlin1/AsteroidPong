@@ -49,28 +49,26 @@ public class UDPServer extends Thread implements NetworkComponentInterface {
 				ClientMessageReader clientMessageReader = new ClientMessageReader(messageHolder, this, socket);
 				clientMessageReader.start();
 
-				while (!isInterrupted()) {
+				byte[] bytes = new byte[1];
 
-						System.out.println("Waiting for a new line");
 
-						//Message from either self or other phone
-						String message = messageHolder.withdraw();
-						System.out.println("Server sending: " + message);
-
-						synchronized (clientAddressLock) {
-								while (clientAddress == null) {
-										try {
-												clientAddressLock.wait();
-										} catch (InterruptedException e) {
-												e.printStackTrace();
-										}
+				synchronized (clientAddressLock) {
+						while (clientAddress == null) {
+								try {
+										clientAddressLock.wait();
+								} catch (InterruptedException e) {
+										e.printStackTrace();
 								}
-
-								clientAddressLock.notifyAll();
 						}
+						clientAddressLock.notifyAll();
+				}
+				DatagramPacket dp = new DatagramPacket(bytes, bytes.length, clientAddress, InetUtil.PORT);
 
-						byte[] bytes = message.getBytes();
-						DatagramPacket dp = new DatagramPacket(bytes, bytes.length, clientAddress, InetUtil.PORT);
+				while (!isInterrupted()) {
+						//Message from either self or other phone
+						bytes = messageHolder.withdraw().getBytes();
+						dp.setData(bytes);
+						dp.setLength(bytes.length);
 
 						try {
 								socket.send(dp);
@@ -86,35 +84,47 @@ public class UDPServer extends Thread implements NetworkComponentInterface {
 		private static class ClientMessageReader extends Thread {
 
 				private MessageHolder messageHolder;
-
 				private UDPServer server;
 				private DatagramSocket socket;
+				private DatagramPacket dp;
+				private byte[] data = new byte[InetUtil.UDP_RECEIVE_BUFFER_SIZE];
+				private ClientToServerMessage clientToServerMessage;
 
 
 				public ClientMessageReader(MessageHolder messageHolder, UDPServer server, DatagramSocket socket) {
 						this.messageHolder = messageHolder;
 						this.server = server;
 						this.socket = socket;
+						dp = new DatagramPacket(data, data.length);
+						clientToServerMessage = new ClientToServerMessage(null);
 				}
 
 				@Override
 				public void run() {
 						try {
-								while (!isInterrupted()) {
-										byte[] data = new byte[InetUtil.UDP_RECEIVE_BUFFER_SIZE];
-										DatagramPacket dp = new DatagramPacket(data, data.length);
-										socket.receive(dp);
-										String message = new String(dp.getData(), 0, dp.getLength());
-										System.out.println("Server Receive: " + message);
 
-										synchronized (clientAddressLock) {
-												if (clientAddress == null) {
-														clientAddress = dp.getAddress();
-														clientAddressLock.notifyAll();
-												}
+								// Receive first to get client IP (will always be the same after) ...
+								socket.receive(dp);
+								String message = new String(dp.getData(), 0, dp.getLength());
+								dp.setLength(data.length);
+								clientToServerMessage.setMessage(message);
+								server.clientToServerMessage = clientToServerMessage;
+
+								synchronized (clientAddressLock) {
+										if (clientAddress == null) {
+												clientAddress = dp.getAddress();
+												clientAddressLock.notifyAll();
 										}
-										server.clientToServerMessage = new ClientToServerMessage(message);
 								}
+
+								while (!isInterrupted()) {
+										socket.receive(dp);
+										message = new String(dp.getData(), 0, dp.getLength());
+										dp.setLength(data.length);
+										clientToServerMessage.setMessage(message);
+										server.clientToServerMessage = clientToServerMessage;
+								}
+
 						} catch (IOException e) {
 								e.printStackTrace();
 						}

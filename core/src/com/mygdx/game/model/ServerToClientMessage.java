@@ -128,9 +128,9 @@ public class ServerToClientMessage {
 
 				returnString.append((gameActive) ? "1" : "0");
 				returnString.append(":");
-				returnString.append((paddleCollision) ? "1" : "0");
+				returnString.append((paddleCollision) ? "1" : "0"); // Needed ?
 				returnString.append(":");
-				returnString.append((wallCollision) ? "1" : "0");
+				returnString.append((wallCollision) ? "1" : "0"); // Needed ?
 				returnString.append(":");
 				returnString.append(paddleX);
 				returnString.append(":");
@@ -148,9 +148,9 @@ public class ServerToClientMessage {
 				returnString.append(":");
 				returnString.append(System.nanoTime());
 				returnString.append(":");
-				returnString.append(screenWidth);
+				returnString.append(screenWidth); // Can remove
 				returnString.append(":");
-				returnString.append(screenHeight);
+				returnString.append(screenHeight); // Can remove
 				System.out.print(returnString.toString());
 
 				return returnString.toString();
@@ -164,9 +164,9 @@ public class ServerToClientMessage {
 						/*
 						 * Unnecessary syntax
 						 */
-						gameActive = (Integer.parseInt(attributes[0]) == 1) ? true : false;
-						paddleCollision = (Integer.parseInt(attributes[1]) == 1) ? true : false;
-						wallCollision = (Integer.parseInt(attributes[2]) == 1) ? true : false;
+						gameActive = (Integer.parseInt(attributes[0]) == 1);
+						paddleCollision = (Integer.parseInt(attributes[1]) == 1);
+						wallCollision = (Integer.parseInt(attributes[2]) == 1);
 
 						paddleX = Float.parseFloat(attributes[3]);
 						paddleY = Float.parseFloat(attributes[4]);
@@ -185,5 +185,9 @@ public class ServerToClientMessage {
 				} catch (Exception e) {
 						throw new IllegalFormatConversionException('b', this.getClass());
 				}
+		}
+
+		public void setMessage(String message) {
+				parse(message);
 		}
 }

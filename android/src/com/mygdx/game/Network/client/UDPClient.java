@@ -67,8 +67,7 @@ public class UDPClient extends Thread implements NetworkComponentInterface {
 				// Write Forever ...
 				try {
 						while (IS_CONNECTION_OPEN && !isInterrupted()) {
-								String msg = messageHolder.withdraw(); // Blocks until message
-								connection.write(msg);
+								connection.write(messageHolder.withdraw());
 						}
 				} catch (IOException e) {
 						e.printStackTrace();
@@ -86,7 +85,8 @@ public class UDPClient extends Thread implements NetworkComponentInterface {
 				private boolean IS_READ_START = false;
 
 				public Connection(UDPClient client, DatagramSocket socket, InetAddress server) {
-						reader = new UDPClient.Reader(new ReaderCallback(), client, socket);
+					//	reader = new UDPClient.Reader(new ReaderCallback(), client, socket);
+						reader = new UDPClient.Reader(socket, client);
 						writer = new UDPClient.Writer(socket, server);
 				}
 
@@ -107,14 +107,20 @@ public class UDPClient extends Thread implements NetworkComponentInterface {
 
 		private static class Reader extends Thread {
 				private UDPClient client;
-				private ReaderCallback readerCallback;
+			//	private ReaderCallback readerCallback;
 				private boolean isClosed = false;
-				DatagramSocket socket;
+				private DatagramSocket socket;
+				private DatagramPacket dp;
+				private byte[] data = new byte[InetUtil.UDP_RECEIVE_BUFFER_SIZE];
+				private ServerToClientMessage serverToClientMessage = new ServerToClientMessage();
 
-				public Reader(ReaderCallback readerCallback, UDPClient client, DatagramSocket socket) {
-						this.readerCallback = readerCallback;
+				public Reader(DatagramSocket socket, UDPClient client) {
+						//this.readerCallback = readerCallback;
 						this.client = client;
 						this.socket = socket;
+						dp = new DatagramPacket(data, data.length);
+
+
 				}
 
 				@Override
@@ -123,15 +129,13 @@ public class UDPClient extends Thread implements NetworkComponentInterface {
 								while (true && !isInterrupted()) {
 										if (!isClosed) {
 												//String line = br.readLine();
-
-												byte[] data = new byte[InetUtil.UDP_RECEIVE_BUFFER_SIZE];
-												DatagramPacket dp = new DatagramPacket(data, data.length);
 												socket.receive(dp);
-												//		System.out.println("Client Received from server: " + line);
-
 												String line = new String(dp.getData(), 0, dp.getLength());
-												client.serverToClientMessage = new ServerToClientMessage(line);
-												readerCallback.onLineRead(line);
+												dp.setLength(data.length);
+												serverToClientMessage.setMessage(line);
+												client.serverToClientMessage = serverToClientMessage;
+												isUpdated = true;
+												//readerCallback.onLineRead(line);
 										}
 								}
 						} catch (IOException e) {
@@ -141,7 +145,7 @@ public class UDPClient extends Thread implements NetworkComponentInterface {
 				}
 		}
 
-		private static class ReaderCallback {
+		/*private static class ReaderCallback {
 
 				public void onLineRead(String line) throws IOException {
 			//			System.out.println("Client Read Line: " + line);
@@ -150,23 +154,28 @@ public class UDPClient extends Thread implements NetworkComponentInterface {
 								throw new IOException("Socket probably closed");
 						}
 				}
-		}
+		}*/
 
 		private static class Writer {
 				private boolean isClosed = false;
 				private DatagramSocket socket;
 				private InetAddress server;
+				private DatagramPacket dp;
+				private byte[] bytes = new byte[1];
+
 
 				public Writer(DatagramSocket socket, InetAddress server) {
 						this.socket = socket;
 						this.server = server;
+						dp = new DatagramPacket(bytes, bytes.length, server, InetUtil.PORT);
 				}
 
 				public void writeLine(String line) throws IOException {
 						if (!isClosed) {
 					//			System.out.println("Client Write: " + line);
-								byte[] bytes = line.getBytes();
-								DatagramPacket dp = new DatagramPacket(bytes, bytes.length, server, InetUtil.PORT);
+								bytes = line.getBytes();
+								dp.setData(bytes);
+								dp.setLength(bytes.length);
 								socket.send(dp);
 						} else {
 								System.err.println("Is Closed!");

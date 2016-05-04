@@ -32,8 +32,14 @@ public class ClientToServerMessage {
 		}
 
 		private void parse(String data) {
-				String[] attributes = data.split(":");
-				paddleX = Float.parseFloat(attributes[0]);
-				paddleY = Float.parseFloat(attributes[1]);
+				if(data != null) {
+						String[] attributes = data.split(":");
+						paddleX = Float.parseFloat(attributes[0]);
+						paddleY = Float.parseFloat(attributes[1]);
+				}
+		}
+
+		public void setMessage(String data) {
+				parse(data);
 		}
 }

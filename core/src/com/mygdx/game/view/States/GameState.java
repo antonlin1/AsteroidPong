@@ -129,7 +129,7 @@ public class GameState extends com.mygdx.game.view.States.State {
 						double w = Gdx.graphics.getWidth();
 						double h = Gdx.graphics.getHeight();
 
-						System.out.println("Set Paddle Y: " + (float)(paddle1.getY() / h));
+					//	System.out.println("Set Paddle Y: " + (float)(paddle1.getY() / h));
 						wifiDirect.getNetworkComponent().setServerToClientData(this.isActive(),
 								paddleCollision, wallCollision, (float) (paddle1.getX() / w),
 								(float) (paddle1.getY() / h), (float) (ball.getX() / w),
@@ -142,7 +142,7 @@ public class GameState extends com.mygdx.game.view.States.State {
 								(float)(paddle1.getX() / w), (float)(paddle1.getY() / h));
 
 						if (wifiDirect.getNetworkComponent().isClientUpdated()) {
-								//	System.out.println("CLIENT UUUUUPDATE");
+								System.out.println("CLIENT UUUUUPDATE");
 								ServerToClientMessage state = wifiDirect.getNetworkComponent().getServerData();
 
 								long currentNanoTime = state.getNanoTime();
