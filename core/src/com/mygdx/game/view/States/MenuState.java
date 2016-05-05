@@ -51,8 +51,9 @@ public class MenuState extends com.mygdx.game.view.States.State {
 
         spriteBatch.setColor(c.r, c.g, c.b, 0.3f);
         spriteBatch.draw(button2, (Gdx.graphics.getWidth() / 2) - (button2.getWidth() / 2), (Gdx.graphics.getHeight() / 2) + 70 + (button1.getHeight()));
-        spriteBatch.draw(button3, (Gdx.graphics.getWidth() / 2) - (button3.getWidth() / 2), (Gdx.graphics.getHeight() / 2) + 90 + (button1.getHeight()) + (button2.getHeight()));
+
         spriteBatch.setColor(c.r, c.g, c.b, 1f);
+        spriteBatch.draw(button3, (Gdx.graphics.getWidth() / 2) - (button3.getWidth() / 2), (Gdx.graphics.getHeight() / 2) + 90 + (button1.getHeight()) + (button2.getHeight()));
 
 
         spriteBatch.end();
@@ -94,10 +95,10 @@ public class MenuState extends com.mygdx.game.view.States.State {
             if(x > x1 && x < x2 && y > y31 && y < y32) {
                 System.out.println("Button3 pressed");
 
+                HowToPlayState howToPlayState = new HowToPlayState(stateManager, wifiDirect);
+                howToPlayState.changeConnected();
+                stateManager.push(howToPlayState);
 
-                //behövs metod här för att sätta GameState till singleplayer
-
-                //stateManager.pop();
 
 
             }

@@ -18,7 +18,9 @@ public class HowToPlayState extends com.mygdx.game.view.States.State {
     private Texture text2;
     private Texture[] movingphone;
     private Texture button;
+
     private long time;
+    private boolean connected;
 
 
 
@@ -34,10 +36,14 @@ public class HowToPlayState extends com.mygdx.game.view.States.State {
 
         text = new Texture("howtoplaytext.png");
         text2 = new Texture("waitingtext2.png");
-        button = new Texture("buttonCON.png");
+        button = new Texture("buttonSG.png");
 
+        connected = false;
 
+    }
 
+    public void changeConnected() {
+        connected = true;
     }
 
 
@@ -53,9 +59,11 @@ public class HowToPlayState extends com.mygdx.game.view.States.State {
         spriteBatch.begin();
         Color c = spriteBatch.getColor();
         spriteBatch.draw(cancel, Gdx.graphics.getWidth() - cancel.getWidth() - 20, 20);
-        spriteBatch.draw(text2, (Gdx.graphics.getWidth()/2) - (text2.getWidth()/2), 20);
 
-        spriteBatch.setColor(c.r, c.g, c.b, 0.3f);
+        if(!connected) {
+            spriteBatch.draw(text2, (Gdx.graphics.getWidth() / 2) - (text2.getWidth() / 2), 20);
+            spriteBatch.setColor(c.r, c.g, c.b, 0.3f);
+        }
         spriteBatch.draw(button, (Gdx.graphics.getWidth() / 2) - (button.getWidth() / 2), Gdx.graphics.getHeight() - button.getHeight() - 100);
         spriteBatch.setColor(c.r, c.g, c.b, 1f);
 
