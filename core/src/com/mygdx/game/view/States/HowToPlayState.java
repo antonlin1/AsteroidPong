@@ -1,6 +1,7 @@
 package com.mygdx.game.view.States;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -14,7 +15,9 @@ public class HowToPlayState extends com.mygdx.game.view.States.State {
 
     private Texture cancel;
     private Texture text;
+    private Texture text2;
     private Texture[] movingphone;
+    private Texture button;
     private long time;
 
 
@@ -30,7 +33,8 @@ public class HowToPlayState extends com.mygdx.game.view.States.State {
         time = TimeUtils.millis();
 
         text = new Texture("howtoplaytext.png");
-
+        text2 = new Texture("waitingtext2.png");
+        button = new Texture("buttonCON.png");
 
 
 
@@ -47,11 +51,19 @@ public class HowToPlayState extends com.mygdx.game.view.States.State {
     public void render(SpriteBatch spriteBatch, ShapeRenderer shapeRenderer) {
 
         spriteBatch.begin();
+        Color c = spriteBatch.getColor();
         spriteBatch.draw(cancel, Gdx.graphics.getWidth() - cancel.getWidth() - 20, 20);
+        spriteBatch.draw(text2, (Gdx.graphics.getWidth()/2) - (text2.getWidth()/2), 20);
+
+        spriteBatch.setColor(c.r, c.g, c.b, 0.3f);
+        spriteBatch.draw(button, (Gdx.graphics.getWidth() / 2) - (button.getWidth() / 2), Gdx.graphics.getHeight() - button.getHeight() - 100);
+        spriteBatch.setColor(c.r, c.g, c.b, 1f);
+
         float x1 = (Gdx.graphics.getWidth() / 2) - 250;
         float x2 = (Gdx.graphics.getWidth() / 2) - (text.getWidth()/2);
 
-        spriteBatch.draw(text, x2, 850);
+        spriteBatch.draw(text, x2, 750);
+
 
         if(TimeUtils.timeSinceMillis(time) > 0) {
             spriteBatch.draw(movingphone[0], x1, 300, 500, 500);

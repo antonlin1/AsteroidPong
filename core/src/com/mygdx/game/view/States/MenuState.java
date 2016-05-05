@@ -13,14 +13,16 @@ import com.mygdx.game.WifiDirectInterface;
 public class MenuState extends com.mygdx.game.view.States.State {
     private Texture button1;
     private Texture button2;
+    private Texture button3;
     private Texture text1;
 
 
 
     public MenuState(StateManager stateManager, WifiDirectInterface wifiDirect) {
         super(stateManager, StateManager.STATE_NAME.MENU_STATE, wifiDirect);
-        button1 = new Texture("button3.png");
-        button2 = new Texture("button4.png");
+        button1 = new Texture("buttonCG.png");
+        button2 = new Texture("buttonFG.png");
+        button3= new Texture("buttonTM.png");
         text1 = new Texture("text1.png");
 
 
@@ -41,14 +43,18 @@ public class MenuState extends com.mygdx.game.view.States.State {
     public void render(SpriteBatch spriteBatch, ShapeRenderer shapeRenderer) {
 
         spriteBatch.begin();
+
         Color c = spriteBatch.getColor();
-        spriteBatch.draw(text1, (Gdx.graphics.getWidth() / 2) - (text1.getWidth() / 2), (Gdx.graphics.getHeight() / 2) - (text1.getHeight() / 2) - 150);
-        if(!wifiDirect.isConnected()) {
-            spriteBatch.setColor(c.r, c.g, c.b, 0.3f);
-        }
-        spriteBatch.draw(button1, (Gdx.graphics.getWidth() / 2) - (button1.getWidth() / 2), (Gdx.graphics.getHeight() / 2) - (button1.getHeight() / 2) + 300);
+        spriteBatch.draw(text1, (Gdx.graphics.getWidth() / 2) - (text1.getWidth() / 2), (Gdx.graphics.getHeight() / 4));
+
+        spriteBatch.draw(button1, (Gdx.graphics.getWidth() / 2) - (button1.getWidth() / 2), (Gdx.graphics.getHeight() / 2) + 50);
+
+        spriteBatch.setColor(c.r, c.g, c.b, 0.3f);
+        spriteBatch.draw(button2, (Gdx.graphics.getWidth() / 2) - (button2.getWidth() / 2), (Gdx.graphics.getHeight() / 2) + 70 + (button1.getHeight()));
+        spriteBatch.draw(button3, (Gdx.graphics.getWidth() / 2) - (button3.getWidth() / 2), (Gdx.graphics.getHeight() / 2) + 90 + (button1.getHeight()) + (button2.getHeight()));
         spriteBatch.setColor(c.r, c.g, c.b, 1f);
-        spriteBatch.draw(button2, (Gdx.graphics.getWidth() / 2) - (button2.getWidth() / 2), (Gdx.graphics.getHeight() / 2) + 340 + (button1.getHeight()/2));
+
+
         spriteBatch.end();
 
     }
@@ -61,22 +67,39 @@ public class MenuState extends com.mygdx.game.view.States.State {
 
             float x1 = (Gdx.graphics.getWidth() / 2) - (button1.getWidth() / 2);
             float x2 = (Gdx.graphics.getWidth() / 2) + (button1.getWidth() / 2);
-            float y1 = (Gdx.graphics.getHeight() / 2) - (button1.getHeight() / 2) + 300;
-            float y2 = (Gdx.graphics.getHeight() / 2) + (button1.getHeight() / 2) + 300;
 
-            if(x > x1 && x < x2 && y > y1 && y < y2 && wifiDirect.isConnected()) {
+            float y11 = (Gdx.graphics.getHeight() / 2) + 50;
+            float y12 = (Gdx.graphics.getHeight() / 2) + 50 + button1.getHeight();
+
+            float y21 = (Gdx.graphics.getHeight() / 2) + 70 + (button1.getHeight());
+            float y22 = (Gdx.graphics.getHeight() / 2) + 70 + 2*(button1.getHeight());
+
+            float y31 = (Gdx.graphics.getHeight() / 2) + 90 + (button1.getHeight()) + (button2.getHeight());
+            float y32 = (Gdx.graphics.getHeight() / 2) + 90 + (button1.getHeight()) + 2*(button2.getHeight());
+
+
+            if(x > x1 && x < x2 && y > y11 && y < y12) { // && wifiDirect.isConnected()) {
                 System.out.println("Button1 pressed");
-                stateManager.pop();
+
+                stateManager.push(new HowToPlayState(stateManager, wifiDirect));
+
+            }
+
+            if(x > x1 && x < x2 && y > y21 && y < y22) {
+                System.out.println("Button2 pressed");
 
 
             }
 
-            float y21 = (Gdx.graphics.getHeight() / 2) + 420;
-            float y22 = (Gdx.graphics.getHeight() / 2) + 420 + button2.getHeight();
+            if(x > x1 && x < x2 && y > y31 && y < y32) {
+                System.out.println("Button3 pressed");
 
-            if(x > x1 && x < x2 && y > y21 && y < y22) {
-                System.out.println("Button2 pressed");
-                stateManager.push(new HowToPlayState(stateManager, wifiDirect));
+
+                //behövs metod här för att sätta GameState till singleplayer
+
+                //stateManager.pop();
+
+
             }
 
 

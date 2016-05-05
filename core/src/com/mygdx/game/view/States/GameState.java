@@ -48,6 +48,9 @@ public class GameState extends com.mygdx.game.view.States.State {
 		private PeerHelperInterface peerHelper;
 		//private WifiDirectInterface wifiDirect;
 
+
+		private boolean mulitplayer;
+
 		/**
 		 * Created by antonlin on 16-04-11.
 		 */
@@ -96,6 +99,14 @@ public class GameState extends com.mygdx.game.view.States.State {
 
 				score = 5;
 
+				mulitplayer = false;
+
+
+		}
+
+
+		public void setMulitplayer() {
+			mulitplayer = true;
 		}
 
 
