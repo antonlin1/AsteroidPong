@@ -107,8 +107,18 @@ public class HowToPlayState extends com.mygdx.game.view.States.State {
             float y2 = cancel.getHeight() + 20;
 
             if(x > x1 && x < x2 && y > y1 && y < y2) {
-                System.out.println("Button pressed");
+                System.out.println("Exit pressed");
                 stateManager.pop();
+
+            }
+
+            float x21 = (Gdx.graphics.getWidth() / 2) - (button.getWidth() / 2);
+            float x22 = (Gdx.graphics.getWidth() / 2) + (button.getWidth() / 2);
+            float y21 = Gdx.graphics.getHeight() - button.getHeight() - 100;
+            float y22 = Gdx.graphics.getHeight() + button.getHeight() - 100;
+
+            if(x > x21 && x < x22 && y > y21 && y < y22) {
+                System.out.println("Start Game pressed");
 
             }
 
