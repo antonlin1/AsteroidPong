@@ -11,7 +11,7 @@ import java.util.Stack;
 public class StateManager {
 
     public enum STATE_NAME {
-        HOW_TO_PLAY_STATE, GAME_STATE, MENU_STATE;
+        HOW_TO_PLAY_STATE, GAME_STATE, MENU_STATE, FIND_GAME_STATE;
     }
 
     private Stack<com.mygdx.game.view.States.State> states;
