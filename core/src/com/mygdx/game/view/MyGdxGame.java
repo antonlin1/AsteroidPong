@@ -1,6 +1,7 @@
 package com.mygdx.game.view;
 
 import com.badlogic.gdx.ApplicationAdapter;
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.Color;
@@ -14,6 +15,9 @@ import com.mygdx.game.PeerHelperInterface;
 import com.mygdx.game.WifiDirectInterface;
 import com.mygdx.game.view.States.GameState;
 import com.mygdx.game.view.States.MenuState;
+import com.mygdx.game.view.States.MultiplayerClient;
+import com.mygdx.game.view.States.MultiplayerServer;
+import com.mygdx.game.view.States.SinglePlayer;
 import com.mygdx.game.view.States.StateManager;
 
 public class MyGdxGame extends ApplicationAdapter implements InputProcessor {
@@ -21,8 +25,6 @@ public class MyGdxGame extends ApplicationAdapter implements InputProcessor {
 		private ShapeRenderer shapeRenderer;
 
 		private StateManager stateManager;
-		private GameState state;
-		private MenuState menuState;
 
 		private OrthographicCamera camera;
 
@@ -37,10 +39,11 @@ public class MyGdxGame extends ApplicationAdapter implements InputProcessor {
 		//private Texture planet1;
 		//private Texture planet2;
 
-		public MyGdxGame(AccelerometerInputInterface accelerometerInput, PeerHelperInterface peerHelper, WifiDirectInterface wifiDirect) {
-			this.accelerometerInput = accelerometerInput;
-			this.peerHelper = peerHelper;
-			this.wifiDirect = wifiDirect;
+		public MyGdxGame(AccelerometerInputInterface accelerometerInput,
+						 PeerHelperInterface peerHelper, WifiDirectInterface wifiDirect) {
+				this.accelerometerInput = accelerometerInput;
+				this.peerHelper = peerHelper;
+				this.wifiDirect = wifiDirect;
 		}
 
 
@@ -54,18 +57,26 @@ public class MyGdxGame extends ApplicationAdapter implements InputProcessor {
 
 				stateManager = new StateManager();
 
-				state = new GameState(stateManager,Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), peerHelper, wifiDirect);
-				stateManager.push(state);
+				GameState serverMultiplayer = new MultiplayerServer(this, stateManager,
+						Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), peerHelper, wifiDirect);
+				stateManager.add(serverMultiplayer.getStateName(), serverMultiplayer);
 
-				menuState = new MenuState(stateManager, wifiDirect);
+				GameState clientMultiplayer = new MultiplayerClient(this, stateManager,
+						Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), peerHelper, wifiDirect);
+				stateManager.add(clientMultiplayer.getStateName(), clientMultiplayer);
+
+				GameState singlePlayer = new SinglePlayer(this, stateManager,
+						Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), peerHelper, wifiDirect);
+				stateManager.add(singlePlayer.getStateName(), singlePlayer);
+
+				MenuState menuState = new MenuState(this, stateManager, wifiDirect);
 				stateManager.push(menuState);
-
-				input = new InputController(state);
-
-				Gdx.input.setInputProcessor(this);
 
 				blinkingStars = new BlinkingStars(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 				blinkingStars.makeBlinkingStars();
+
+				input = new InputController();
+				Gdx.input.setInputProcessor(this);
 
 				//planet1 = new Texture("planet1.png");
 				//planet2 = new Texture("planet2.png");
@@ -74,32 +85,32 @@ public class MyGdxGame extends ApplicationAdapter implements InputProcessor {
 
 		@Override
 		public void render() {
-			Gdx.gl.glClearColor(0.075f, 0.059f, 0.188f, 1);
-			Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+				Gdx.gl.glClearColor(0.075f, 0.059f, 0.188f, 1);
+				Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-			input.movePaddleToAbsPos((float) accelerometerInput.getNormalizedPosition(this));
+				// WHY ?!?!?!
+				//input.movePaddleToAbsPos((float) accelerometerInput.getNormalizedPosition(this));
 
-			batch.setProjectionMatrix(camera.combined);
+				batch.setProjectionMatrix(camera.combined);
 
-			shapeRenderer.setProjectionMatrix(camera.combined);
+				shapeRenderer.setProjectionMatrix(camera.combined);
 
-			shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-			shapeRenderer.setColor(Color.WHITE);
-			blinkingStars.drawBlinkingStars(shapeRenderer);
-			shapeRenderer.end();
+				shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+				shapeRenderer.setColor(Color.WHITE);
+				blinkingStars.drawBlinkingStars(shapeRenderer);
+				shapeRenderer.end();
 
-			batch.setProjectionMatrix(camera.combined);
-			stateManager.render(batch, shapeRenderer);
-			stateManager.update();
+				batch.setProjectionMatrix(camera.combined);
+				stateManager.render(batch, shapeRenderer);
+				stateManager.update();
 
-			batch.begin();
-			//batch.draw(planet1, Gdx.graphics.getWidth() - planet1.getWidth(), Gdx.graphics.getHeight() - planet1.getHeight());
-			//batch.draw(planet2, 0, 0);
-			batch.end();
+				batch.begin();
+				//batch.draw(planet1, Gdx.graphics.getWidth() - planet1.getWidth(), Gdx.graphics.getHeight() - planet1.getHeight());
+				//batch.draw(planet2, 0, 0);
+				batch.end();
 
 
 		}
-
 
 
 		@Override

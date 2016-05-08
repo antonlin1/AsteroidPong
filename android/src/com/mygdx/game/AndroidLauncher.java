@@ -85,7 +85,7 @@ public class AndroidLauncher extends ListenerActivity implements SensorEventList
         mSensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
 
         mSensorManager.registerListener(this, mSensorManager.getDefaultSensor(
-                Sensor.TYPE_LINEAR_ACCELERATION), SensorManager.SENSOR_DELAY_FASTEST);
+                Sensor.TYPE_LINEAR_ACCELERATION), SensorManager.SENSOR_DELAY_GAME);
 
         accelerationConverter = new ConverterV2();
 
@@ -129,7 +129,7 @@ public class AndroidLauncher extends ListenerActivity implements SensorEventList
         registerReceiver(mReceiver, mIntentFilter);
 
         mSensorManager.registerListener(this, mSensorManager.getDefaultSensor(
-                Sensor.TYPE_ACCELEROMETER), SensorManager.SENSOR_DELAY_FASTEST);
+                Sensor.TYPE_ACCELEROMETER), SensorManager.SENSOR_DELAY_GAME);
 
         startListening();
 

@@ -13,6 +13,7 @@ import com.mygdx.game.model.Ball;
 import com.mygdx.game.model.Paddle;
 import com.mygdx.game.model.PhysicsHelper;
 import com.mygdx.game.model.ServerToClientMessage;
+import com.mygdx.game.view.MyGdxGame;
 import com.mygdx.game.view.Particles;
 
 import java.util.ArrayList;
@@ -20,36 +21,32 @@ import java.util.ArrayList;
 import static com.mygdx.game.view.States.GameState.PaddleConstant.*;
 
 
-public class GameState extends com.mygdx.game.view.States.State {
+public abstract class GameState
+		extends com.mygdx.game.view.States.State {
 
-		private Paddle paddle1;
-		private Paddle paddle2;
-		private ArrayList<Ball> balls;
+		protected Paddle paddle1;
+		protected Paddle paddle2;
+		protected ArrayList<Ball> balls;
 
-		protected static int roundsPlayed = 0;
-		public static int bounces = 0;
-		private float width, height;
+		protected float width, height;
 
-		private boolean wallCollision;
-		private boolean isDead;
-		private boolean paddleCollision;
-		private Particles particles;
+		protected boolean wallCollision;
+		protected boolean isDead;
+		protected boolean paddleCollision;
+		protected Particles particles;
 
-		private InputController input;
+		protected InputController input;
 
-		private Sound collisionSound;
-		private Sound gameOverSound;
+		protected Sound collisionSound;
+		protected Sound gameOverSound;
 
-		private Texture cancel;
+		protected Texture cancel;
 
-		private Texture[] scores;
-		private int score;
+		protected Texture[] scores;
+		protected int score;
 
-		private PeerHelperInterface peerHelper;
+		protected PeerHelperInterface peerHelper;
 		//private WifiDirectInterface wifiDirect;
-
-
-		private boolean mulitplayer;
 
 		/**
 		 * Created by antonlin on 16-04-11.
@@ -60,14 +57,14 @@ public class GameState extends com.mygdx.game.view.States.State {
 
 				public int value;
 
-				private PaddleConstant(int value) {
+				PaddleConstant(int value) {
 						this.value = value;
 				}
 		}
 
-		public GameState(StateManager stateManager, float width, float height,
-						 PeerHelperInterface peerHelper, WifiDirectInterface wifiDirect) {
-				super(stateManager, StateManager.STATE_NAME.GAME_STATE, wifiDirect);
+		public GameState(MyGdxGame game, StateManager stateManager, float width, float height,
+						 PeerHelperInterface peerHelper, WifiDirectInterface wifiDirect, StateManager.STATE_NAME state) {
+				super(game, stateManager, state, wifiDirect);
 
 				this.width = width;
 				this.height = height;
@@ -78,7 +75,6 @@ public class GameState extends com.mygdx.game.view.States.State {
 				balls = new ArrayList<Ball>();
 				balls.add(new Ball(width / 2, height / 2, 32));
 
-
 				paddle1 = new Paddle(width / 2 - 32, height - YPOS.value - 100, (float) LENGTH.value);
 				paddle2 = new Paddle(width / 2 - 32, YPOS.value - 20, (float) LENGTH.value);
 
@@ -87,112 +83,23 @@ public class GameState extends com.mygdx.game.view.States.State {
 				gameOverSound = Gdx.audio.newSound(Gdx.files.internal("missedBall.wav"));
 
 				cancel = new Texture("cancel2.png");
-
 				scores = new Texture[6];
-
 				scores[0] = new Texture("score0.png");
 				scores[1] = new Texture("score20.png");
 				scores[2] = new Texture("score40.png");
 				scores[3] = new Texture("score60.png");
 				scores[4] = new Texture("score80.png");
 				scores[5] = new Texture("score100.png");
-
 				score = 5;
-
-				mulitplayer = false;
-
-
 		}
 
-
-		public void setMulitplayer() {
-			mulitplayer = true;
-		}
-
-
-		private long lastNanoTimeUpdate = 0l;
 		public void update() {
-
-
-				Ball ball = balls.get(0);
+				/**
+				 * WHY ?!
+				 */
 				wallCollision = false;
 				paddleCollision = false;
 				isDead = false;
-
-				if (wifiDirect.isServer()) {
-						//  System.out.println("SERVER UUUUUPDATE");
-						wallCollision = PhysicsHelper.wallCollision(width, height, balls);
-						paddleCollision = PhysicsHelper.paddleCollision(getPaddles(), balls);
-						isDead = PhysicsHelper.isDead(width, height, balls);
-						setPaddle2X(wifiDirect.getNetworkComponent().getOpponentPaddleX() *
-								Gdx.graphics.getWidth(), (float) Gdx.graphics.getWidth());
-
-						setPaddle2Y(wifiDirect.getNetworkComponent().getOpponentPaddleY() *
-								Gdx.graphics.getHeight(), (float) Gdx.graphics.getHeight());
-
-						ball.move();
-
-						handleInput();
-
-//            wifiDirect.getNetworkComponent().setServerToClientData(this.isActive(), paddleCollision, wallCollision,
-//                    paddle1.getX(), ball.getX(), ball.getY(), ball.getXVel(), ball.getYVel(), ball.getVelocity());
-
-						double w = Gdx.graphics.getWidth();
-						double h = Gdx.graphics.getHeight();
-
-					//	System.out.println("Set Paddle Y: " + (float)(paddle1.getY() / h));
-						wifiDirect.getNetworkComponent().setServerToClientData(this.isActive(),
-								paddleCollision, wallCollision, (float) (paddle1.getX() / w),
-								(float) (paddle1.getY() / h), (float) (ball.getX() / w),
-								(float) (ball.getY() / h), ball.getXVel(), ball.getYVel(), ball.getVelocity(), w, h);
-				} else {
-						handleInput();
-						double w = Gdx.graphics.getWidth();
-						double h = Gdx.graphics.getHeight();
-						wifiDirect.getNetworkComponent().setClientToServerData(
-								(float)(paddle1.getX() / w), (float)(paddle1.getY() / h));
-
-						if (wifiDirect.getNetworkComponent().isClientUpdated()) {
-								System.out.println("CLIENT UUUUUPDATE");
-								ServerToClientMessage state = wifiDirect.getNetworkComponent().getServerData();
-
-								long currentNanoTime = state.getNanoTime();
-
-								if(currentNanoTime > lastNanoTimeUpdate) {
-										isDead = false;
-
-										ball.setxVelocity((float)(-1 * state.getBallXVelocity()));
-										ball.setyVelocity((float)(-1 * state.getBallYVelocity()));
-
-										ball.setX((float) (w - (state.getBallX()) * w));
-										ball.setY((float) (h - (state.getBallY()) * h));
-
-										setPaddle2X((float) (state.getPaddleX() * w), (float) w);
-
-									//	System.out.println("PaddleY: " + state.getPaddleY());
-										setPaddle2Y((float) (state.getPaddleY() * h), (float) h);
-										lastNanoTimeUpdate = currentNanoTime;
-								} else {
-								//		clientRegularUpdate(ball);
-								}
-
-						} else {
-								clientRegularUpdate(ball);
-						}
-
-						//System.out.println("ball.x = " + ball.getXVel() + " ball.y = " + ball.getYVel());
-
-				}
-		}
-
-		public void clientRegularUpdate(Ball ball) {
-
-				//System.out.println("Client Move Ball: xvel: " + ball.getXVel()  + " yvel: " + ball.getYVel());
-				wallCollision = PhysicsHelper.wallCollision(width, height, balls);
-				paddleCollision = PhysicsHelper.paddleCollision(getPaddles(), balls);
-				isDead = PhysicsHelper.isDead(width, height, balls);
-
-				ball.move();
 		}
 
 //    private void setFullState(boolean gameActive, boolean paddleCollision, boolean wallCollision, float paddleX, float ballX, float ballY,
@@ -216,13 +123,13 @@ public class GameState extends com.mygdx.game.view.States.State {
 //    }
 
 		public void render(SpriteBatch spriteBatch, ShapeRenderer shapeRenderer) {
-
-
 				Ball ball = getBalls().get(0);
 				particles.makeParticles(ball);
 				particles.removeParticles();
 
-
+				/**
+				 *  THERE SHOULD BE NO GAME LOGIC HERE
+				 */
 				if (isDead()) {
 						gameOverSound.play();
 						killBall();
@@ -231,12 +138,9 @@ public class GameState extends com.mygdx.game.view.States.State {
 								score--;
 						}
 				}
-
 				if (score == 0) {
 						score = 5;
 				}
-
-
 				Paddle paddle1 = getPaddles()[0];
 				Paddle paddle2 = getPaddles()[1];
 
@@ -247,35 +151,23 @@ public class GameState extends com.mygdx.game.view.States.State {
 				if (isWallCollision()) {
 						collisionSound.play();
 				}
-
-
 				shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-
 				particles.drawParticles(shapeRenderer);
-
 				shapeRenderer.setColor(Color.WHITE);
 				shapeRenderer.circle(ball.getX(), ball.getY(), ball.getRadius());
-
 				shapeRenderer.setColor(Color.WHITE);
 				shapeRenderer.rect(paddle1.getX(), paddle1.getY(), paddle1.getLength(), paddle1.getHeight());
-
 				shapeRenderer.rect(paddle2.getX(), paddle2.getY(), paddle2.getLength(), paddle2.getHeight());
-
 				shapeRenderer.end();
 
 				spriteBatch.begin();
 				spriteBatch.draw(cancel, Gdx.graphics.getWidth() - cancel.getWidth() - 20, 20);
 				spriteBatch.draw(scores[score], 20, height - YPOS.value - 175, 170, 75);
 				spriteBatch.draw(scores[5], 20, YPOS.value + 100, 170, 75);
-
 				spriteBatch.end();
-
-
 		}
 
-
-		public void handleInput() {
-
+		public void handleTouchInput() {
 				if (Gdx.input.justTouched()) {
 						float x = Gdx.input.getX();
 						float y = Gdx.input.getY();
@@ -287,10 +179,9 @@ public class GameState extends com.mygdx.game.view.States.State {
 
 						if (x > x1 && x < x2 && y > y1 && y < y2) {
 								System.out.println("Button pressed");
-								stateManager.push(new MenuState(stateManager, wifiDirect));
+								stateManager.push(new MenuState(game, stateManager, wifiDirect));
 						}
 				}
-
 		}
 
 		public boolean isDead() {
@@ -351,6 +242,23 @@ public class GameState extends com.mygdx.game.view.States.State {
 		@Override
 		public boolean isActive() {
 				return (this.stateManager.getActiveState().equals(this.stateName));
+		}
+
+		protected boolean isStarted = false;
+		protected boolean isPaused = false;
+
+		public void start() {
+				isStarted = true;
+				isPaused = false;
+		}
+
+		public void paus() {
+				isPaused = true;
+		}
+
+		public void stop() {
+				isStarted = false;
+				isPaused = false;
 		}
 
 		//	public boolean newBall() {

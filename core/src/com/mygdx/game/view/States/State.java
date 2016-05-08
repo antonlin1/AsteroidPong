@@ -12,25 +12,27 @@ import com.mygdx.game.view.MyGdxGame;
  */
 public abstract class State {
 
-    protected StateManager stateManager;
-    protected AccelerometerInputInterface accelerometerInput;
-    protected MyGdxGame game;
-    protected StateManager.STATE_NAME stateName;
-    protected WifiDirectInterface wifiDirect;
+		protected StateManager stateManager;
+		protected AccelerometerInputInterface accelerometerInput;
+		protected MyGdxGame game;
+		protected StateManager.STATE_NAME stateName;
+		protected WifiDirectInterface wifiDirect;
 
-    public State(StateManager stateManager, StateManager.STATE_NAME stateName, WifiDirectInterface wifiDirect) {
-        this.stateManager = stateManager;
-        this.stateName = stateName;
-        this.wifiDirect = wifiDirect;
-    }
+		public State(MyGdxGame game, StateManager stateManager, StateManager.STATE_NAME stateName, WifiDirectInterface wifiDirect) {
+				this.game = game;
+				this.stateManager = stateManager;
+				this.stateName = stateName;
+				this.wifiDirect = wifiDirect;
+		}
 
-    public StateManager.STATE_NAME getStateName() {
-        return  stateName;
-    }
+		public StateManager.STATE_NAME getStateName() {
+				return stateName;
+		}
 
-    public abstract void update();
-    public abstract void render(SpriteBatch spriteBatch, ShapeRenderer shapeRenderer);
+		public abstract void update();
 
-    public abstract boolean isActive();
+		public abstract void render(SpriteBatch spriteBatch, ShapeRenderer shapeRenderer);
+
+		public abstract boolean isActive();
 
 }

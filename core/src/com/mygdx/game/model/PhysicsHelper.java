@@ -69,7 +69,7 @@ public class PhysicsHelper {
 				if ((isCollision(ball, paddle1) || isCollision(ball, paddle2)) && !isCollision) {
 
 						ball.reverseYVelocity();
-						com.mygdx.game.view.States.GameState.bounces++;
+						//com.mygdx.game.view.States.GameState.bounces++;
 						//GameState.paddleCollision = true;
 						isCollision = true;
 						makeCollisionSound = true;

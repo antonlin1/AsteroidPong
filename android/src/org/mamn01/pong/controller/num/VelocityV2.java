@@ -163,7 +163,7 @@ public class VelocityV2 {
 		}
 
 		public double getValue() {
-				return 5 * value;
+				return value;
 		}
 
 		public void reset() {
