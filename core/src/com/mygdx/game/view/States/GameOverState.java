@@ -12,14 +12,18 @@ import com.mygdx.game.view.MyGdxGame;
  */
 public class GameOverState extends State {
 
-    private Texture cancel;
     private Texture text;
+    private Texture button1;
+    private Texture button2;
 
     public GameOverState(MyGdxGame game, StateManager stateManager, WifiDirectInterface wifiDirect) {
         super(game, stateManager, StateManager.STATE_NAME.HOW_TO_PLAY_STATE, wifiDirect);
 
-        cancel = new Texture("cancel2.png");
+
         text = new Texture("gameover.png");
+        button1 = new Texture("button3.png");
+        button2 = new Texture("buttonEX.png");
+
 
     }
 
@@ -31,8 +35,10 @@ public class GameOverState extends State {
     @Override
     public void render(SpriteBatch spriteBatch, ShapeRenderer shapeRenderer) {
         spriteBatch.begin();
-        spriteBatch.draw(cancel, Gdx.graphics.getWidth() - cancel.getWidth() - 20, 20);
-        spriteBatch.draw(text, (Gdx.graphics.getWidth()/2) - (text.getWidth()/2), (Gdx.graphics.getHeight()/2) -600);
+
+        spriteBatch.draw(text, (Gdx.graphics.getWidth()/2) - (text.getWidth()/2), (Gdx.graphics.getHeight()/2) - text.getHeight() - 100);
+        spriteBatch.draw(button1, (Gdx.graphics.getWidth() / 2) - (button1.getWidth() / 2), (Gdx.graphics.getHeight() / 2) + 50);
+        spriteBatch.draw(button2, (Gdx.graphics.getWidth() / 2) - (button2.getWidth() / 2), (Gdx.graphics.getHeight() / 2) + 70 + (button1.getHeight()));
         spriteBatch.end();
 
     }
@@ -47,18 +53,29 @@ public class GameOverState extends State {
             float x = Gdx.input.getX();
             float y = Gdx.input.getY();
 
+            float x1 = (Gdx.graphics.getWidth() / 2) - (button1.getWidth() / 2);
+            float x2 = (Gdx.graphics.getWidth() / 2) + (button1.getWidth() / 2);
 
-            float x1 = Gdx.graphics.getWidth() - cancel.getWidth() - 20;
-            float x2 = Gdx.graphics.getWidth() + cancel.getWidth() - 20;
-            float y1 = 20;
-            float y2 = cancel.getHeight() + 20;
+            float y11 = (Gdx.graphics.getHeight() / 2) + 50;
+            float y12 = (Gdx.graphics.getHeight() / 2) + 50 + button1.getHeight();
 
-            if (x > x1 && x < x2 && y > y1 && y < y2) {
-                System.out.println("Exit pressed");
+            float y21 = (Gdx.graphics.getHeight() / 2) + 70 + (button1.getHeight());
+            float y22 = (Gdx.graphics.getHeight() / 2) + 70 + 2 * (button1.getHeight());
+
+
+            if (x > x1 && x < x2 && y > y11 && y < y12) {
+                System.out.println("Button1 pressed");
                 stateManager.pop();
+            }
 
+            if (x > x1 && x < x2 && y > y21 && y < y22) {
+                System.out.println("Button2 pressed");
+                stateManager.push(new MenuState(game, stateManager, wifiDirect));
             }
         }
     }
+
+
+
 
 }
