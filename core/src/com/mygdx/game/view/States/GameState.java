@@ -40,10 +40,13 @@ public abstract class GameState
 		protected Sound collisionSound;
 		protected Sound gameOverSound;
 
+
+
 		protected Texture cancel;
 
-		protected Texture[] scores;
-		protected int score;
+
+
+
 
 		protected PeerHelperInterface peerHelper;
 		//private WifiDirectInterface wifiDirect;
@@ -80,17 +83,11 @@ public abstract class GameState
 
 				particles = new Particles();
 				collisionSound = Gdx.audio.newSound(Gdx.files.internal("bounce1.wav"));
-				gameOverSound = Gdx.audio.newSound(Gdx.files.internal("missedBall.wav"));
+				gameOverSound = Gdx.audio.newSound(Gdx.files.internal("missedBall2.wav"));
+
 
 				cancel = new Texture("cancel2.png");
-				scores = new Texture[6];
-				scores[0] = new Texture("score0.png");
-				scores[1] = new Texture("score20.png");
-				scores[2] = new Texture("score40.png");
-				scores[3] = new Texture("score60.png");
-				scores[4] = new Texture("score80.png");
-				scores[5] = new Texture("score100.png");
-				score = 5;
+
 		}
 
 		public void update() {
@@ -123,6 +120,9 @@ public abstract class GameState
 //    }
 
 		public void render(SpriteBatch spriteBatch, ShapeRenderer shapeRenderer) {
+
+
+
 				Ball ball = getBalls().get(0);
 				particles.makeParticles(ball);
 				particles.removeParticles();
@@ -131,16 +131,13 @@ public abstract class GameState
 				 *  THERE SHOULD BE NO GAME LOGIC HERE
 				 */
 				if (isDead()) {
-						gameOverSound.play();
+						//gameOverSound.play();
+						Gdx.input.vibrate(50);
 						killBall();
 						randomizePos();
-						if (score > 0) {
-								score--;
-						}
+//
 				}
-				if (score == 0) {
-						score = 5;
-				}
+//
 				Paddle paddle1 = getPaddles()[0];
 				Paddle paddle2 = getPaddles()[1];
 
@@ -151,6 +148,9 @@ public abstract class GameState
 				if (isWallCollision()) {
 						collisionSound.play();
 				}
+
+
+
 				shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
 				particles.drawParticles(shapeRenderer);
 				shapeRenderer.setColor(Color.WHITE);
@@ -162,8 +162,6 @@ public abstract class GameState
 
 				spriteBatch.begin();
 				spriteBatch.draw(cancel, Gdx.graphics.getWidth() - cancel.getWidth() - 20, 20);
-				spriteBatch.draw(scores[score], 20, height - YPOS.value - 175, 170, 75);
-				spriteBatch.draw(scores[5], 20, YPOS.value + 100, 170, 75);
 				spriteBatch.end();
 		}
 
