@@ -79,7 +79,7 @@ public abstract class GameState
 				balls.add(new Ball(width / 2, height / 2, 32));
 
 				paddle1 = new Paddle(width / 2 - 32, height - YPOS.value - 100, (float) LENGTH.value);
-				paddle2 = new Paddle(width / 2 - 32, YPOS.value - 20, (float) LENGTH.value);
+				paddle2 = new Paddle(width / 2 - 32, YPOS.value + 100, (float) LENGTH.value);
 
 				particles = new Particles();
 				collisionSound = Gdx.audio.newSound(Gdx.files.internal("bounce1.wav"));

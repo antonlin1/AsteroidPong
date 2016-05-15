@@ -17,7 +17,7 @@ import static com.mygdx.game.view.States.GameState.PaddleConstant.YPOS;
  */
 public class SinglePlayer extends GameState {
 
-		protected Texture planetDown;
+		protected Texture planetDown, planetUp;
 		protected Texture[] scores;
 		protected int score;
 
@@ -27,6 +27,7 @@ public class SinglePlayer extends GameState {
 						StateManager.STATE_NAME.SINGLEPLAYER_STATE);
 
 				planetDown = new Texture("planet1.png");
+				planetUp = new Texture("planet4.png");
 
 				scores = new Texture[6];
 				scores[0] = new Texture("score0.png");
@@ -67,6 +68,7 @@ public class SinglePlayer extends GameState {
 
 		spriteBatch.begin();
 		spriteBatch.draw(planetDown, 0, Gdx.graphics.getHeight() - planetDown.getHeight());
+		spriteBatch.draw(planetUp, 0, 0);
 		spriteBatch.draw(scores[score], 20, height - YPOS.value - 175, 170, 75);
 
 		spriteBatch.end();
