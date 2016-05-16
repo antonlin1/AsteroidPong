@@ -61,7 +61,7 @@ public class SinglePlayer extends GameState {
 
 					if(score == 0) {
 						score = 5;
-						stateManager.push(new GameOverState(game, stateManager, wifiDirect));
+						stateManager.push(new GameOverState(game, stateManager, wifiDirect, peerHelperInterface));
 					}
 				}
 

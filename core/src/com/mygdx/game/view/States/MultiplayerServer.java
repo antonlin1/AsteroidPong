@@ -77,7 +77,7 @@ public class MultiplayerServer extends Multiplayer {
 
 				if(scoreDown == 0) {
 					scoreDown = 5;
-					stateManager.push(new GameOverState(game, stateManager, wifiDirect));
+					stateManager.push(new GameOverState(game, stateManager, wifiDirect, peerHelperInterface));
 				}
 			}
 			if(isDead && isDeadUp) {
@@ -86,7 +86,7 @@ public class MultiplayerServer extends Multiplayer {
 
 				if(scoreUp == 0) {
 					scoreUp = 5;
-					stateManager.push(new GameOverState(game, stateManager, wifiDirect));
+					stateManager.push(new GameOverState(game, stateManager, wifiDirect, peerHelperInterface));
 				}
 			}
 

@@ -39,15 +39,10 @@ public abstract class GameState
 
 		protected Sound collisionSound;
 		protected Sound gameOverSound;
-
-
-
 		protected Texture cancel;
 
 
-		protected PeerHelperInterface peerHelper;
 		//private WifiDirectInterface wifiDirect;
-
 		/**
 		 * Created by antonlin on 16-04-11.
 		 */
@@ -63,13 +58,12 @@ public abstract class GameState
 		}
 
 		public GameState(MyGdxGame game, StateManager stateManager, float width, float height,
-						 PeerHelperInterface peerHelper, WifiDirectInterface wifiDirect, StateManager.STATE_NAME state) {
-				super(game, stateManager, state, wifiDirect);
+						 PeerHelperInterface peerHelper, WifiDirectInterface wifiDirect,
+						 StateManager.STATE_NAME state) {
+				super(game, stateManager, state, wifiDirect, peerHelper);
 
 				this.width = width;
 				this.height = height;
-
-				this.peerHelper = peerHelper;
 				//this.wifiDirect = wifiDirect;
 
 				balls = new ArrayList<Ball>();
@@ -174,7 +168,7 @@ public abstract class GameState
 
 						if (x > x1 && x < x2 && y > y1 && y < y2) {
 								System.out.println("Button pressed");
-								stateManager.push(new MenuState(game, stateManager, wifiDirect));
+								stateManager.push(new MenuState(game, stateManager, wifiDirect, peerHelperInterface));
 						}
 				}
 		}
