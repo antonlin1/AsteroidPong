@@ -21,6 +21,7 @@ public class MultiplayerClient extends Multiplayer {
 	protected Texture planetDown, planetUp;
 	protected Texture[] scores;
 	protected int scoreDown, scoreUp;
+	protected boolean isDeadUp, isDeadDown;
 
 	public MultiplayerClient(MyGdxGame game, StateManager stateManager, float width, float height, PeerHelperInterface peerHelper, WifiDirectInterface wifiDirect) {
 
@@ -40,6 +41,8 @@ public class MultiplayerClient extends Multiplayer {
 
 		scoreDown = 5;
 		scoreUp = 5;
+		isDeadUp = false;
+		isDeadDown = false;
 	}
 
 	@Override
@@ -75,7 +78,32 @@ public class MultiplayerClient extends Multiplayer {
 		} else {
 			clientRegularUpdate(ball);
 		}
+
+		isDeadDown = PhysicsHelper.isDeadDown(width, height, balls);
+		isDeadUp = PhysicsHelper.isDeadUp(width, height, balls);
+
+		if(isDead && isDeadDown) {
+
+			scoreDown--;
+
+			if(scoreDown == 0) {
+				scoreDown = 5;
+				stateManager.push(new GameOverState(game, stateManager, wifiDirect));
+			}
+		}
+		if(isDead && isDeadUp) {
+
+			scoreUp--;
+
+			if(scoreUp == 0) {
+				scoreUp = 5;
+				stateManager.push(new GameOverState(game, stateManager, wifiDirect));
+			}
+		}
 	}
+
+
+
 
 	private void clientRegularUpdate(Ball ball) {
 		wallCollision = PhysicsHelper.wallCollision(width, height, balls);

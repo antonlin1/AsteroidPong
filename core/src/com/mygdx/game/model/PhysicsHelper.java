@@ -57,6 +57,25 @@ public class PhysicsHelper {
 
 		}
 
+	public static boolean isDeadUp(float width, float height, ArrayList<Ball> balls) {
+		Ball ball = balls.get(0);
+		if (ball.getY() <=  - ball.getRadius()) {
+			//ball.yVelocity *= -1;
+			return true;
+		}
+		return false;
+
+	}
+	public static boolean isDeadDown(float width, float height, ArrayList<Ball> balls) {
+		Ball ball = balls.get(0);
+		if (ball.getY() >= height + ball.getRadius()) {
+			//ball.yVelocity *= -1;
+			return true;
+		}
+		return false;
+
+	}
+
 		static boolean isCollision = false;
 
 		public static boolean paddleCollision(Paddle[] paddles, ArrayList<Ball> balls) {

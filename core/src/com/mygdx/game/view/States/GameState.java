@@ -45,9 +45,6 @@ public abstract class GameState
 		protected Texture cancel;
 
 
-
-
-
 		protected PeerHelperInterface peerHelper;
 		//private WifiDirectInterface wifiDirect;
 

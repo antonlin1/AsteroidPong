@@ -21,6 +21,8 @@ public class SinglePlayer extends GameState {
 		protected Texture[] scores;
 		protected int score;
 
+		protected boolean isDeadDown;
+
 		public SinglePlayer(MyGdxGame game, StateManager stateManager, float width, float height,
 							PeerHelperInterface peerHelper, WifiDirectInterface wifiDirect) {
 				super(game, stateManager, width, height, peerHelper, wifiDirect,
@@ -38,6 +40,8 @@ public class SinglePlayer extends GameState {
 				scores[5] = new Texture("score100.png");
 
 				score = 5;
+				isDeadDown = false;
+
 		}
 
 		@Override
@@ -49,9 +53,12 @@ public class SinglePlayer extends GameState {
 				isDead = PhysicsHelper.isDead(width, height, balls);
 				ball.move();
 				handleTouchInput();
+				isDeadDown = PhysicsHelper.isDeadDown(width, height, balls);
 
-				if(isDead()) {
+				if(isDead && isDeadDown) {
+
 					score--;
+
 					if(score == 0) {
 						score = 5;
 						stateManager.push(new GameOverState(game, stateManager, wifiDirect));
