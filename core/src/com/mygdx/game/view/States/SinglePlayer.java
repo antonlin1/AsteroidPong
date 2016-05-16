@@ -64,9 +64,6 @@ public class SinglePlayer extends GameState {
 						stateManager.push(new GameOverState(game, stateManager, wifiDirect, peerHelperInterface));
 					}
 				}
-
-
-
 		}
 
 	@Override

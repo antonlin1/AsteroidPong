@@ -88,6 +88,7 @@ public class MultiplayerClient extends Multiplayer {
 
 			if(scoreDown == 0) {
 				scoreDown = 5;
+				scoreUp = 5;
 				stateManager.push(new GameOverState(game, stateManager, wifiDirect, peerHelperInterface));
 			}
 		}
@@ -97,6 +98,7 @@ public class MultiplayerClient extends Multiplayer {
 
 			if(scoreUp == 0) {
 				scoreUp = 5;
+				scoreDown = 5;
 				stateManager.push(new GameOverState(game, stateManager, wifiDirect,peerHelperInterface));
 			}
 		}

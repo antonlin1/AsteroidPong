@@ -128,6 +128,7 @@ public class HowToPlayState extends com.mygdx.game.view.States.State {
 								stateManager, (float)game.getWidth(), (float)game.getHeight(), peerHelperInterface, wifiDirect);
 						//howToPlayState.changeConnected();
 						stateManager.push(multiplayer);
+					game.getInput().setGameState((GameState) multiplayer);
 //					} else {
 //						MultiplayerClient multiplayer= new MultiplayerClient(game,
 //								stateManager, (float)game.getWidth(), (float)game.getHeight(), peerHelperInterface, wifiDirect);

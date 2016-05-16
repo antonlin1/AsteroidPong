@@ -57,7 +57,7 @@ public class MyGdxGame extends ApplicationAdapter implements InputProcessor {
 				camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 				camera.setToOrtho(true, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
-				stateManager = new StateManager();
+				stateManager = new StateManager(this, wifiDirect, peerHelper);
 
 				GameState serverMultiplayer = new MultiplayerServer(this, stateManager,
 						Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), peerHelper, wifiDirect);

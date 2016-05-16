@@ -2,6 +2,9 @@ package com.mygdx.game.view.States;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.mygdx.game.PeerHelperInterface;
+import com.mygdx.game.WifiDirectInterface;
+import com.mygdx.game.view.MyGdxGame;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -20,7 +23,8 @@ public class StateManager {
 		private HashMap<STATE_NAME, State> savedStates = new HashMap<STATE_NAME, State>();
 		private STATE_NAME activeState;
 
-		public StateManager() {
+		public StateManager(MyGdxGame game, WifiDirectInterface wifiDirect,
+							PeerHelperInterface peerHelperInterface) {
 				states = new Stack<com.mygdx.game.view.States.State>();
 		}
 

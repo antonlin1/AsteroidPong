@@ -40,7 +40,6 @@ public class MultiplayerServer extends Multiplayer {
 		scoreUp = 5;
 		isDeadUp = false;
 		isDeadDown = false;
-
 	}
 
 		@Override
@@ -77,6 +76,7 @@ public class MultiplayerServer extends Multiplayer {
 
 				if(scoreDown == 0) {
 					scoreDown = 5;
+					scoreUp = 5;
 					stateManager.push(new GameOverState(game, stateManager, wifiDirect, peerHelperInterface));
 				}
 			}
@@ -86,6 +86,7 @@ public class MultiplayerServer extends Multiplayer {
 
 				if(scoreUp == 0) {
 					scoreUp = 5;
+					scoreDown = 5;
 					stateManager.push(new GameOverState(game, stateManager, wifiDirect, peerHelperInterface));
 				}
 			}

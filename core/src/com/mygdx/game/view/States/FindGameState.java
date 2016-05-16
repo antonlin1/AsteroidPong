@@ -142,6 +142,7 @@ public class FindGameState extends State {
                             stateManager, (float)game.getWidth(), (float)game.getHeight(), peerHelperInterface, wifiDirect);
                     //howToPlayState.changeConnected();
                     stateManager.push(multiplayer);
+                game.getInput().setGameState((GameState) multiplayer);
 //                }
             }
         }
