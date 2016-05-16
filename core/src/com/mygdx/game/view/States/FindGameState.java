@@ -186,18 +186,11 @@ public class FindGameState extends State {
         generator.dispose();
 
         for(int i = 0; i < peers.size(); i++){
-//            BitmapFont font = new BitmapFont();
-//            Skin skin = new Skin();
-            String name = peers.get(i);
 
-//        skin.addRegions(buttonAtlas);
+            String name = peers.get(i);
             TextButton.TextButtonStyle textButtonStyle = new TextButton.TextButtonStyle();
             textButtonStyle.font = font;
-//        textButtonStyle.up = skin.getDrawable("up-button");
-//        textButtonStyle.down = skin.getDrawable("down-button");
-//        textButtonStyle.checked = skin.getDrawable("checked-button");
             TextButton button = new TextButton(name, textButtonStyle);
-//            button.getLabel().setFontScale(5.0f);
             button.setX((float) ((game.getWidth() - button.getWidth()) /2 ));
             button.setY((float) (game.getHeight() * 0.7 - i * button.getHeight()* 1.5));
             stage.addActor(button);
