@@ -162,8 +162,9 @@ public class AndroidLauncher extends ListenerActivity implements SensorEventList
                 c = "";
 
             }
-            startListening();
+
         }
+        restartListeningService();
     }
 
     protected float[] lowPass(float[] input, float[] output, final float ALPHA) {
