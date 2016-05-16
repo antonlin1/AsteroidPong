@@ -41,8 +41,6 @@ public class FindGameState extends State {
 
         time1 = TimeUtils.millis();
         time2 = TimeUtils.millis() + 420;
-
-
     }
 
     @Override
@@ -100,7 +98,9 @@ public class FindGameState extends State {
 
         Color c = spriteBatch.getColor();
 
-        spriteBatch.setColor(c.r, c.g, c.b, 0.3f);
+        if(!wifiDirect.isConnected()){
+            spriteBatch.setColor(c.r, c.g, c.b, 0.3f);
+        }
         spriteBatch.draw(button, (Gdx.graphics.getWidth() / 2) - (button.getWidth() / 2), Gdx.graphics.getHeight() - button.getHeight() - 100);
         spriteBatch.setColor(c.r, c.g, c.b, 1f);
 
@@ -124,6 +124,25 @@ public class FindGameState extends State {
                 System.out.println("Exit pressed");
                 stateManager.pop();
 
+            }
+
+            float x21 = (Gdx.graphics.getWidth() / 2) - (button.getWidth() / 2);
+            float x22 = (Gdx.graphics.getWidth() / 2) + (button.getWidth() / 2);
+            float y21 = Gdx.graphics.getHeight() - button.getHeight() - 100;
+            float y22 = Gdx.graphics.getHeight() + button.getHeight() - 100;
+
+            if (x > x21 && x < x22 && y > y21 && y < y22 && wifiDirect.isConnected()) {
+//                if(wifiDirect.isServer()){
+//                    MultiplayerServer multiplayer= new MultiplayerServer(game,
+//                            stateManager, (float)game.getWidth(), (float)game.getHeight(), peerHelperInterface, wifiDirect);
+//                    //howToPlayState.changeConnected();
+//                    stateManager.push(multiplayer);
+//                } else {
+                    MultiplayerClient multiplayer= new MultiplayerClient(game,
+                            stateManager, (float)game.getWidth(), (float)game.getHeight(), peerHelperInterface, wifiDirect);
+                    //howToPlayState.changeConnected();
+                    stateManager.push(multiplayer);
+//                }
             }
         }
     }
