@@ -21,6 +21,7 @@ public class HowToPlayState extends com.mygdx.game.view.States.State {
 		private Texture[] movingphone;
 		private Texture button;
 
+
 		private long time;
 		private boolean isMultiplayer;
 

@@ -40,6 +40,7 @@ public abstract class GameState
 		protected Sound collisionSound;
 		protected Sound gameOverSound;
 		protected Texture cancel;
+		protected Texture pause;
 
 
 		//private WifiDirectInterface wifiDirect;
@@ -78,6 +79,7 @@ public abstract class GameState
 
 
 				cancel = new Texture("cancel2.png");
+				pause = new Texture("paus1.png");
 
 		}
 
@@ -152,7 +154,7 @@ public abstract class GameState
 				shapeRenderer.end();
 
 				spriteBatch.begin();
-				spriteBatch.draw(cancel, Gdx.graphics.getWidth() - cancel.getWidth() - 20, 20);
+				spriteBatch.draw(pause, Gdx.graphics.getWidth() - cancel.getWidth() - 20, 20);
 				spriteBatch.end();
 		}
 
@@ -161,14 +163,14 @@ public abstract class GameState
 						float x = Gdx.input.getX();
 						float y = Gdx.input.getY();
 
-						float x1 = Gdx.graphics.getWidth() - cancel.getWidth() - 20;
-						float x2 = Gdx.graphics.getWidth() + cancel.getWidth() - 20;
+						float x1 = Gdx.graphics.getWidth() - pause.getWidth() - 20;
+						float x2 = Gdx.graphics.getWidth() + pause.getWidth() - 20;
 						float y1 = 20;
 						float y2 = cancel.getHeight() + 20;
 
 						if (x > x1 && x < x2 && y > y1 && y < y2) {
 								System.out.println("Button pressed");
-								stateManager.push(new MenuState(game, stateManager, wifiDirect, peerHelperInterface));
+								stateManager.push(new GamePausedState(game, stateManager, wifiDirect, peerHelperInterface));
 						}
 				}
 		}
@@ -241,7 +243,7 @@ public abstract class GameState
 				isPaused = false;
 		}
 
-		public void paus() {
+		public void pause() {
 				isPaused = true;
 		}
 

@@ -14,7 +14,7 @@ public class StateManager {
 
 		public enum STATE_NAME {
 				HOW_TO_PLAY_STATE, MULTIPLAYER_SERVER_STATE, MULTIPLAYER_CLIENT_STATE,
-				SINGLEPLAYER_STATE, MENU_STATE, FIND_GAME_STATE;
+				SINGLEPLAYER_STATE, MENU_STATE, FIND_GAME_STATE, PAUSE_STATE;
 		}
 		private Stack<com.mygdx.game.view.States.State> states;
 		private HashMap<STATE_NAME, State> savedStates = new HashMap<STATE_NAME, State>();
