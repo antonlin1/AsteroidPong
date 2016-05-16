@@ -44,7 +44,7 @@ public class WifiDirectBroadcastReceiver extends BroadcastReceiver implements Wi
 
 		// Client or server
 		private NetworkComponentInterface networkComponent;
-		private boolean actAsServer = false;
+		//private boolean actAsServer = false;
 
 		public WifiDirectBroadcastReceiver(WifiP2pManager manager, WifiP2pManager.Channel channel, final PeerHelper peerHelper) {
 				super();
@@ -101,7 +101,7 @@ public class WifiDirectBroadcastReceiver extends BroadcastReceiver implements Wi
 														if (!NetworkState.IS_CONNECTING.get()) {
 																System.out.println("Connecting to peer in group " + GROUP_NAME);
 																System.out.println(Arrays.toString(peers.toArray()));
-																peerHelper.decideConnectionRole(thisDeviceName, peers.get(0).deviceName);
+																//peerHelper.decideConnectionRole(thisDeviceName, peers.get(0).deviceName);
 																peerHelper.connect(peers.get(0));
 														}
 												} else {
@@ -230,7 +230,7 @@ public class WifiDirectBroadcastReceiver extends BroadcastReceiver implements Wi
 
 		@Override
 		public boolean isServer() {
-				return actAsServer;
+				return NetworkState.IS_CLIENT.get();
 		}
 
 		@Override
@@ -264,21 +264,21 @@ public class WifiDirectBroadcastReceiver extends BroadcastReceiver implements Wi
 								// Do whatever tasks are specific to the group owner.
 								// One common case is creating a server thread and accepting
 								// incoming connections.
-								System.out.println("DirectConnectionInfoListener, I AM GROUPOWNER");
 
 								// Do server stuff ...
+								NetworkState.IS_CLIENT.set(false);
 
 								//Server server = new Server(wifiDirectBroadcastReceiver.messageHolder);
 								UDPServer server = new UDPServer(wifiDirectBroadcastReceiver.messageHolder);
 								wifiDirectBroadcastReceiver.networkComponent = server;
-								wifiDirectBroadcastReceiver.actAsServer = true;
 								server.start();
+								System.out.println("DirectConnectionInfoListener, I AM GROUPOWNER: " + server);
 
 						} else if (info.groupFormed) {
 								// The other device acts as the client. In this case,
 								// you'll want to create a client thread that connects to the group
 								// owner.
-
+								NetworkState.IS_CLIENT.set(true);
 								System.out.println("DirectConnectionInfoListener, OTHER IS GROUP OWNER");
 								// Do client stuff ...
 
@@ -289,7 +289,6 @@ public class WifiDirectBroadcastReceiver extends BroadcastReceiver implements Wi
 										wifiDirectBroadcastReceiver.messageHolder, wifiDirectBroadcastReceiver);
 
 								wifiDirectBroadcastReceiver.networkComponent = client;
-								wifiDirectBroadcastReceiver.actAsServer = false;
 
 								client.start();
 

@@ -95,7 +95,7 @@ public class AndroidLauncher extends ListenerActivity implements SensorEventList
         System.out.println("DEVICE MAC: "+ getMacAddress(this));
         mReceiver.resetNetwork();
 
-        peerHelper.discover();
+     //   peerHelper.discover();
     }
 
     private String getMacAddress(Context context) {

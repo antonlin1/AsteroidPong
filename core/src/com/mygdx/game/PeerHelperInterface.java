@@ -4,7 +4,7 @@ package com.mygdx.game;
  * Created by antonlin on 16-04-20.
  */
 public interface PeerHelperInterface {
-    public void discover();
+    void discover(boolean isClient);
 
-    public String getNetworkRole();
+    String getNetworkRole();
 }

@@ -78,7 +78,7 @@ public class MenuState extends com.mygdx.game.view.States.State {
 
 						if (x > x1 && x < x2 && y > y11 && y < y12) { // && wifiDirect.isConnected()) {
 								System.out.println("Button1 pressed");
-
+								peerHelperInterface.discover(false);
 								HowToPlayState howToPlayState = new HowToPlayState(game, stateManager,
 										wifiDirect, true, peerHelperInterface);
 								stateManager.push(howToPlayState);
@@ -86,6 +86,7 @@ public class MenuState extends com.mygdx.game.view.States.State {
 
 						if (x > x1 && x < x2 && y > y21 && y < y22) {
 								System.out.println("Button2 pressed");
+								peerHelperInterface.discover(true);
 								stateManager.push(new FindGameState(game, stateManager, wifiDirect,
 										peerHelperInterface));
 						}

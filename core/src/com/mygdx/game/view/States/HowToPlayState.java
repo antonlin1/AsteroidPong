@@ -120,7 +120,7 @@ public class HowToPlayState extends com.mygdx.game.view.States.State {
 						if (x > x21 && x < x22 && y > y21 && y < y22) {
 
 								if(isMultiplayer) {
-										peerHelperInterface.discover();
+
 
 								}else {
 										System.out.println("Start Game pressed");

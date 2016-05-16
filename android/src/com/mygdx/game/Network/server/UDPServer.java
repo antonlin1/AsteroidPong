@@ -44,7 +44,7 @@ public class UDPServer extends Thread implements NetworkComponentInterface {
 
 		@Override
 		public void run() {
-				System.out.print("Server Start");
+				System.out.println("Server Start");
 
 				ClientMessageReader clientMessageReader = new ClientMessageReader(messageHolder, this, socket);
 				clientMessageReader.start();

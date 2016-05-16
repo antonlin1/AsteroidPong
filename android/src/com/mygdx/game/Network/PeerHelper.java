@@ -49,7 +49,7 @@ public class PeerHelper implements PeerHelperInterface {
 		private void onResetSuccess() {
 				System.out.println("onResetSuccess");
 				NetworkState.IS_GROUPING = false;
-				discover();
+				//discover();
 //		if (role.equals(ROLE_ACTIVE)) {
 //			PeerHelper.this.discoverActive();
 //		} else {
@@ -114,8 +114,10 @@ public class PeerHelper implements PeerHelperInterface {
 //		}
 //	}
 
-		public void discover() {
+		public void discover(boolean isClient) {
 				System.out.println("Discover");
+
+				NetworkState.IS_CLIENT.set(isClient);
 
 				if (!NetworkState.IS_DISCOVERING && !NetworkState.IS_GROUPING) {
 						discoverThread = new DiscoverThread();
@@ -134,6 +136,8 @@ public class PeerHelper implements PeerHelperInterface {
 //	}
 
 		public void connect(final WifiP2pDevice device) {
+				System.out.println("Connect ... ");
+
 				if (!NetworkState.IS_CONNECTING.get() && !NetworkState.IS_GROUPING && NetworkState.IS_CLIENT.get()) {
 						connectThread = new ConnectThread(device);
 						connectThread.start();
@@ -280,7 +284,6 @@ public class PeerHelper implements PeerHelperInterface {
 						boolean isClient = false;
 						isClient = (thisDate.compareTo(peerDate) < 0);
 						NetworkState.IS_CLIENT.set(isClient);
-						NetworkState.IS_SERVER.set(!isClient);
 
 				} catch (ParseException e) {
 						e.printStackTrace();

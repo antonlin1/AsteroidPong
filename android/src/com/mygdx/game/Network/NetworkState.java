@@ -21,8 +21,6 @@ public class NetworkState {
 
 		public static volatile AtomicBoolean IS_CONNECTING = new AtomicBoolean(false);
 
-		public static volatile AtomicBoolean IS_SERVER = new AtomicBoolean(false);
-
 		public static volatile AtomicBoolean IS_CLIENT = new AtomicBoolean(false);
 
 		public static volatile AtomicBoolean IS_CONNECTING_RESET = new AtomicBoolean(false);
