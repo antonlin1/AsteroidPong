@@ -1,6 +1,7 @@
 package com.mygdx.game.view.States;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -8,6 +9,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.mygdx.game.PeerHelperInterface;
 import com.mygdx.game.WifiDirectInterface;
 import com.mygdx.game.view.MyGdxGame;
+import com.mygdx.game.view.MyTextInputListener;
 
 /**
  * Created by johanmansson on 16-04-20.
@@ -81,6 +83,10 @@ public class MenuState extends com.mygdx.game.view.States.State {
 								peerHelperInterface.discover(false);
 								HowToPlayState howToPlayState = new HowToPlayState(game, stateManager,
 										wifiDirect, true, peerHelperInterface);
+
+								MyTextInputListener listener = new MyTextInputListener();
+								Gdx.input.getTextInput(listener, "Choose your Game Name", "Test Game", "");
+								System.out.println(listener.getGameName());
 								stateManager.push(howToPlayState);
 						}
 
@@ -101,4 +107,6 @@ public class MenuState extends com.mygdx.game.view.States.State {
 				}
 
 		}
+
+
 }
