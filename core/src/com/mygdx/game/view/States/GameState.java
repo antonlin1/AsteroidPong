@@ -11,8 +11,6 @@ import com.mygdx.game.PeerHelperInterface;
 import com.mygdx.game.WifiDirectInterface;
 import com.mygdx.game.model.Ball;
 import com.mygdx.game.model.Paddle;
-import com.mygdx.game.model.PhysicsHelper;
-import com.mygdx.game.model.ServerToClientMessage;
 import com.mygdx.game.view.MyGdxGame;
 import com.mygdx.game.view.Particles;
 
@@ -232,7 +230,7 @@ public abstract class GameState
 
 		@Override
 		public boolean isActive() {
-				return (this.stateManager.getActiveState().equals(this.stateName));
+				return (this.stateManager.getActiveStateName().equals(this.stateName));
 		}
 
 		protected boolean isStarted = false;

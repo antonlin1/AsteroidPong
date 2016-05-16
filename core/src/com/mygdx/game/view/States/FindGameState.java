@@ -1,14 +1,28 @@
 package com.mygdx.game.view.States;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Button;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.utils.Scaling;
 import com.badlogic.gdx.utils.TimeUtils;
+import com.badlogic.gdx.utils.viewport.ScalingViewport;
+import com.badlogic.gdx.utils.viewport.Viewport;
 import com.mygdx.game.PeerHelperInterface;
 import com.mygdx.game.WifiDirectInterface;
 import com.mygdx.game.view.MyGdxGame;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by johanmansson on 16-05-06.
@@ -20,6 +34,7 @@ public class FindGameState extends State {
     private Texture text;
     private Texture button;
     private long time1, time2, time3;
+    private Stage stage;
 
 
     public FindGameState(MyGdxGame game, StateManager stateManager,
@@ -41,12 +56,25 @@ public class FindGameState extends State {
 
         time1 = TimeUtils.millis();
         time2 = TimeUtils.millis() + 420;
+
+        //Button test
+        stage = new Stage(new ScalingViewport(Scaling.stretch,(float) game.getWidth(), (float)game.getHeight()));
+        setupCustomInputProcessor();
+
+        //DUMMY LIST
+        List<String> goodGames = new ArrayList<String>();
+        goodGames.add("Anton");
+        goodGames.add("Viktor");
+        goodGames.add("Hampus");
+        goodGames.add("Johan");
+
+        setupPeerList(goodGames);
     }
 
     @Override
     public void update() {
         handleInput();
-
+        stage.draw();
     }
 
     @Override
@@ -148,4 +176,38 @@ public class FindGameState extends State {
         }
     }
 
+    public void setupPeerList(List<String> peers) {
+
+        for(int i = 0; i < peers.size(); i++){
+            BitmapFont font = new BitmapFont();
+            Skin skin = new Skin();
+            String name = peers.get(i);
+
+//        skin.addRegions(buttonAtlas);
+            TextButton.TextButtonStyle textButtonStyle = new TextButton.TextButtonStyle();
+            textButtonStyle.font = font;
+//        textButtonStyle.up = skin.getDrawable("up-button");
+//        textButtonStyle.down = skin.getDrawable("down-button");
+//        textButtonStyle.checked = skin.getDrawable("checked-button");
+            TextButton button = new TextButton(name, textButtonStyle);
+            button.getLabel().setFontScale(5.0f);
+            button.setX((float) (game.getWidth()/2));
+            button.setY((float) (game.getHeight() * (0.7 - 0.075*i)));
+            stage.addActor(button);
+
+            button.addListener(new ChangeListener() {
+                @Override
+                public void changed (ChangeEvent event, Actor actor) {
+                    System.out.println(((TextButton)actor).getText()+" button Pressed");
+                }
+            });
+        }
+    }
+
+    public void setupCustomInputProcessor() {
+        InputMultiplexer multiplexer = new InputMultiplexer();
+        multiplexer.addProcessor(game);
+        multiplexer.addProcessor(stage);
+        Gdx.input.setInputProcessor(multiplexer);
+    }
 }

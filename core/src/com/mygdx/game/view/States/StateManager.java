@@ -1,5 +1,6 @@
 package com.mygdx.game.view.States;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.mygdx.game.PeerHelperInterface;
@@ -7,7 +8,6 @@ import com.mygdx.game.WifiDirectInterface;
 import com.mygdx.game.view.MyGdxGame;
 
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Stack;
 
 /**
@@ -21,29 +21,44 @@ public class StateManager {
 		}
 		private Stack<com.mygdx.game.view.States.State> states;
 		private HashMap<STATE_NAME, State> savedStates = new HashMap<STATE_NAME, State>();
-		private STATE_NAME activeState;
+		private STATE_NAME activeStateName;
+		private MyGdxGame game;
+		private State activeState;
 
 		public StateManager(MyGdxGame game, WifiDirectInterface wifiDirect,
 							PeerHelperInterface peerHelperInterface) {
 				states = new Stack<com.mygdx.game.view.States.State>();
+				this.game = game;
 		}
 
 		public void push(com.mygdx.game.view.States.State state) {
 				states.push(state);
-				setActiveState(states.peek().getStateName());
+			activeState = state;
+			setActiveStateName(activeState.getStateName());
+			System.out.println(state.getStateName());
+				if(state.getStateName() != STATE_NAME.FIND_GAME_STATE){
+					setStandardInputProcessor();
+				}
 		}
 
 		public void pop() {
 				states.pop();
-				setActiveState(states.peek().getStateName());
+			activeState = states.peek();
+			setActiveStateName(activeState.getStateName());
+				handleInputProcessor();
 		}
 
 
 		public void set(com.mygdx.game.view.States.State state) {
 				states.pop();
 				states.push(state);
-				setActiveState(states.peek().getStateName());
+				setActiveStateName(states.peek().getStateName());
 		}
+
+		public void setStandardInputProcessor() {
+			Gdx.input.setInputProcessor(game);
+		}
+
 
 
 		/**
@@ -61,18 +76,27 @@ public class StateManager {
 				if(state != null) {
 						states.pop();
 						states.push(state);
-						setActiveState(states.peek().getStateName());
+						setActiveStateName(states.peek().getStateName());
 				}
 				return state;
 		}
 
-		private void setActiveState(STATE_NAME state) {
-				activeState = state;
-				System.out.println("STATE: " + activeState);
+		private void setActiveStateName(STATE_NAME state) {
+				activeStateName = state;
+				System.out.println("STATE: " + activeStateName);
 		}
 
-		public STATE_NAME getActiveState() {
-				return activeState;
+		private void handleInputProcessor() {
+
+			if(activeStateName == STATE_NAME.FIND_GAME_STATE){
+				((FindGameState)activeState).setupCustomInputProcessor();
+			} else {
+				setStandardInputProcessor();
+			}
+		}
+
+		public STATE_NAME getActiveStateName() {
+				return activeStateName;
 		}
 
 		public void update() {

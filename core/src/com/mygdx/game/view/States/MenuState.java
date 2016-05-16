@@ -32,7 +32,7 @@ public class MenuState extends com.mygdx.game.view.States.State {
 
 		@Override
 		public boolean isActive() {
-				return (this.stateManager.getActiveState().equals(this.stateName));
+				return (this.stateManager.getActiveStateName().equals(this.stateName));
 		}
 
 		@Override

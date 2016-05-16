@@ -119,9 +119,9 @@ public class HowToPlayState extends com.mygdx.game.view.States.State {
 			float y21 = Gdx.graphics.getHeight() - button.getHeight() - 100;
 			float y22 = Gdx.graphics.getHeight() + button.getHeight() - 100;
 
-			if (x > x21 && x < x22 && y > y21 && y < y22 && wifiDirect.isConnected()) {
+			if (x > x21 && x < x22 && y > y21 && y < y22 ) {
 
-				if(isMultiplayer) {
+				if(isMultiplayer && wifiDirect.isConnected()) {
 
 //					if(wifiDirect.isServer()){
 						MultiplayerServer multiplayer= new MultiplayerServer(game,
@@ -147,6 +147,6 @@ public class HowToPlayState extends com.mygdx.game.view.States.State {
 
 	@Override
 	public boolean isActive() {
-		return (this.stateManager.getActiveState().equals(this.stateName));
+		return (this.stateManager.getActiveStateName().equals(this.stateName));
 	}
 }
