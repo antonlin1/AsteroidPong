@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.TimeUtils;
+import com.mygdx.game.PeerHelperInterface;
 import com.mygdx.game.WifiDirectInterface;
 import com.mygdx.game.view.MyGdxGame;
 
@@ -21,8 +22,9 @@ public class FindGameState extends State {
     private long time1, time2, time3;
 
 
-    public FindGameState(MyGdxGame game, StateManager stateManager, WifiDirectInterface wifiDirect) {
-       super(game, stateManager, StateManager.STATE_NAME.FIND_GAME_STATE, wifiDirect);
+    public FindGameState(MyGdxGame game, StateManager stateManager,
+						 WifiDirectInterface wifiDirect, PeerHelperInterface peerHelperInterface) {
+       super(game, stateManager, StateManager.STATE_NAME.FIND_GAME_STATE, wifiDirect, peerHelperInterface);
        cancel = new Texture("cancel2.png");
 
         circles = new Texture[7];

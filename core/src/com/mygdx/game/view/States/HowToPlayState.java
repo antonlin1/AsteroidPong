@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.TimeUtils;
+import com.mygdx.game.PeerHelperInterface;
 import com.mygdx.game.WifiDirectInterface;
 import com.mygdx.game.view.MyGdxGame;
 
@@ -21,11 +22,14 @@ public class HowToPlayState extends com.mygdx.game.view.States.State {
 		private Texture button;
 
 		private long time;
-		private boolean connected;
+		private boolean isMultiplayer;
 
 
-		public HowToPlayState(MyGdxGame game, StateManager stateManager, WifiDirectInterface wifiDirect) {
-				super(game, stateManager, StateManager.STATE_NAME.HOW_TO_PLAY_STATE, wifiDirect);
+		public HowToPlayState(MyGdxGame game, StateManager stateManager,
+							  WifiDirectInterface wifiDirect, boolean isMultiplayer,
+							  PeerHelperInterface peerHelperInterface) {
+				super(game, stateManager, StateManager.STATE_NAME.HOW_TO_PLAY_STATE,
+						wifiDirect, peerHelperInterface);
 				cancel = new Texture("cancel2.png");
 				movingphone = new Texture[3];
 				movingphone[0] = new Texture("phone1.png");
@@ -38,14 +42,9 @@ public class HowToPlayState extends com.mygdx.game.view.States.State {
 				text2 = new Texture("waitingtext2.png");
 				button = new Texture("buttonSG.png");
 
-				connected = false;
+				this.isMultiplayer = isMultiplayer;
 
 		}
-
-		public void changeConnected() {
-				connected = true;
-		}
-
 
 		@Override
 		public void update() {
@@ -59,7 +58,7 @@ public class HowToPlayState extends com.mygdx.game.view.States.State {
 				Color c = spriteBatch.getColor();
 				spriteBatch.draw(cancel, Gdx.graphics.getWidth() - cancel.getWidth() - 20, 20);
 
-				if (!connected) {
+				if (!isMultiplayer) {
 						spriteBatch.draw(text2, (Gdx.graphics.getWidth() / 2) - (text2.getWidth() / 2), 20);
 						spriteBatch.setColor(c.r, c.g, c.b, 0.3f);
 				}
@@ -119,10 +118,16 @@ public class HowToPlayState extends com.mygdx.game.view.States.State {
 						float y22 = Gdx.graphics.getHeight() + button.getHeight() - 100;
 
 						if (x > x21 && x < x22 && y > y21 && y < y22) {
-								System.out.println("Start Game pressed");
-								//stateManager.push();
-								State state = stateManager.set(StateManager.STATE_NAME.SINGLEPLAYER_STATE);
-								game.getInput().setGameState((GameState) state);
+
+								if(isMultiplayer) {
+										peerHelperInterface.discover();
+
+								}else {
+										System.out.println("Start Game pressed");
+										//stateManager.push();
+										State state = stateManager.set(StateManager.STATE_NAME.SINGLEPLAYER_STATE);
+										game.getInput().setGameState((GameState) state);
+								}
 						}
 				}
 		}

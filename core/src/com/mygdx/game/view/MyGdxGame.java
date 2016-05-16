@@ -36,6 +36,8 @@ public class MyGdxGame extends ApplicationAdapter implements InputProcessor {
 		private PeerHelperInterface peerHelper;
 		private WifiDirectInterface wifiDirect;
 
+
+
 		//private Texture planet1;
 		//private Texture planet2;
 
@@ -69,7 +71,7 @@ public class MyGdxGame extends ApplicationAdapter implements InputProcessor {
 						Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), peerHelper, wifiDirect);
 				stateManager.add(singlePlayer.getStateName(), singlePlayer);
 
-				MenuState menuState = new MenuState(this, stateManager, wifiDirect);
+				MenuState menuState = new MenuState(this, stateManager, wifiDirect, peerHelper);
 				stateManager.push(menuState);
 
 				blinkingStars = new BlinkingStars(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
@@ -80,7 +82,6 @@ public class MyGdxGame extends ApplicationAdapter implements InputProcessor {
 
 				//planet1 = new Texture("planet1.png");
 				//planet2 = new Texture("planet2.png");
-
 		}
 
 		@Override

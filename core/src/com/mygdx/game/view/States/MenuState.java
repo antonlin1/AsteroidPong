@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.mygdx.game.PeerHelperInterface;
 import com.mygdx.game.WifiDirectInterface;
 import com.mygdx.game.view.MyGdxGame;
 
@@ -18,8 +19,9 @@ public class MenuState extends com.mygdx.game.view.States.State {
 		private Texture text1;
 
 
-		public MenuState(MyGdxGame game, StateManager stateManager, WifiDirectInterface wifiDirect) {
-				super(game, stateManager, StateManager.STATE_NAME.MENU_STATE, wifiDirect);
+		public MenuState(MyGdxGame game, StateManager stateManager, WifiDirectInterface wifiDirect,
+						 PeerHelperInterface peerHelperInterface) {
+				super(game, stateManager, StateManager.STATE_NAME.MENU_STATE, wifiDirect, peerHelperInterface);
 				button1 = new Texture("buttonCG.png");
 				button2 = new Texture("buttonFG.png");
 				button3 = new Texture("buttonTM.png");
@@ -76,18 +78,23 @@ public class MenuState extends com.mygdx.game.view.States.State {
 
 						if (x > x1 && x < x2 && y > y11 && y < y12) { // && wifiDirect.isConnected()) {
 								System.out.println("Button1 pressed");
-								stateManager.push(new HowToPlayState(game, stateManager, wifiDirect));
+
+								HowToPlayState howToPlayState = new HowToPlayState(game, stateManager,
+										wifiDirect, true, peerHelperInterface);
+								stateManager.push(howToPlayState);
 						}
 
 						if (x > x1 && x < x2 && y > y21 && y < y22) {
 								System.out.println("Button2 pressed");
-								stateManager.push(new FindGameState(game, stateManager, wifiDirect));
+								stateManager.push(new FindGameState(game, stateManager, wifiDirect,
+										peerHelperInterface));
 						}
 
 						if (x > x1 && x < x2 && y > y31 && y < y32) {
 								System.out.println("Button3 pressed");
-								HowToPlayState howToPlayState = new HowToPlayState(game, stateManager, wifiDirect);
-								howToPlayState.changeConnected();
+								HowToPlayState howToPlayState = new HowToPlayState(game,
+										stateManager, wifiDirect, false, peerHelperInterface);
+								//howToPlayState.changeConnected();
 								stateManager.push(howToPlayState);
 						}
 				}

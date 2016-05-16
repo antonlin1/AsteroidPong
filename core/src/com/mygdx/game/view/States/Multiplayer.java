@@ -10,7 +10,8 @@ import com.mygdx.game.view.MyGdxGame;
 public abstract class Multiplayer extends GameState {
 
 		public Multiplayer(MyGdxGame game, StateManager stateManager, float width, float height,
-						   PeerHelperInterface peerHelper, WifiDirectInterface wifiDirect, StateManager.STATE_NAME state) {
+						   PeerHelperInterface peerHelper, WifiDirectInterface wifiDirect,
+						   StateManager.STATE_NAME state) {
 				super(game, stateManager, width, height, peerHelper, wifiDirect, state);
 		}
 }

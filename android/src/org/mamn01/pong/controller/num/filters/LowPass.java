@@ -5,16 +5,16 @@ package org.mamn01.pong.controller.num.filters;
  */
 public class LowPass extends Filter {
 
-		public LowPass(final int XN, final int YN, final float ALPHA) {
-				super(XN, YN);
+	public LowPass(final int XN, final int YN, final float ALPHA) {
+		super(XN, YN);
 
-				for (int i = 0; i < XN; i++) {
-						a[i] = ALPHA / (double)XN;
-				}
-
-				for (int i = 0; i < YN; i++) {
-						b[i] = (1 - ALPHA) / (double) YN;
-				}
+		for (int i = 0; i < XN; i++) {
+			a[i] = ALPHA / (double)XN;
 		}
+
+		for (int i = 0; i < YN; i++) {
+			b[i] = (1 - ALPHA) / (double) YN;
+		}
+	}
 
 }

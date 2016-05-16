@@ -1,4 +1,5 @@
 package com.mygdx.game.Network;
+
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
@@ -6,26 +7,27 @@ import java.util.concurrent.atomic.AtomicBoolean;
  */
 public class NetworkState {
 
-	//	public volatile static boolean IS_CONNECTING = false;
-    public volatile static boolean IS_CONNECTED = false;
+		//	public volatile static boolean IS_CONNECTING = false;
+		public volatile static boolean IS_CONNECTED = false;
 
-    public volatile static boolean IS_DISCOVERING = false;
+		public volatile static boolean IS_DISCOVERING = false;
 
-	public volatile static boolean HAS_DISCOVERED = false;
-    public volatile static boolean IS_GROUPING = false;
+		public volatile static boolean HAS_DISCOVERED = false;
+		public volatile static boolean IS_GROUPING = false;
 
-    public volatile static boolean IS_SERVER = false;
+		public volatile static boolean IS_CONNECTED_TO_SERVER = false;
 
-	public volatile static boolean IS_CLIENT = false;
-    public volatile static boolean IS_CONNECTED_TO_SERVER = false;
+		public volatile static boolean HAS_CONNECTION_FROM_CLIENT = false;
 
-	public volatile static boolean HAS_CONNECTION_FROM_CLIENT = false;
-    public static volatile AtomicBoolean IS_CONNECTING = new AtomicBoolean(false);
+		public static volatile AtomicBoolean IS_CONNECTING = new AtomicBoolean(false);
 
+		public static volatile AtomicBoolean IS_SERVER = new AtomicBoolean(false);
 
-    public static volatile AtomicBoolean IS_CONNECTING_RESET = new AtomicBoolean(false);
+		public static volatile AtomicBoolean IS_CLIENT = new AtomicBoolean(false);
 
-	public static volatile AtomicBoolean IS_DISCOVERING_RESET = new AtomicBoolean(false);
+		public static volatile AtomicBoolean IS_CONNECTING_RESET = new AtomicBoolean(false);
+
+		public static volatile AtomicBoolean IS_DISCOVERING_RESET = new AtomicBoolean(false);
 
 /*
 

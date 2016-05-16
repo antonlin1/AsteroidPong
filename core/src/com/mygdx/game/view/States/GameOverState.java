@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.mygdx.game.PeerHelperInterface;
 import com.mygdx.game.WifiDirectInterface;
 import com.mygdx.game.view.MyGdxGame;
 
@@ -16,8 +17,9 @@ public class GameOverState extends State {
     private Texture button1;
     private Texture button2;
 
-    public GameOverState(MyGdxGame game, StateManager stateManager, WifiDirectInterface wifiDirect) {
-        super(game, stateManager, StateManager.STATE_NAME.HOW_TO_PLAY_STATE, wifiDirect);
+    public GameOverState(MyGdxGame game, StateManager stateManager,
+						 WifiDirectInterface wifiDirect, PeerHelperInterface peerHelperInterface) {
+        super(game, stateManager, StateManager.STATE_NAME.HOW_TO_PLAY_STATE, wifiDirect, peerHelperInterface);
 
 
         text = new Texture("gameover.png");
@@ -70,7 +72,7 @@ public class GameOverState extends State {
 
             if (x > x1 && x < x2 && y > y21 && y < y22) {
                 System.out.println("Button2 pressed");
-                stateManager.push(new MenuState(game, stateManager, wifiDirect));
+                stateManager.push(new MenuState(game, stateManager, wifiDirect, peerHelperInterface));
             }
         }
     }
