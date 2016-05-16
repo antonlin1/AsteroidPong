@@ -1,20 +1,43 @@
 package com.mygdx.game.view.States;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.mygdx.game.PeerHelperInterface;
 import com.mygdx.game.WifiDirectInterface;
 import com.mygdx.game.model.Ball;
 import com.mygdx.game.model.PhysicsHelper;
 import com.mygdx.game.view.MyGdxGame;
 
+import static com.mygdx.game.view.States.GameState.PaddleConstant.YPOS;
+
 /**
  * Created by hampusballdin on 2016-05-08.
  */
 public class MultiplayerServer extends Multiplayer {
-		public MultiplayerServer(MyGdxGame game, StateManager stateManager, float width, float height,
-								 PeerHelperInterface peerHelper, WifiDirectInterface wifiDirect) {
-				super(game, stateManager, width, height, peerHelper, wifiDirect, StateManager.STATE_NAME.MULTIPLAYER_SERVER_STATE);
-		}
+
+	protected Texture planetDown, planetUp;
+	protected Texture[] scores;
+	protected int scoreDown, scoreUp;
+
+	public MultiplayerServer(MyGdxGame game, StateManager stateManager, float width, float height, PeerHelperInterface peerHelper, WifiDirectInterface wifiDirect) {
+
+		super(game, stateManager, width, height, peerHelper, wifiDirect, StateManager.STATE_NAME.MULTIPLAYER_SERVER_STATE);
+		planetDown = new Texture("EarthDown.png");
+		planetUp = new Texture("MoonUp.png");
+
+		scores = new Texture[6];
+		scores[0] = new Texture("score0.png");
+		scores[1] = new Texture("score20.png");
+		scores[2] = new Texture("score40.png");
+		scores[3] = new Texture("score60.png");
+		scores[4] = new Texture("score80.png");
+		scores[5] = new Texture("score100.png");
+
+		scoreDown = 5;
+		scoreUp = 5;
+	}
 
 		@Override
 		public void update() {
@@ -40,4 +63,21 @@ public class MultiplayerServer extends Multiplayer {
 						(float) (paddle1.getY() / h), (float) (ball.getX() / w),
 						(float) (ball.getY() / h), ball.getXVel(), ball.getYVel(), ball.getVelocity(), w, h);
 		}
+
+
+	@Override
+	public void render(SpriteBatch spriteBatch, ShapeRenderer shapeRenderer) {
+		super.render(spriteBatch, shapeRenderer);
+
+		spriteBatch.begin();
+
+		spriteBatch.draw(planetDown, 0, Gdx.graphics.getHeight() - planetDown.getHeight());
+		spriteBatch.draw(planetUp, 0, 0);
+		spriteBatch.draw(scores[scoreDown], 20, height - YPOS.value - 175, 170, 75);
+		spriteBatch.draw(scores[scoreUp], 20, YPOS.value + 175, 170, 75);
+
+		spriteBatch.end();
+
+	}
+
 }

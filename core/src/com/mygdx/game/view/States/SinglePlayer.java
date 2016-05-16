@@ -26,8 +26,8 @@ public class SinglePlayer extends GameState {
 				super(game, stateManager, width, height, peerHelper, wifiDirect,
 						StateManager.STATE_NAME.SINGLEPLAYER_STATE);
 
-				planetDown = new Texture("planet1.png");
-				planetUp = new Texture("planet4.png");
+				planetDown = new Texture("EarthDown.png");
+				planetUp = new Texture("MoonUp.png");
 
 				scores = new Texture[6];
 				scores[0] = new Texture("score0.png");
