@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -178,9 +179,15 @@ public class FindGameState extends State {
 
     public void setupPeerList(List<String> peers) {
 
+        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("helvetica_bold.ttf"));
+        FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
+        parameter.size = 80;
+        BitmapFont font = generator.generateFont(parameter); // font size 12 pixels
+        generator.dispose();
+
         for(int i = 0; i < peers.size(); i++){
-            BitmapFont font = new BitmapFont();
-            Skin skin = new Skin();
+//            BitmapFont font = new BitmapFont();
+//            Skin skin = new Skin();
             String name = peers.get(i);
 
 //        skin.addRegions(buttonAtlas);
@@ -190,9 +197,9 @@ public class FindGameState extends State {
 //        textButtonStyle.down = skin.getDrawable("down-button");
 //        textButtonStyle.checked = skin.getDrawable("checked-button");
             TextButton button = new TextButton(name, textButtonStyle);
-            button.getLabel().setFontScale(5.0f);
-            button.setX((float) (game.getWidth()/2));
-            button.setY((float) (game.getHeight() * (0.7 - 0.075*i)));
+//            button.getLabel().setFontScale(5.0f);
+            button.setX((float) ((game.getWidth() - button.getWidth()) /2 ));
+            button.setY((float) (game.getHeight() * 0.7 - i * button.getHeight()* 1.5));
             stage.addActor(button);
 
             button.addListener(new ChangeListener() {
