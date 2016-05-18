@@ -26,6 +26,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Created by antonlin on 16-04-20.
@@ -37,8 +38,6 @@ public class WifiDirectBroadcastReceiver extends BroadcastReceiver implements Wi
 	private static final MessageHolder messageHolder = MessageHolder.getInstance();
 	//private ViewModifier viewModifier;
 	private static PeerHelper peerHelper;
-
-	private List<String> peerNames = new ArrayList<String>();
 	private Map<String, WifiP2pDevice> peerMap = new HashMap<>();
 
 	private WifiP2pManager mManager;
@@ -63,8 +62,8 @@ public class WifiDirectBroadcastReceiver extends BroadcastReceiver implements Wi
 				// Out with the old, in with the new.
 				for (WifiP2pDevice device: peerList.getDeviceList()) {
 					if(device.deviceName.startsWith(GROUP_NAME)) {
-						peerMap.put(device.deviceName.toString(), device);
-						peerNames.add(device.deviceName.toString());
+						peerMap.put(device.deviceName.toString().toUpperCase(), device);
+
 					}
 				}
 //								peers.addAll(peerList.getDeviceList());
@@ -181,16 +180,16 @@ public class WifiDirectBroadcastReceiver extends BroadcastReceiver implements Wi
 //		return peers;
 //	}
 
-	public List<String> getPeerNames() {
-		return peerNames;
+	public Set<String> getPeerNames() {
+		return peerMap.keySet();
 	}
 
 	@Override
 	public void connectToDevice(String deviceName) {
 		WifiP2pDevice connectDevice = peerMap.get(deviceName);
 
+		System.out.println("TRYING TO CONNECT!");
 		if (!NetworkState.IS_CONNECTING.get() && connectDevice != null) {
-
 			peerHelper.connect(connectDevice);
 		}
 
@@ -287,13 +286,13 @@ public class WifiDirectBroadcastReceiver extends BroadcastReceiver implements Wi
 
 
 			// After the group negotiation, we can determine the group owner.
-			if (info.groupFormed && info.isGroupOwner) {
+			if (info.groupFormed && !NetworkState.IS_CLIENT.get()) {
 				// Do whatever tasks are specific to the group owner.
 				// One common case is creating a server thread and accepting
 				// incoming connections.
 
 				// Do server stuff ...
-				NetworkState.IS_CLIENT.set(false);
+//				NetworkState.IS_CLIENT.set(false);
 
 				//Server server = new Server(wifiDirectBroadcastReceiver.messageHolder);
 				UDPServer server = new UDPServer(wifiDirectBroadcastReceiver.messageHolder);
@@ -305,7 +304,7 @@ public class WifiDirectBroadcastReceiver extends BroadcastReceiver implements Wi
 				// The other device acts as the client. In this case,
 				// you'll want to create a client thread that connects to the group
 				// owner.
-				NetworkState.IS_CLIENT.set(true);
+//				NetworkState.IS_CLIENT.set(true);
 				System.out.println("DirectConnectionInfoListener, OTHER IS GROUP OWNER");
 				// Do client stuff ...
 

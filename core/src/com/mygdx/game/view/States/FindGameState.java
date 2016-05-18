@@ -23,7 +23,9 @@ import com.mygdx.game.WifiDirectInterface;
 import com.mygdx.game.view.MyGdxGame;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created by johanmansson on 16-05-06.
@@ -170,17 +172,18 @@ import java.util.List;
         }
     }
 
-    public void setupPeerList(List<String> peers) {
+    public void setupPeerList(Set<String> peers) {
 
         FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("coves_light.otf"));
         FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
         parameter.size = 80;
         BitmapFont font = generator.generateFont(parameter); // font size 12 pixels
         generator.dispose();
+        Iterator<String> peerIterator = peers.iterator();
 
         for(int i = 0; i < peers.size(); i++){
 
-            String name = peers.get(i).toUpperCase();
+            String name = peerIterator.next().toUpperCase().split(":")[1];
             TextButton.TextButtonStyle textButtonStyle = new TextButton.TextButtonStyle();
             textButtonStyle.font = font;
             TextButton button = new TextButton(name, textButtonStyle);
@@ -191,7 +194,9 @@ import java.util.List;
             button.addListener(new ChangeListener() {
                 @Override
                 public void changed (ChangeEvent event, Actor actor) {
-                    System.out.println(((TextButton)actor).getText()+" button Pressed");
+                    String gameName = ((TextButton)actor).getText().toString();
+                    System.out.println(gameName+" button Pressed");
+                    wifiDirect.connectToDevice("AP:"+gameName);
                 }
             });
         }
