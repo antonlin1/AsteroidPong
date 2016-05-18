@@ -28,7 +28,7 @@ import java.util.List;
 /**
  * Created by johanmansson on 16-05-06.
  */
-public class FindGameState extends State {
+    public class FindGameState extends State {
 
     private Texture cancel;
     private Texture[] circles;
