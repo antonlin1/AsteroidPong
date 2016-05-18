@@ -53,6 +53,7 @@ public class SinglePlayer extends GameState {
 				isDead = PhysicsHelper.isDead(width, height, balls);
 				ball.move();
 				handleTouchInput();
+				handleSpeechInput();
 				isDeadDown = PhysicsHelper.isDeadDown(width, height, balls);
 
 				if(isDead && isDeadDown) {

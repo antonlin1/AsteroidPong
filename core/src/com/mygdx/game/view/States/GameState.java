@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.mygdx.game.Controller.InputController;
 import com.mygdx.game.PeerHelperInterface;
+import com.mygdx.game.SpeechHelperInterface;
 import com.mygdx.game.WifiDirectInterface;
 import com.mygdx.game.model.Ball;
 import com.mygdx.game.model.Paddle;
@@ -39,6 +40,10 @@ public abstract class GameState
 		protected Sound gameOverSound;
 		protected Texture cancel;
 		protected Texture pause;
+
+
+
+
 
 
 		//private WifiDirectInterface wifiDirect;
@@ -78,6 +83,9 @@ public abstract class GameState
 
 				cancel = new Texture("cancel2.png");
 				pause = new Texture("paus1.png");
+
+
+
 
 		}
 
@@ -140,9 +148,7 @@ public abstract class GameState
 						collisionSound.play();
 				}
 
-
-
-				shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+			shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
 				particles.drawParticles(shapeRenderer);
 				shapeRenderer.setColor(Color.WHITE);
 				shapeRenderer.circle(ball.getX(), ball.getY(), ball.getRadius());
@@ -164,13 +170,20 @@ public abstract class GameState
 						float x1 = Gdx.graphics.getWidth() - pause.getWidth() - 20;
 						float x2 = Gdx.graphics.getWidth() + pause.getWidth() - 20;
 						float y1 = 20;
-						float y2 = cancel.getHeight() + 20;
+						float y2 = pause.getHeight() + 20;
 
 						if (x > x1 && x < x2 && y > y1 && y < y2) {
 								System.out.println("Button pressed");
-								stateManager.push(new GamePausedState(game, stateManager, wifiDirect, peerHelperInterface));
+								game.getSpeechHelper().setPaused(true);
+					//			stateManager.push(new GamePausedState(game, stateManager, wifiDirect, peerHelperInterface));
 						}
 				}
+		}
+
+		public void handleSpeechInput() {
+			if(game.getSpeechHelper().isPaused() == true) {
+				stateManager.push(new GamePausedState(game, stateManager, wifiDirect, peerHelperInterface));
+			}
 		}
 
 		public boolean isDead() {

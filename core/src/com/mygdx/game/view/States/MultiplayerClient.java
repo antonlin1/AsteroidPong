@@ -50,6 +50,7 @@ public class MultiplayerClient extends Multiplayer {
 		super.update();
 		Ball ball = balls.get(0);
 		handleTouchInput();
+		handleSpeechInput();
 		double w = Gdx.graphics.getWidth();
 		double h = Gdx.graphics.getHeight();
 		wifiDirect.getNetworkComponent().setClientToServerData(
