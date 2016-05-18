@@ -28,8 +28,6 @@ public class MenuState extends com.mygdx.game.view.States.State {
 				button2 = new Texture("buttonFG.png");
 				button3 = new Texture("buttonTM.png");
 				text1 = new Texture("text1.png");
-
-
 		}
 
 		@Override
@@ -79,15 +77,15 @@ public class MenuState extends com.mygdx.game.view.States.State {
 
 						if (x > x1 && x < x2 && y > y11 && y < y12) { // && wifiDirect.isConnected()) {
 								System.out.println("Button1 pressed");
-//								peerHelperInterface.discover(false);
-//								HowToPlayState howToPlayState = new HowToPlayState(game, stateManager,
-//										wifiDirect, true, peerHelperInterface);
-//
-//								MyTextInputListener listener = new MyTextInputListener();
-//								Gdx.input.getTextInput(listener, "Choose game name", "Test Game", "");
-//								System.out.println(listener.getGameName());
-//								stateManager.push(howToPlayState);
-								stateManager.push(new CreateGameDialogueState(game, stateManager, wifiDirect, peerHelperInterface));
+
+								HowToPlayState howToPlayState = new HowToPlayState(game, stateManager,
+										wifiDirect, true, peerHelperInterface);
+
+								MyTextInputListener listener = new MyTextInputListener(wifiDirect, peerHelperInterface, false);
+								Gdx.input.getTextInput(listener, "Choose game name", "Test Game", "");
+								System.out.println(listener.getGameName());
+								stateManager.push(howToPlayState);
+//								stateManager.push(new CreateGameDialogueState(game, stateManager, wifiDirect, peerHelperInterface));
 						}
 
 						if (x > x1 && x < x2 && y > y21 && y < y22) {

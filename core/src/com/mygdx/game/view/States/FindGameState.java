@@ -62,14 +62,7 @@ import java.util.List;
         stage = new Stage(new ScalingViewport(Scaling.stretch,(float) game.getWidth(), (float)game.getHeight()));
         setupCustomInputProcessor();
 
-        //DUMMY LIST
-        List<String> goodGames = new ArrayList<String>();
-        goodGames.add("Anton");
-        goodGames.add("Viktor");
-        goodGames.add("Hampus");
-        goodGames.add("Johan");
-
-        setupPeerList(goodGames);
+        setupPeerList(wifiDirect.getPeerNames());
     }
 
     @Override

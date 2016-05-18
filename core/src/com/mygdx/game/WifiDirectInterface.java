@@ -1,14 +1,21 @@
 package com.mygdx.game;
 
+import java.util.List;
+
 /**
  * Created by antonlin on 16-04-26.
  */
 public interface WifiDirectInterface {
 
-    public NetworkComponentInterface getNetworkComponent();
+    NetworkComponentInterface getNetworkComponent();
 
-    public boolean isServer();
+    boolean isServer();
 
-    public boolean isConnected();
+    boolean isConnected();
 
+    void setDeviceName(String name);
+
+    List<String> getPeerNames();
+
+    void connectToDevice(String name);
 }
