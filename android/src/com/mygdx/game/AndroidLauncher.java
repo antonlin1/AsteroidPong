@@ -22,6 +22,8 @@ import com.mygdx.game.Network.WifiDirectBroadcastReceiver;
 import com.mygdx.game.SpeechRecognizer.ListenerActivity;
 import com.mygdx.game.SpeechRecognizer.SpeechListener;
 import com.mygdx.game.view.MyGdxGame;
+import com.mygdx.game.view.States.GameState;
+
 
 import org.mamn01.pong.controller.num.AccelerationConverter;
 import org.mamn01.pong.controller.num.Converter;
@@ -30,12 +32,13 @@ import org.mamn01.pong.controller.num.ConverterV2;
 import java.util.Arrays;
 
 
-public class AndroidLauncher extends ListenerActivity implements SensorEventListener{
+public class AndroidLauncher extends ListenerActivity implements SensorEventListener, SpeechHelperInterface {
     private SensorManager mSensorManager;
    // private SpeechListener sl;
 
     private float[] mGData = new float[3];
     private MyGdxGame game;
+    private GameState state;
 
     //Network stuff
     private WifiP2pManager mManager;
@@ -62,8 +65,8 @@ public class AndroidLauncher extends ListenerActivity implements SensorEventList
 
         // Launches speech recognition
         context = getApplicationContext();
-        //SpeechListener.getInstance().setListener(this);
-       // startListening();
+        SpeechListener.getInstance().setListener(this);
+        startListening();
         pause = false;
 
 
@@ -89,10 +92,10 @@ public class AndroidLauncher extends ListenerActivity implements SensorEventList
 
         accelerationConverter = new ConverterV2();
 
-        game = new MyGdxGame(accelerationConverter, peerHelper, mReceiver);
+        game = new MyGdxGame(accelerationConverter, peerHelper, mReceiver, this);
         initialize(game, config);
 
-        System.out.println("DEVICE MAC: "+ getMacAddress(this));
+        System.out.println("DEVICE MAC: " + getMacAddress(this));
         mReceiver.resetNetwork();
 
      //   peerHelper.discover();
@@ -149,22 +152,20 @@ public class AndroidLauncher extends ListenerActivity implements SensorEventList
 
     }
 
-    @Override
     public void processVoiceCommands(String... voiceCommands) {
 
         for (String c : voiceCommands) {
-            if (c.contains("start") || c.contains("play")) {
-                pause = false;
+            if (c.contains("start") || c.contains("play") || c.contains("resume")) {
                 c = "";
+                pause = false;
 
             } else if (c.contains("stop") || c.contains("pause") || c.contains("paws")) {
-                pause = true;
                 c = "";
-
+                pause = true;
             }
-
         }
         restartListeningService();
+
     }
 
     protected float[] lowPass(float[] input, float[] output, final float ALPHA) {
@@ -174,5 +175,14 @@ public class AndroidLauncher extends ListenerActivity implements SensorEventList
             output[i] = output[i] + ALPHA * (input[i] - output[i]);
         }
         return output;
+    }
+
+    @Override
+    public boolean isPaused() {
+        return pause;
+    }
+
+    public void setPaused(boolean paused) {
+        pause = paused;
     }
 }

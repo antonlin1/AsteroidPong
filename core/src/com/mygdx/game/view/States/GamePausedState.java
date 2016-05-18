@@ -17,6 +17,7 @@ public class GamePausedState extends State {
     private Texture button1;
     private Texture button2;
 
+
     public GamePausedState(MyGdxGame game, StateManager stateManager, WifiDirectInterface wifiDirect, PeerHelperInterface peerHelperInterface) {
         super(game, stateManager, StateManager.STATE_NAME.PAUSE_STATE, wifiDirect, peerHelperInterface);
 
@@ -26,10 +27,14 @@ public class GamePausedState extends State {
         button2 = new Texture("buttonEX.png");
 
 
+
     }
 
     @Override
     public void update() {
+        if(game.getSpeechHelper().isPaused() == false) {
+            stateManager.pop();
+        }
         handleTouchInput();
     }
 
@@ -66,11 +71,13 @@ public class GamePausedState extends State {
 
             if (x > x1 && x < x2 && y > y11 && y < y12) {
                 System.out.println("Button1 pressed");
-                stateManager.pop();
+                game.getSpeechHelper().setPaused(false);
+         //       stateManager.pop();
             }
 
             if (x > x1 && x < x2 && y > y21 && y < y22) {
                 System.out.println("Button2 pressed");
+                game.getSpeechHelper().setPaused(false);
                 stateManager.push(new MenuState(game, stateManager, wifiDirect, peerHelperInterface));
             }
         }

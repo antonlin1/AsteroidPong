@@ -13,6 +13,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.mygdx.game.AccelerometerInputInterface;
 import com.mygdx.game.Controller.InputController;
 import com.mygdx.game.PeerHelperInterface;
+import com.mygdx.game.SpeechHelperInterface;
 import com.mygdx.game.WifiDirectInterface;
 import com.mygdx.game.view.States.GameState;
 import com.mygdx.game.view.States.MenuState;
@@ -36,16 +37,18 @@ public class MyGdxGame extends ApplicationAdapter implements InputProcessor {
 
 	private PeerHelperInterface peerHelper;
 	private WifiDirectInterface wifiDirect;
+	private SpeechHelperInterface speechHelper;
 
 	private InputMultiplexer inputMultiplexer;
 
 	//private Texture planet1;
 
 	public MyGdxGame(AccelerometerInputInterface accelerometerInput,
-					 PeerHelperInterface peerHelper, WifiDirectInterface wifiDirect) {
+					 PeerHelperInterface peerHelper, WifiDirectInterface wifiDirect, SpeechHelperInterface speechHelper) {
 		this.accelerometerInput = accelerometerInput;
 		this.peerHelper = peerHelper;
 		this.wifiDirect = wifiDirect;
+		this.speechHelper = speechHelper;
 	}
 
 	@Override
@@ -182,5 +185,9 @@ public class MyGdxGame extends ApplicationAdapter implements InputProcessor {
 
 	public InputMultiplexer getInputMultiplexer() {
 		return inputMultiplexer;
+	}
+
+	public SpeechHelperInterface getSpeechHelper() {
+		return speechHelper;
 	}
 }

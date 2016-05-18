@@ -57,6 +57,7 @@ public class MultiplayerServer extends Multiplayer {
 
 				ball.move();
 				handleTouchInput();
+				handleSpeechInput();
 
 				double w = Gdx.graphics.getWidth();
 				double h = Gdx.graphics.getHeight();
