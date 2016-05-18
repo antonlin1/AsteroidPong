@@ -179,7 +179,7 @@ public class FindGameState extends State {
 
     public void setupPeerList(List<String> peers) {
 
-        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("helvetica_bold.ttf"));
+        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("coves_light.otf"));
         FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
         parameter.size = 80;
         BitmapFont font = generator.generateFont(parameter); // font size 12 pixels
@@ -187,7 +187,7 @@ public class FindGameState extends State {
 
         for(int i = 0; i < peers.size(); i++){
 
-            String name = peers.get(i);
+            String name = peers.get(i).toUpperCase();
             TextButton.TextButtonStyle textButtonStyle = new TextButton.TextButtonStyle();
             textButtonStyle.font = font;
             TextButton button = new TextButton(name, textButtonStyle);
