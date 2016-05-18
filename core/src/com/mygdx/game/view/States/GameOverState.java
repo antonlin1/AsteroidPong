@@ -35,7 +35,7 @@ public class GameOverState extends State {
         if(youWon == false) {
             textNbr = 0;
         }
-        if(youWon = true) {
+        if(youWon == true) {
             textNbr = 1;
         }
 
@@ -44,7 +44,10 @@ public class GameOverState extends State {
 
     @Override
     public void update() {
+
         handleTouchInput();
+
+
     }
 
     @Override
