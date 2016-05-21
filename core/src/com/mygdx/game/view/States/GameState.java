@@ -131,7 +131,7 @@ public abstract class GameState
 				 */
 				if (isDead()) {
 						//gameOverSound.play();
-						Gdx.input.vibrate(50);
+						//Gdx.input.vibrate(50);
 						killBall();
 						randomizePos();
 //

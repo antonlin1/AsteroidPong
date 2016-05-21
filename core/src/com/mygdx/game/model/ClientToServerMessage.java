@@ -18,6 +18,8 @@ public class ClientToServerMessage {
 				this.paddleY = paddleY;
 		}
 
+		public static final ClientToServerMessage DEFAULT_MESSAGE = new ClientToServerMessage(0f, 0f);
+
 		public ClientToServerMessage(String data) {
 				parse(data);
 		}

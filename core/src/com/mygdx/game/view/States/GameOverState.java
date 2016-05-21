@@ -13,32 +13,48 @@ import com.mygdx.game.view.MyGdxGame;
  */
 public class GameOverState extends State {
 
-    private Texture text;
+    private Texture text[];
     private Texture button1;
     private Texture button2;
 
+    private boolean youWon;
+    private int textNbr;
+
     public GameOverState(MyGdxGame game, StateManager stateManager,
-						 WifiDirectInterface wifiDirect, PeerHelperInterface peerHelperInterface) {
+						 WifiDirectInterface wifiDirect, PeerHelperInterface peerHelperInterface, boolean youWon) {
         super(game, stateManager, StateManager.STATE_NAME.HOW_TO_PLAY_STATE, wifiDirect, peerHelperInterface);
 
+        text = new Texture[2];
+        text[0] = new Texture("gameover.png");
+        text[1] = new Texture("youWon.png");
 
-        text = new Texture("gameover.png");
         button1 = new Texture("button3.png");
         button2 = new Texture("buttonEX.png");
+        this.youWon = youWon;
+
+        if(youWon == false) {
+            textNbr = 0;
+        }
+        if(youWon == true) {
+            textNbr = 1;
+        }
 
 
     }
 
     @Override
     public void update() {
+
         handleTouchInput();
+
+
     }
 
     @Override
     public void render(SpriteBatch spriteBatch, ShapeRenderer shapeRenderer) {
         spriteBatch.begin();
 
-        spriteBatch.draw(text, (Gdx.graphics.getWidth()/2) - (text.getWidth()/2), (Gdx.graphics.getHeight()/2) - text.getHeight() - 100);
+        spriteBatch.draw(text[textNbr], (Gdx.graphics.getWidth()/2) - (text[textNbr].getWidth()/2), (Gdx.graphics.getHeight()/2) - text[textNbr].getHeight() - 100);
         spriteBatch.draw(button1, (Gdx.graphics.getWidth() / 2) - (button1.getWidth() / 2), (Gdx.graphics.getHeight() / 2) + 50);
         spriteBatch.draw(button2, (Gdx.graphics.getWidth() / 2) - (button2.getWidth() / 2), (Gdx.graphics.getHeight() / 2) + 70 + (button1.getHeight()));
         spriteBatch.end();

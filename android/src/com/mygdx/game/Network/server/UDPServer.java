@@ -16,6 +16,7 @@ import java.io.OutputStreamWriter;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
+import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketException;
@@ -28,39 +29,57 @@ public class UDPServer extends Thread implements NetworkComponentInterface {
 		private MessageHolder messageHolder;
 		private ClientToServerMessage clientToServerMessage = new ClientToServerMessage(0.0f, 0.0f);
 		private static boolean IS_CONNECTION_OPEN = false;
-		private static InetAddress clientAddress = null;
-		private static final Object clientAddressLock = new Object();
+		private InetAddress clientAddress = null;
+		private final Object clientAddressLock = new Object();
 
 		//private GameState gameState;
-		public UDPServer(MessageHolder messageHolder/*, GameState gameState*/) {
+		public UDPServer(MessageHolder messageHolder, InetAddress clientAddress) {
 				this.messageHolder = messageHolder;
-//        this.gameState = gameState;
+				this.clientAddress = clientAddress;
+
+
+				System.out.println("Creating Socket");
 				try {
-						socket = new DatagramSocket(InetUtil.PORT);
+						socket = new DatagramSocket(null);
+						socket.setReuseAddress(true);
+						socket.bind(new InetSocketAddress(InetUtil.PORT));
 				} catch (SocketException e) {
 						e.printStackTrace();
 				}
+
+				System.out.println("socket: " + socket);
 		}
 
 		@Override
 		public void run() {
 				System.out.println("Server Start");
-
-				ClientMessageReader clientMessageReader = new ClientMessageReader(messageHolder, this, socket);
+				ClientMessageReader clientMessageReader = new ClientMessageReader();
 				clientMessageReader.start();
-
 				byte[] bytes = new byte[1];
 
-
-				synchronized (clientAddressLock) {
-						while (clientAddress == null) {
-								try {
-										clientAddressLock.wait();
-								} catch (InterruptedException e) {
-										e.printStackTrace();
+				if(clientAddress == null) {
+						synchronized (clientAddressLock) {
+								while (clientAddress == null) {
+										try {
+												clientAddressLock.wait();
+										} catch (InterruptedException e) {
+												e.printStackTrace();
+										}
 								}
+								clientAddressLock.notifyAll();
 						}
-						clientAddressLock.notifyAll();
+				}else {
+						/**
+						 * Send dummy message to client for it to discover server address ...
+						 */
+
+						byte[] tmp = ServerToClientMessage.DEFAULT_MESSAGE.toString().getBytes();
+						try {
+								socket.send(new DatagramPacket(tmp, tmp.length, clientAddress, InetUtil.PORT));
+						} catch (IOException e) {
+								e.printStackTrace();
+						}
+
 				}
 				DatagramPacket dp = new DatagramPacket(bytes, bytes.length, clientAddress, InetUtil.PORT);
 
@@ -81,48 +100,37 @@ public class UDPServer extends Thread implements NetworkComponentInterface {
 
 		}
 
-		private static class ClientMessageReader extends Thread {
-
-				private MessageHolder messageHolder;
-				private UDPServer server;
-				private DatagramSocket socket;
+		private class ClientMessageReader extends Thread {
 				private DatagramPacket dp;
 				private byte[] data = new byte[InetUtil.UDP_RECEIVE_BUFFER_SIZE];
-				private ClientToServerMessage clientToServerMessage;
 
-
-				public ClientMessageReader(MessageHolder messageHolder, UDPServer server, DatagramSocket socket) {
-						this.messageHolder = messageHolder;
-						this.server = server;
-						this.socket = socket;
+				public ClientMessageReader() {
 						dp = new DatagramPacket(data, data.length);
-						clientToServerMessage = new ClientToServerMessage(null);
 				}
 
 				@Override
 				public void run() {
 						try {
-
 								// Receive first to get client IP (will always be the same after) ...
-								socket.receive(dp);
-								String message = new String(dp.getData(), 0, dp.getLength());
-								dp.setLength(data.length);
-								clientToServerMessage.setMessage(message);
-								server.clientToServerMessage = clientToServerMessage;
+								if(clientAddress == null) {
+										socket.receive(dp);
+										String message = new String(dp.getData(), 0, dp.getLength());
+										dp.setLength(data.length);
+										clientToServerMessage.setMessage(message);
 
-								synchronized (clientAddressLock) {
-										if (clientAddress == null) {
-												clientAddress = dp.getAddress();
-												clientAddressLock.notifyAll();
+										synchronized (clientAddressLock) {
+												if (clientAddress == null) {
+														clientAddress = dp.getAddress();
+														clientAddressLock.notifyAll();
+												}
 										}
 								}
-
+								String message = "";
 								while (!isInterrupted()) {
 										socket.receive(dp);
 										message = new String(dp.getData(), 0, dp.getLength());
 										dp.setLength(data.length);
 										clientToServerMessage.setMessage(message);
-										server.clientToServerMessage = clientToServerMessage;
 								}
 
 						} catch (IOException e) {
@@ -149,10 +157,7 @@ public class UDPServer extends Thread implements NetworkComponentInterface {
 								paddleX,paddleY, ballX, ballY, ballXVelocity,
 						ballYVelocity, ballVelocity, screenWidth, screenHeight);
 
-
 				messageHolder.deposit(serverToClientMessage.toString());
-//        ClientToServerMessage clientMessage = new ClientToServerMessage(data);
-//        gameState.setPaddle2(clientMessage.getPaddleX());
 		}
 
 		@Override
@@ -199,7 +204,6 @@ public class UDPServer extends Thread implements NetworkComponentInterface {
 
 		@Override
 		public float getOpponentPaddleY() {
-				return clientToServerMessage.getPaddleY()
-						;
+				return clientToServerMessage.getPaddleY();
 		}
 }

@@ -17,30 +17,33 @@ import static com.mygdx.game.view.States.GameState.PaddleConstant.YPOS;
  */
 public class SinglePlayer extends GameState {
 
-		protected Texture planetDown, planetUp;
-		protected Texture[] scores;
-		protected int score;
 
-		protected boolean isDeadDown;
+		protected  Texture[] planetDown, planetUp;
+		protected int scoreUp, scoreDown;
+
+		protected boolean isDeadDown, isDeadUp;
 
 		public SinglePlayer(MyGdxGame game, StateManager stateManager, float width, float height,
 							PeerHelperInterface peerHelper, WifiDirectInterface wifiDirect) {
 				super(game, stateManager, width, height, peerHelper, wifiDirect,
 						StateManager.STATE_NAME.SINGLEPLAYER_STATE);
 
-				planetDown = new Texture("EarthDown.png");
-				planetUp = new Texture("MoonUp.png");
 
-				scores = new Texture[6];
-				scores[0] = new Texture("score0.png");
-				scores[1] = new Texture("score20.png");
-				scores[2] = new Texture("score40.png");
-				scores[3] = new Texture("score60.png");
-				scores[4] = new Texture("score80.png");
-				scores[5] = new Texture("score100.png");
+				planetDown = new Texture[4];
+				planetDown[0] = new Texture("EarthLifeDown25.png");
+				planetDown[1] = new Texture("EarthLifeDown50.png");
+				planetDown[2] = new Texture("EarthLifeDown75.png");
+				planetDown[3] = new Texture("EarthLifeDown100.png");
 
-				score = 5;
-				isDeadDown = false;
+
+				planetUp = new Texture[4];
+				planetUp[0] = new Texture("MoonLifeUp25.png");
+				planetUp[1] = new Texture("MoonLifeUp50.png");
+				planetUp[2] = new Texture("MoonLifeUp75.png");
+				planetUp[3] = new Texture("MoonLifeUp100.png");
+
+				scoreDown = 4;
+				scoreUp = 4;
 
 		}
 
@@ -54,17 +57,31 @@ public class SinglePlayer extends GameState {
 				ball.move();
 				handleTouchInput();
 				handleSpeechInput();
-				isDeadDown = PhysicsHelper.isDeadDown(width, height, balls);
 
-				if(isDead && isDeadDown) {
+			isDeadDown = PhysicsHelper.isDeadDown(width, height, balls);
+			isDeadUp = PhysicsHelper.isDeadUp(width, height, balls);
 
-					score--;
+			if(isDead && isDeadDown) {
 
-					if(score == 0) {
-						score = 5;
-						stateManager.push(new GameOverState(game, stateManager, wifiDirect, peerHelperInterface));
-					}
+				scoreDown--;
+
+				if(scoreDown == 0) {
+					Gdx.input.vibrate(1000);
+					scoreDown = 4;
+					scoreUp = 4;
+					stateManager.push(new GameOverState(game, stateManager, wifiDirect, peerHelperInterface, false));
 				}
+			}
+			if(isDead && isDeadUp) {
+
+				scoreUp--;
+
+				if(scoreUp == 0) {
+					scoreUp = 4;
+					scoreDown = 4;
+					stateManager.push(new GameOverState(game, stateManager, wifiDirect, peerHelperInterface, true));
+				}
+			}
 		}
 
 	@Override
@@ -72,10 +89,8 @@ public class SinglePlayer extends GameState {
 		super.render(spriteBatch, shapeRenderer);
 
 		spriteBatch.begin();
-		spriteBatch.draw(planetDown, 0, Gdx.graphics.getHeight() - planetDown.getHeight());
-		spriteBatch.draw(planetUp, 0, 0);
-		spriteBatch.draw(scores[score], 20, height - YPOS.value - 175, 170, 75);
-
+		spriteBatch.draw(planetDown[scoreDown - 1], 0, Gdx.graphics.getHeight() - planetDown[scoreDown - 1].getHeight());
+		spriteBatch.draw(planetUp[scoreUp - 1], 0, 0);
 		spriteBatch.end();
 
 

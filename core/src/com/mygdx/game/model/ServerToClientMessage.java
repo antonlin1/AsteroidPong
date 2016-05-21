@@ -67,6 +67,10 @@ public class ServerToClientMessage {
 				this.screenHeight = screenHeight;
 		}
 
+		public static final ServerToClientMessage DEFAULT_MESSAGE = new ServerToClientMessage(
+				false, false, false, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0.0, 0.0
+		);
+
 		public ServerToClientMessage(String data) {
 				parse(data);
 		}
@@ -122,6 +126,7 @@ public class ServerToClientMessage {
 		public long getNanoTime() {
 				return nanoTime;
 		}
+
 		//Every attribute separated by ':'
 		public String toString() {
 				StringBuilder returnString = new StringBuilder("");

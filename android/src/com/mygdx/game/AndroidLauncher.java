@@ -1,9 +1,11 @@
 package com.mygdx.game;
 
+import android.Manifest;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.PackageManager;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -12,8 +14,12 @@ import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.net.wifi.p2p.WifiP2pManager;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.WindowManager;
+
+
 
 import com.badlogic.gdx.backends.android.AndroidApplication;
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
@@ -34,11 +40,10 @@ import java.util.Arrays;
 
 public class AndroidLauncher extends ListenerActivity implements SensorEventListener, SpeechHelperInterface {
     private SensorManager mSensorManager;
-   // private SpeechListener sl;
+    // private SpeechListener sl;
 
     private float[] mGData = new float[3];
     private MyGdxGame game;
-    private GameState state;
 
     //Network stuff
     private WifiP2pManager mManager;
@@ -98,7 +103,16 @@ public class AndroidLauncher extends ListenerActivity implements SensorEventList
         System.out.println("DEVICE MAC: " + getMacAddress(this));
         mReceiver.resetNetwork();
 
-     //   peerHelper.discover();
+        //   peerHelper.discover();
+
+        if (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
+
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.RECORD_AUDIO},
+                    1);
+
+        }
     }
 
     private String getMacAddress(Context context) {
@@ -155,11 +169,15 @@ public class AndroidLauncher extends ListenerActivity implements SensorEventList
     public void processVoiceCommands(String... voiceCommands) {
 
         for (String c : voiceCommands) {
-            if (c.contains("start") || c.contains("play") || c.contains("resume")) {
+            if (c.contains("start") || c.contains("play") || c.contains("resume")
+                    || c.contains("stat") || c.contains("starta") || c.contains("stark")
+                    || c.contains("stars")) {
                 c = "";
                 pause = false;
 
-            } else if (c.contains("stop") || c.contains("pause") || c.contains("paws")) {
+            } else if (c.contains("stop") || c.contains("pause") || c.contains("paws")
+                    || c.contains("stock") || c.contains("stopp") || c.contains("stahp")
+                    || c.contains("pass") || c.contains("fass") || c.contains("paus")) {
                 c = "";
                 pause = true;
             }

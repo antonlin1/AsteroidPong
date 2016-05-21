@@ -32,6 +32,7 @@ android {
 
 
 dependencies {
+    compile 'com.android.support:appcompat-v7:23.2.0'
     compile 'org.apache.commons:commons-math3:3.0'
     compile "com.badlogicgames.gdx:gdx-freetype:$gdxVersion"
     natives "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-armeabi"
@@ -39,6 +40,7 @@ dependencies {
     natives "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-arm64-v8a"
     natives "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-x86"
     natives "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-x86_64"
+
 }
 // called every time gradle gets executed, takes the native dependencies of
 // the natives configuration, and extracts them to the proper libs/ folders
