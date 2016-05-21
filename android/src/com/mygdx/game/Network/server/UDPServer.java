@@ -27,7 +27,7 @@ import java.net.SocketException;
 public class UDPServer extends Thread implements NetworkComponentInterface {
 		private DatagramSocket socket;
 		private MessageHolder messageHolder;
-		private ClientToServerMessage clientToServerMessage = new ClientToServerMessage(0.0f, 0.0f);
+		private ClientToServerMessage clientToServerMessage = new ClientToServerMessage(false, false, 0.0f, 0.0f);
 		private static boolean IS_CONNECTION_OPEN = false;
 		private InetAddress clientAddress = null;
 		private final Object clientAddressLock = new Object();
@@ -141,21 +141,21 @@ public class UDPServer extends Thread implements NetworkComponentInterface {
 		}
 
 		@Override
-		public void setClientToServerData(float paddleX, float paddleY) {
+		public void setClientToServerData(boolean gameActive, boolean gamePaused, float paddleX, float paddleY) {
 				//Do nothing
 		}
 
 		@Override
-		public void setServerToClientData(boolean gameActive, boolean paddleCollision,
+		public void setServerToClientData(boolean gameActive, boolean gamePaused, boolean paddleCollision,
 										  boolean wallCollision, float paddleX,float paddleY,
 										  float ballX, float ballY, float ballXVelocity,
 										  float ballYVelocity, float ballVelocity,
-										  double screenWidth, double screenHeight) {
+										  double screenWidth, double screenHeight, int hpUp, int hpDown) {
 
 				ServerToClientMessage serverToClientMessage =
-						new ServerToClientMessage(gameActive, paddleCollision, wallCollision,
+						new ServerToClientMessage(gameActive, gamePaused,paddleCollision, wallCollision,
 								paddleX,paddleY, ballX, ballY, ballXVelocity,
-						ballYVelocity, ballVelocity, screenWidth, screenHeight);
+						ballYVelocity, ballVelocity, screenWidth, screenHeight, hpUp, hpDown);
 
 				messageHolder.deposit(serverToClientMessage.toString());
 		}

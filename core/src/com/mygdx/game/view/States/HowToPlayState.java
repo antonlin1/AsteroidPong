@@ -21,11 +21,8 @@ public class HowToPlayState extends com.mygdx.game.view.States.State {
 	private Texture button;
 	private Texture backButton;
 
-
-
 	private long time;
 	private boolean isMultiplayer;
-
 
 	public HowToPlayState(MyGdxGame game, StateManager stateManager,
 						  WifiDirectInterface wifiDirect, boolean isMultiplayer,
@@ -129,18 +126,19 @@ public class HowToPlayState extends com.mygdx.game.view.States.State {
 				System.out.println("Exit pressed");
 				if(isMultiplayer && wifiDirect.isConnected()) {
 
-//					if(wifiDirect.isServer()){
+					if(!wifiDirect.isClient()){
 						MultiplayerServer multiplayer= new MultiplayerServer(game,
 								stateManager, (float)game.getWidth(), (float)game.getHeight(), peerHelperInterface, wifiDirect);
 						//howToPlayState.changeConnected();
 						stateManager.push(multiplayer);
 					game.getInput().setGameState((GameState) multiplayer);
-//					} else {
-//						MultiplayerClient multiplayer= new MultiplayerClient(game,
-//								stateManager, (float)game.getWidth(), (float)game.getHeight(), peerHelperInterface, wifiDirect);
-//						//howToPlayState.changeConnected();
-//						stateManager.push(multiplayer);
-//					}
+					} else {
+						MultiplayerClient multiplayer= new MultiplayerClient(game,
+								stateManager, (float)game.getWidth(), (float)game.getHeight(), peerHelperInterface, wifiDirect);
+						//howToPlayState.changeConnected();
+						stateManager.push(multiplayer);
+						game.getInput().setGameState((GameState) multiplayer);
+					}
 				}else {
 					System.out.println("Start Game pressed");
 					//stateManager.push();

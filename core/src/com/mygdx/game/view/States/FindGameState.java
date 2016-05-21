@@ -10,21 +10,18 @@ import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Button;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.Scaling;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.badlogic.gdx.utils.viewport.ScalingViewport;
-import com.badlogic.gdx.utils.viewport.Viewport;
 import com.mygdx.game.PeerHelperInterface;
 import com.mygdx.game.WifiDirectInterface;
 import com.mygdx.game.view.MyGdxGame;
+import com.mygdx.game.view.MyTextInputListener;
 
-import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Set;
 
 /**
@@ -35,9 +32,11 @@ import java.util.Set;
     private Texture cancel;
     private Texture[] circles;
     private Texture text;
-    private Texture button;
+//    private Texture button;
     private long time1, time2, time3;
     private Stage stage;
+    private BitmapFont font;
+    private Set peers = new HashSet();
 
 
     public FindGameState(MyGdxGame game, StateManager stateManager,
@@ -55,7 +54,7 @@ import java.util.Set;
         circles[6] = new Texture("s7.png");
 
         text = new Texture("selecttext.png");
-        button = new Texture("buttonREF.png");
+//        button = new Texture("buttonREF.png");
 
         time1 = TimeUtils.millis();
         time2 = TimeUtils.millis() + 420;
@@ -64,13 +63,20 @@ import java.util.Set;
         stage = new Stage(new ScalingViewport(Scaling.stretch,(float) game.getWidth(), (float)game.getHeight()));
         setupCustomInputProcessor();
 
-        setupPeerList(wifiDirect.getPeerNames());
+        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("coves_light.otf"));
+        FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
+        parameter.size = 80;
+        font = generator.generateFont(parameter); // font size 12 pixels
+        generator.dispose();
+
+        setupPeerNames(wifiDirect.getPeerNames());
     }
 
     @Override
     public void update() {
         handleInput();
         stage.draw();
+
     }
 
     @Override
@@ -87,47 +93,50 @@ import java.util.Set;
         spriteBatch.draw(text, (Gdx.graphics.getWidth() / 2) - (text.getWidth() / 2),
 				(Gdx.graphics.getHeight() / 2) - text.getHeight() - 500);
 
-        if(TimeUtils.timeSinceMillis(time1) > 0 && TimeUtils.timeSinceMillis(time1) < 100) {
-            spriteBatch.draw(circles[0], (Gdx.graphics.getWidth() / 2) - (circles[0].getWidth() / 2),
-					(Gdx.graphics.getHeight() / 2) - (circles[0].getHeight() / 2));
-        }
-        if(TimeUtils.timeSinceMillis(time1) > 100 && TimeUtils.timeSinceMillis(time1) < 230) {
-            spriteBatch.draw(circles[1], (Gdx.graphics.getWidth()/2) - (circles[0].getWidth()/2),
-					(Gdx.graphics.getHeight()/2) - (circles[0].getHeight()/2));
-        }
-        if(TimeUtils.timeSinceMillis(time1) > 230 && TimeUtils.timeSinceMillis(time1) < 360) {
-            spriteBatch.draw(circles[2], (Gdx.graphics.getWidth()/2) - (circles[0].getWidth()/2),
-					(Gdx.graphics.getHeight()/2) - (circles[0].getHeight()/2));
-        }
-        if(TimeUtils.timeSinceMillis(time1) > 360 && TimeUtils.timeSinceMillis(time1) < 490) {
-            spriteBatch.draw(circles[3], (Gdx.graphics.getWidth()/2) - (circles[0].getWidth()/2),
-					(Gdx.graphics.getHeight()/2) - (circles[0].getHeight()/2));
-        }
-        if(TimeUtils.timeSinceMillis(time1) > 490 && TimeUtils.timeSinceMillis(time1) < 530) {
-            spriteBatch.draw(circles[4], (Gdx.graphics.getWidth()/2) - (circles[0].getWidth()/2),
-					(Gdx.graphics.getHeight()/2) - (circles[0].getHeight()/2));
-        }
-        if(TimeUtils.timeSinceMillis(time1) > 530 && TimeUtils.timeSinceMillis(time1) < 680) {
-            spriteBatch.draw(circles[5], (Gdx.graphics.getWidth()/2) - (circles[0].getWidth()/2),
-					(Gdx.graphics.getHeight()/2) - (circles[0].getHeight()/2));
-        }
-        if(TimeUtils.timeSinceMillis(time1) > 680 && TimeUtils.timeSinceMillis(time1) < 840) {
-            spriteBatch.draw(circles[6], (Gdx.graphics.getWidth()/2) - (circles[0].getWidth()/2),
-					(Gdx.graphics.getHeight()/2) - (circles[0].getHeight()/2));
-        }
-        if(TimeUtils.timeSinceMillis(time1) > 840) {
-            time1 = TimeUtils.millis();
+        if(peers.size() == 0) {
+
+            if (TimeUtils.timeSinceMillis(time1) > 0 && TimeUtils.timeSinceMillis(time1) < 100) {
+                spriteBatch.draw(circles[0], (Gdx.graphics.getWidth() / 2) - (circles[0].getWidth() / 2),
+                        (Gdx.graphics.getHeight() / 2) - (circles[0].getHeight() / 2));
+            }
+            if (TimeUtils.timeSinceMillis(time1) > 100 && TimeUtils.timeSinceMillis(time1) < 230) {
+                spriteBatch.draw(circles[1], (Gdx.graphics.getWidth() / 2) - (circles[0].getWidth() / 2),
+                        (Gdx.graphics.getHeight() / 2) - (circles[0].getHeight() / 2));
+            }
+            if (TimeUtils.timeSinceMillis(time1) > 230 && TimeUtils.timeSinceMillis(time1) < 360) {
+                spriteBatch.draw(circles[2], (Gdx.graphics.getWidth() / 2) - (circles[0].getWidth() / 2),
+                        (Gdx.graphics.getHeight() / 2) - (circles[0].getHeight() / 2));
+            }
+            if (TimeUtils.timeSinceMillis(time1) > 360 && TimeUtils.timeSinceMillis(time1) < 490) {
+                spriteBatch.draw(circles[3], (Gdx.graphics.getWidth() / 2) - (circles[0].getWidth() / 2),
+                        (Gdx.graphics.getHeight() / 2) - (circles[0].getHeight() / 2));
+            }
+            if (TimeUtils.timeSinceMillis(time1) > 490 && TimeUtils.timeSinceMillis(time1) < 530) {
+                spriteBatch.draw(circles[4], (Gdx.graphics.getWidth() / 2) - (circles[0].getWidth() / 2),
+                        (Gdx.graphics.getHeight() / 2) - (circles[0].getHeight() / 2));
+            }
+            if (TimeUtils.timeSinceMillis(time1) > 530 && TimeUtils.timeSinceMillis(time1) < 680) {
+                spriteBatch.draw(circles[5], (Gdx.graphics.getWidth() / 2) - (circles[0].getWidth() / 2),
+                        (Gdx.graphics.getHeight() / 2) - (circles[0].getHeight() / 2));
+            }
+            if (TimeUtils.timeSinceMillis(time1) > 680 && TimeUtils.timeSinceMillis(time1) < 840) {
+                spriteBatch.draw(circles[6], (Gdx.graphics.getWidth() / 2) - (circles[0].getWidth() / 2),
+                        (Gdx.graphics.getHeight() / 2) - (circles[0].getHeight() / 2));
+            }
+            if (TimeUtils.timeSinceMillis(time1) > 840) {
+                time1 = TimeUtils.millis();
+            }
         }
 
-
-        Color c = spriteBatch.getColor();
-
-        if(!wifiDirect.isConnected()){
-            spriteBatch.setColor(c.r, c.g, c.b, 0.3f);
-        }
-        spriteBatch.draw(button, (Gdx.graphics.getWidth() / 2) - (button.getWidth() / 2), Gdx.graphics.getHeight() - button.getHeight() - 100);
-        spriteBatch.setColor(c.r, c.g, c.b, 1f);
-
+//
+//        Color c = spriteBatch.getColor();
+//
+//        if(!wifiDirect.isConnected()){
+//            spriteBatch.setColor(c.r, c.g, c.b, 0.3f);
+//        }
+//        spriteBatch.draw(button, (Gdx.graphics.getWidth() / 2) - (button.getWidth() / 2), Gdx.graphics.getHeight() - button.getHeight() - 100);
+//        spriteBatch.setColor(c.r, c.g, c.b, 1f);
+//
 
         spriteBatch.end();
 
@@ -150,36 +159,28 @@ import java.util.Set;
 
             }
 
-            float x21 = (Gdx.graphics.getWidth() / 2) - (button.getWidth() / 2);
-            float x22 = (Gdx.graphics.getWidth() / 2) + (button.getWidth() / 2);
-            float y21 = Gdx.graphics.getHeight() - button.getHeight() - 100;
-            float y22 = Gdx.graphics.getHeight() + button.getHeight() - 100;
-
-            if (x > x21 && x < x22 && y > y21 && y < y22 && wifiDirect.isConnected()) {
-//                if(wifiDirect.isServer()){
-//                    MultiplayerServer multiplayer= new MultiplayerServer(game,
+//            float x21 = (Gdx.graphics.getWidth() / 2) - (button.getWidth() / 2);
+//            float x22 = (Gdx.graphics.getWidth() / 2) + (button.getWidth() / 2);
+//            float y21 = Gdx.graphics.getHeight() - button.getHeight() - 100;
+//            float y22 = Gdx.graphics.getHeight() + button.getHeight() - 100;
+//
+//            if (x > x21 && x < x22 && y > y21 && y < y22 && wifiDirect.isConnected()) {
+//
+//                    MultiplayerClient multiplayer= new MultiplayerClient(game,
 //                            stateManager, (float)game.getWidth(), (float)game.getHeight(), peerHelperInterface, wifiDirect);
 //                    //howToPlayState.changeConnected();
 //                    stateManager.push(multiplayer);
-//                } else {
-                    MultiplayerClient multiplayer= new MultiplayerClient(game,
-                            stateManager, (float)game.getWidth(), (float)game.getHeight(), peerHelperInterface, wifiDirect);
-                    //howToPlayState.changeConnected();
-                    stateManager.push(multiplayer);
-                game.getInput().setGameState((GameState) multiplayer);
-//                }
-            }
+//                game.getInput().setGameState((GameState) multiplayer);
+////                }
+//            }
         }
     }
 
-    public void setupPeerList(Set<String> peers) {
+    public void setupPeerNames(Set<String> peers) {
+        stage.clear();
 
-        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("coves_light.otf"));
-        FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
-        parameter.size = 80;
-        BitmapFont font = generator.generateFont(parameter); // font size 12 pixels
-        generator.dispose();
-        Iterator<String> peerIterator = peers.iterator();
+        this.peers = peers;
+        Iterator<String> peerIterator = this.peers.iterator();
 
         for(int i = 0; i < peers.size(); i++){
 
@@ -197,6 +198,10 @@ import java.util.Set;
                     String gameName = ((TextButton)actor).getText().toString();
                     System.out.println(gameName+" button Pressed");
                     wifiDirect.connectToDevice("AP:"+gameName);
+
+                    HowToPlayState howToPlayState = new HowToPlayState(game, stateManager,
+                            wifiDirect, true, peerHelperInterface);
+                    stateManager.push(howToPlayState);
                 }
             });
         }

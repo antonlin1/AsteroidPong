@@ -31,14 +31,14 @@ public class MyGdxGame extends ApplicationAdapter implements InputProcessor {
 	private OrthographicCamera camera;
 
 	private BlinkingStars blinkingStars;
-	private AccelerometerInputInterface accelerometerInput;
 
+	private AccelerometerInputInterface accelerometerInput;
 	private InputController input;
 
 	private PeerHelperInterface peerHelper;
+
 	private WifiDirectInterface wifiDirect;
 	private SpeechHelperInterface speechHelper;
-
 	private InputMultiplexer inputMultiplexer;
 
 	//private Texture planet1;
@@ -90,7 +90,6 @@ public class MyGdxGame extends ApplicationAdapter implements InputProcessor {
 		//planet2 = new Texture("planet2.png");
 	}
 
-
 	@Override
 	public void render() {
 		Gdx.gl.glClearColor(0.075f, 0.059f, 0.188f, 1);
@@ -120,16 +119,17 @@ public class MyGdxGame extends ApplicationAdapter implements InputProcessor {
 
 	}
 
+
 	@Override
 	public boolean keyDown(int keycode) {
 		return false;
 	}
 
-
 	@Override
 	public boolean keyUp(int keycode) {
 		return false;
 	}
+
 
 	@Override
 	public boolean keyTyped(char character) {
@@ -142,7 +142,6 @@ public class MyGdxGame extends ApplicationAdapter implements InputProcessor {
 		return false;
 	}
 
-
 	@Override
 	public boolean touchDragged(int screenX, int screenY, int pointer) {
 		//	input.movePaddleToAbsPos(screenX);
@@ -154,6 +153,7 @@ public class MyGdxGame extends ApplicationAdapter implements InputProcessor {
 
 		return false;
 	}
+
 
 	@Override
 	public boolean mouseMoved(int screenX, int screenY) {
@@ -178,10 +178,10 @@ public class MyGdxGame extends ApplicationAdapter implements InputProcessor {
 		return Gdx.graphics.getWidth();
 	}
 
-
 	public double getHeight() {
 		return Gdx.graphics.getHeight();
 	}
+
 
 	public InputMultiplexer getInputMultiplexer() {
 		return inputMultiplexer;
@@ -189,5 +189,9 @@ public class MyGdxGame extends ApplicationAdapter implements InputProcessor {
 
 	public SpeechHelperInterface getSpeechHelper() {
 		return speechHelper;
+	}
+
+	public StateManager getStateManager() {
+		return stateManager;
 	}
 }

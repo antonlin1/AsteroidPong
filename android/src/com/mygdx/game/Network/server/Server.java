@@ -23,7 +23,7 @@ public class Server extends Thread implements NetworkComponentInterface {
 		private ServerSocket serverSocket;
 		private Socket clientSocket;
 		private MessageHolder messageHolder;
-		private ClientToServerMessage clientToServerMessage = new ClientToServerMessage(0.0f, 0.0f);
+		private ClientToServerMessage clientToServerMessage = new ClientToServerMessage(false,false,0.0f, 0.0f);
 		private static boolean IS_CONNECTION_OPEN = false;
 
 		//private GameState gameState;
@@ -113,16 +113,16 @@ public class Server extends Thread implements NetworkComponentInterface {
 		}
 
 		@Override
-		public void setClientToServerData(float paddleX, float paddleY) {
+		public void setClientToServerData(boolean gameActive, boolean gamePaused, float paddleX, float paddleY) {
 				//Do nothing
 		}
 
 		@Override
-		public void setServerToClientData(boolean gameActive, boolean paddleCollision, boolean wallCollision, float paddleX, float paddleY,
+		public void setServerToClientData(boolean gameActive, boolean gamePaused,boolean paddleCollision, boolean wallCollision, float paddleX, float paddleY,
 										  float ballX, float ballY, float ballXVelocity, float ballYVelocity, float ballVelocity,
-										  double screenWidth, double screenHeight) {
-				ServerToClientMessage serverToClientMessage = new ServerToClientMessage(gameActive, paddleCollision,
-						wallCollision, paddleX,paddleY, ballX, ballY, ballXVelocity, ballYVelocity, ballVelocity, screenWidth, screenHeight);
+										  double screenWidth, double screenHeight, int hpUp, int hpDown) {
+				ServerToClientMessage serverToClientMessage = new ServerToClientMessage(gameActive, gamePaused,paddleCollision,
+						wallCollision, paddleX,paddleY, ballX, ballY, ballXVelocity, ballYVelocity, ballVelocity, screenWidth, screenHeight, hpUp, hpDown);
 				messageHolder.deposit(serverToClientMessage.toString());
 //        ClientToServerMessage clientMessage = new ClientToServerMessage(data);
 //        gameState.setPaddle2(clientMessage.getPaddleX());

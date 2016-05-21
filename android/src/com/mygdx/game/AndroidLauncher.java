@@ -100,6 +100,8 @@ public class AndroidLauncher extends ListenerActivity implements SensorEventList
         game = new MyGdxGame(accelerationConverter, peerHelper, mReceiver, this);
         initialize(game, config);
 
+        mReceiver.setGame(game);
+
         System.out.println("DEVICE MAC: " + getMacAddress(this));
         mReceiver.resetNetwork();
 

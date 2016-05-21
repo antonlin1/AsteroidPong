@@ -233,17 +233,17 @@ public class Client extends Thread implements NetworkComponentInterface {
 		}
 
 		@Override
-		public void setClientToServerData(float paddleX, float paddleY) {
-				ClientToServerMessage message = new ClientToServerMessage(paddleX, paddleY);
+		public void setClientToServerData(boolean gameActive, boolean gamePaused, float paddleX, float paddleY) {
+				ClientToServerMessage message = new ClientToServerMessage(gameActive, gamePaused, paddleX, paddleY);
 				messageHolder.deposit(message.toString());
 		}
 
 		@Override
-		public void setServerToClientData(boolean gameActive, boolean paddleCollision,
+		public void setServerToClientData(boolean gameActive, boolean gamePaused,boolean paddleCollision,
 										  boolean wallCollision, float paddleX, float paddleY,
 										  float ballX, float ballY, float ballXVelocity,
 										  float ballYVelocity, float ballVelocity,
-										  double screenWidth, double screenHeight) {
+										  double screenWidth, double screenHeight, int hpUp, int hpDown) {
 
 		}
 

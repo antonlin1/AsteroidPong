@@ -5,20 +5,21 @@ package com.mygdx.game.model;
  */
 public class ClientToServerMessage {
 
-		private boolean isActive;
-		private boolean isPaused;
-		// Client device's x position
-		private float paddleX;
-		private float paddleY;
+		private boolean gameActive;
 
-		public ClientToServerMessage(boolean isActive, boolean isPaused,float paddleX, float paddleY) {
-				this.isActive = isActive;
-				this.isPaused = isPaused;
+	private boolean gamePaused;
+
+	// Client device's x position
+		private float paddleX;
+	private float paddleY;
+		public ClientToServerMessage(boolean gameActive, boolean gamePaused, float paddleX, float paddleY) {
+				this.gameActive = gameActive;
+				this.gamePaused = gamePaused;
 				this.paddleX = paddleX;
 				this.paddleY = paddleY;
 		}
 
-		public static final ClientToServerMessage DEFAULT_MESSAGE = new ClientToServerMessage(0f, 0f);
+		public static final ClientToServerMessage DEFAULT_MESSAGE = new ClientToServerMessage(false, false,0f, 0f);
 
 		public ClientToServerMessage(String data) {
 				parse(data);
@@ -32,16 +33,29 @@ public class ClientToServerMessage {
 				return paddleY;
 		}
 
-
 		public String toString() {
-				return paddleX + ":" + paddleY;
+
+			StringBuilder returnString = new StringBuilder("");
+
+			returnString.append((gameActive) ? "1" : "0");
+			returnString.append(":");
+			returnString.append((gamePaused) ? "1" : "0");
+			returnString.append(":");
+			returnString.append(paddleX);
+			returnString.append(":");
+			returnString.append(paddleY);
+
+			System.out.print(returnString.toString());
+
+			return returnString.toString();
 		}
+
 
 		private void parse(String data) {
 				if(data != null) {
 						String[] attributes = data.split(":");
-						isActive = Boolean.parseBoolean(attributes[0]);
-						isPaused = Boolean.parseBoolean(attributes[1]);
+						gameActive = (Integer.parseInt(attributes[0]) == 1);
+						gamePaused = (Integer.parseInt(attributes[1]) == 1);
 						paddleX = Float.parseFloat(attributes[2]);
 						paddleY = Float.parseFloat(attributes[3]);
 				}
@@ -50,4 +64,12 @@ public class ClientToServerMessage {
 		public void setMessage(String data) {
 				parse(data);
 		}
+
+	public boolean isGamePaused() {
+		return gamePaused;
+	}
+
+	public boolean isGameActive() {
+		return gameActive;
+	}
 }

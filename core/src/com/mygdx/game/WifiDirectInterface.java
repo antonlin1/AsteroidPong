@@ -10,7 +10,7 @@ public interface WifiDirectInterface {
 
     NetworkComponentInterface getNetworkComponent();
 
-    boolean isServer();
+    boolean isClient();
 
     boolean isConnected();
 
