@@ -5,11 +5,15 @@ package com.mygdx.game.model;
  */
 public class ClientToServerMessage {
 
+		private boolean isActive;
+		private boolean isPaused;
 		// Client device's x position
 		private float paddleX;
 		private float paddleY;
 
-		public ClientToServerMessage(float paddleX, float paddleY) {
+		public ClientToServerMessage(boolean isActive, boolean isPaused,float paddleX, float paddleY) {
+				this.isActive = isActive;
+				this.isPaused = isPaused;
 				this.paddleX = paddleX;
 				this.paddleY = paddleY;
 		}
@@ -34,8 +38,10 @@ public class ClientToServerMessage {
 		private void parse(String data) {
 				if(data != null) {
 						String[] attributes = data.split(":");
-						paddleX = Float.parseFloat(attributes[0]);
-						paddleY = Float.parseFloat(attributes[1]);
+						isActive = Boolean.parseBoolean(attributes[0]);
+						isPaused = Boolean.parseBoolean(attributes[1]);
+						paddleX = Float.parseFloat(attributes[2]);
+						paddleY = Float.parseFloat(attributes[3]);
 				}
 		}
 

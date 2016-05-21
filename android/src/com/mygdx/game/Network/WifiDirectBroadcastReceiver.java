@@ -49,7 +49,9 @@ public class WifiDirectBroadcastReceiver extends BroadcastReceiver implements Wi
 	// Client or server
 	private NetworkComponentInterface networkComponent;
 
-	public WifiDirectBroadcastReceiver(WifiP2pManager manager, WifiP2pManager.Channel channel, final PeerHelper peerHelper) {
+	public WifiDirectBroadcastReceiver(WifiP2pManager manager,
+									   WifiP2pManager.Channel channel,
+									   final PeerHelper peerHelper) {
 		super();
 		this.mManager = manager;
 		this.mChannel = channel;
