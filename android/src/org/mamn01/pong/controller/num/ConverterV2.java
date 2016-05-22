@@ -4,6 +4,8 @@ import com.badlogic.gdx.Gdx;
 import com.mygdx.game.AccelerometerInputInterface;
 import com.mygdx.game.Controller.InputController;
 import com.mygdx.game.view.MyGdxGame;
+import com.mygdx.game.view.States.Multiplayer;
+import com.mygdx.game.view.States.StateManager;
 
 /**
  * Created by hampusballdin on 2016-04-12.
@@ -43,7 +45,23 @@ public class ConverterV2 implements AccelerometerInputInterface {
 
 				InputController controller = game.getInput();
 
-				if (controller != null && game.getStateManager().getActiveState().isActive()) {
+				StateManager stateManager = game.getStateManager();
+				boolean isPaused = false;
+				if(stateManager != null) {
+						if(stateManager.getActiveState() instanceof Multiplayer) {
+								System.out.println("Is Multiplayer");
+								Multiplayer multiplayer = (Multiplayer)stateManager.getActiveState();
+								isPaused = multiplayer.isPaused();
+						}else {
+								isPaused = false;
+						}
+				}else {
+						isPaused = true;
+				}
+
+				System.out.println("IsPaused: " + isPaused);
+
+				if (controller != null && !isPaused){ //&& game.getStateManager().getActiveState().isActive()) {
 						position.onVelocityUpdate(dt);
 						double currentPos = getNormalizedPosition(null); //% controller.getRightBoundary();
 
