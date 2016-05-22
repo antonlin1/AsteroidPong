@@ -54,7 +54,7 @@ public class MultiplayerServer extends Multiplayer {
 		}
 //		if(isActive()&& clientMessage.isGameActive()) {
 
-			if(countDownDone) {
+			if(countDownDone && isActive() && clientMessage.isGameActive()) {
 				wallCollision = PhysicsHelper.wallCollision(width, height, balls);
 				paddleCollision = PhysicsHelper.paddleCollision(getPaddles(), balls);
 				isDead = PhysicsHelper.isDead(width, height, balls);

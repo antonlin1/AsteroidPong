@@ -82,7 +82,6 @@ public class MultiplayerClient extends Multiplayer {
 				if(countDownDone && state.isGameActive() && isActive()) {
 					clientRegularUpdate(ball);
 				}
-
 		}
 
 		isDeadDown = PhysicsHelper.isDeadDown(width, height, balls);
