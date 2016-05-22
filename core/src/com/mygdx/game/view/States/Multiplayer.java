@@ -54,6 +54,8 @@ public abstract class Multiplayer extends GameState {
 						countDownDone = true;
 					}
 				prevCount = (int) deltaTime;
+			} else {
+				stage.clear();
 			}
 		}
 

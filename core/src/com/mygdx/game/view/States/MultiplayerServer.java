@@ -46,8 +46,14 @@ public class MultiplayerServer extends Multiplayer {
 		double w = Gdx.graphics.getWidth();
 		double h = Gdx.graphics.getHeight();
 		ClientToServerMessage clientMessage = wifiDirect.getNetworkComponent().getClientData();
-		if(isActive()&& clientMessage.isGameActive()) {
+
+		if((isActive()&& clientMessage.isGameActive())) {
 			countDown();
+		} else {
+			drawWaitingForOtherPlayer();
+		}
+//		if(isActive()&& clientMessage.isGameActive()) {
+
 			if(countDownDone) {
 				wallCollision = PhysicsHelper.wallCollision(width, height, balls);
 				paddleCollision = PhysicsHelper.paddleCollision(getPaddles(), balls);
@@ -62,16 +68,16 @@ public class MultiplayerServer extends Multiplayer {
 				handleTouchInput();
 				handleSpeechInput();
 
-				isDeadDown = PhysicsHelper.isDeadDown(width, height, balls);
-				isDeadUp = PhysicsHelper.isDeadUp(width, height, balls);
-
-				if(handlePlanetHit(isDead, isDeadUp, isDeadDown)) {
-					resetCountDown();
-				}
 			}
-		} else {
-			drawWaitingForOtherPlayer();
+		isDeadDown = PhysicsHelper.isDeadDown(width, height, balls);
+		isDeadUp = PhysicsHelper.isDeadUp(width, height, balls);
+
+		if(handlePlanetHit(isDead, isDeadUp, isDeadDown)) {
+			resetCountDown();
 		}
+//		} else {
+//			drawWaitingForOtherPlayer();
+//		}
 
 		wifiDirect.getNetworkComponent().setServerToClientData(this.isActive(), this.isPaused,
 				paddleCollision, wallCollision, (float) (paddle1.getX() / w),

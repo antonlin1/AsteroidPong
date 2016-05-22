@@ -73,7 +73,8 @@ public class Ball {
 				float y = minY + (maxY - minY) * (float) Math.random();
 
 				setX(x);
-				setY(y);
+//				setY(y);
+				setY(height/2);
 				randomizeVelocity();
 		}
 

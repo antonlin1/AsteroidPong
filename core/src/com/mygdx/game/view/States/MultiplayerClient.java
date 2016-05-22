@@ -79,7 +79,7 @@ public class MultiplayerClient extends Multiplayer {
 				}
 
 		} else {
-				if(countDownDone) {
+				if(countDownDone && state.isGameActive() && isActive()) {
 					clientRegularUpdate(ball);
 				}
 

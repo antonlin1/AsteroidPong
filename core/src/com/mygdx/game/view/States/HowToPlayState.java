@@ -139,7 +139,7 @@ public class HowToPlayState extends com.mygdx.game.view.States.State {
 						stateManager.push(multiplayer);
 						game.getInput().setGameState((GameState) multiplayer);
 					}
-				}else {
+				} else {
 					System.out.println("Start Game pressed");
 					//stateManager.push();
 					State state = stateManager.set(StateManager.STATE_NAME.SINGLEPLAYER_STATE);
