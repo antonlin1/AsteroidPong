@@ -43,7 +43,7 @@ public class ConverterV2 implements AccelerometerInputInterface {
 
 				InputController controller = game.getInput();
 
-				if (controller != null) {
+				if (controller != null && game.getStateManager().getActiveState().isActive()) {
 						position.onVelocityUpdate(dt);
 						double currentPos = getNormalizedPosition(null); //% controller.getRightBoundary();
 
