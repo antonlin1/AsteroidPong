@@ -29,10 +29,9 @@ import java.util.Set;
  */
     public class FindGameState extends State {
 
-    private Texture cancel;
     private Texture[] circles;
     private Texture text;
-//    private Texture button;
+    private Texture button;
     private long time1, time2, time3;
     private Stage stage;
     private BitmapFont font;
@@ -42,7 +41,7 @@ import java.util.Set;
     public FindGameState(MyGdxGame game, StateManager stateManager,
 						 WifiDirectInterface wifiDirect, PeerHelperInterface peerHelperInterface) {
        super(game, stateManager, StateManager.STATE_NAME.FIND_GAME_STATE, wifiDirect, peerHelperInterface);
-       cancel = new Texture("cancel2.png");
+
 
         circles = new Texture[7];
         circles[0] = new Texture("s1.png");
@@ -54,7 +53,7 @@ import java.util.Set;
         circles[6] = new Texture("s7.png");
 
         text = new Texture("selecttext.png");
-//        button = new Texture("buttonREF.png");
+        button = new Texture("buttonBA.png");
 
         time1 = TimeUtils.millis();
         time2 = TimeUtils.millis() + 420;
@@ -88,7 +87,7 @@ import java.util.Set;
     public void render(SpriteBatch spriteBatch, ShapeRenderer shapeRenderer) {
 
         spriteBatch.begin();
-        spriteBatch.draw(cancel, Gdx.graphics.getWidth() - cancel.getWidth() - 20, 20);
+        spriteBatch.draw(button, (Gdx.graphics.getWidth() / 2) - (button.getWidth() / 2), Gdx.graphics.getHeight() - 300 + 20);
 
         spriteBatch.draw(text, (Gdx.graphics.getWidth() / 2) - (text.getWidth() / 2),
 				(Gdx.graphics.getHeight() / 2) - text.getHeight() - 500);
@@ -148,16 +147,18 @@ import java.util.Set;
             float x = Gdx.input.getX();
             float y = Gdx.input.getY();
 
-            float x1 = Gdx.graphics.getWidth() - cancel.getWidth() - 20;
-            float x2 = Gdx.graphics.getWidth() + cancel.getWidth() - 20;
-            float y1 = 20;
-            float y2 = cancel.getHeight() + 20;
+            float x21 = (Gdx.graphics.getWidth() / 2) - (button.getWidth() / 2);
+            float x22 = (Gdx.graphics.getWidth() / 2) + (button.getWidth() / 2);
 
-            if (x > x1 && x < x2 && y > y1 && y < y2) {
-                System.out.println("Exit pressed");
+            float y11 = Gdx.graphics.getHeight()  - 300 + 20;
+            float y12 = Gdx.graphics.getHeight()  - 300 + (20 + button.getHeight()) ;
+
+            if (x > x21 && x < x22 && y > y11 && y < y12) {
+                System.out.println("Back pressed");
                 stateManager.pop();
 
             }
+
 
 //            float x21 = (Gdx.graphics.getWidth() / 2) - (button.getWidth() / 2);
 //            float x22 = (Gdx.graphics.getWidth() / 2) + (button.getWidth() / 2);
@@ -197,7 +198,7 @@ import java.util.Set;
                 public void changed (ChangeEvent event, Actor actor) {
                     String gameName = ((TextButton)actor).getText().toString();
                     System.out.println(gameName+" button Pressed");
-                    wifiDirect.connectToDevice("AP:"+gameName);
+                    wifiDirect.connectToDevice("AP:" + gameName);
 
                     HowToPlayState howToPlayState = new HowToPlayState(game, stateManager,
                             wifiDirect, true, peerHelperInterface);
