@@ -175,13 +175,13 @@ public class AndroidLauncher extends ListenerActivity implements SensorEventList
                     || c.contains("stat") || c.contains("starta") || c.contains("stark")
                     || c.contains("stars")) {
                 c = "";
-                pause = false;
+//                pause = false;
 
             } else if (c.contains("stop") || c.contains("pause") || c.contains("paws")
                     || c.contains("stock") || c.contains("stopp") || c.contains("stahp")
                     || c.contains("pass") || c.contains("fass") || c.contains("paus")) {
                 c = "";
-                pause = true;
+//                pause = true;
             }
         }
         restartListeningService();

@@ -6,6 +6,7 @@ import com.mygdx.game.Network.WifiDirectBroadcastReceiver;
 import com.mygdx.game.NetworkComponentInterface;
 import com.mygdx.game.model.ClientToServerMessage;
 import com.mygdx.game.model.ServerToClientMessage;
+import com.mygdx.game.view.States.GameState;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -239,11 +240,11 @@ public class Client extends Thread implements NetworkComponentInterface {
 		}
 
 		@Override
-		public void setServerToClientData(boolean gameActive, boolean gamePaused,boolean paddleCollision,
+		public void setServerToClientData(boolean gameActive, boolean gamePaused, boolean paddleCollision,
 										  boolean wallCollision, float paddleX, float paddleY,
 										  float ballX, float ballY, float ballXVelocity,
 										  float ballYVelocity, float ballVelocity,
-										  double screenWidth, double screenHeight, int hpUp, int hpDown) {
+										  double screenWidth, double screenHeight, int hpUp, int hpDown, GameState.GameOverEvent gameOverEvent) {
 
 		}
 

@@ -49,7 +49,6 @@ public class ConverterV2 implements AccelerometerInputInterface {
 				boolean isPaused = false;
 				if(stateManager != null) {
 						if(stateManager.getActiveState() instanceof Multiplayer) {
-								System.out.println("Is Multiplayer");
 								Multiplayer multiplayer = (Multiplayer)stateManager.getActiveState();
 								isPaused = multiplayer.isPaused();
 						}else {
@@ -58,8 +57,6 @@ public class ConverterV2 implements AccelerometerInputInterface {
 				}else {
 						isPaused = true;
 				}
-
-				System.out.println("IsPaused: " + isPaused);
 
 				if (controller != null && !isPaused){ //&& game.getStateManager().getActiveState().isActive()) {
 						position.onVelocityUpdate(dt);

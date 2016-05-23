@@ -34,7 +34,7 @@ public class ServerToClientMessage {
 
 	private int hpClient, hpServer;
 
-//	private GameState.GameOverEvent gameOverEvent;
+	private GameState.GameOverEvent gameOverEvent;
 
 	public ServerToClientMessage() {
 		this.gameActive = false;
@@ -56,7 +56,7 @@ public class ServerToClientMessage {
 	public ServerToClientMessage(boolean gameActive, boolean gamePaused, boolean paddleCollision, boolean wallCollision,
 								 float paddleX, float paddleY, float ballX, float ballY,
 								 float ballXVelocity, float ballYVelocity, float ballVelocity,
-								 double screenWidth, double screenHeight, int hpClient, int hpServer/*, GameState.GameOverEvent gameOverEvent*/) {
+								 double screenWidth, double screenHeight, int hpClient, int hpServer, GameState.GameOverEvent gameOverEvent) {
 		this.gameActive = gameActive;
 		this.gamePaused = gamePaused;
 		this.paddleCollision = paddleCollision;
@@ -74,11 +74,11 @@ public class ServerToClientMessage {
 		this.screenHeight = screenHeight;
 		this.hpClient = hpClient;
 		this.hpServer = hpServer;
-//		this.gameOverEvent = gameOverEvent;
+		this.gameOverEvent = gameOverEvent;
 	}
 
 	public static final ServerToClientMessage DEFAULT_MESSAGE = new ServerToClientMessage(
-			false, false ,false, false, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0.0, 0.0, 4, 4/*, GameState.GameOverEvent.NOT_OVER*/
+			false, false ,false, false, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0.0, 0.0, 4, 4, GameState.GameOverEvent.NOT_OVER
 	);
 
 	public ServerToClientMessage(String data) {
@@ -172,8 +172,8 @@ public class ServerToClientMessage {
 		returnString.append(hpClient);
 		returnString.append(":");
 		returnString.append(hpServer);
-//		returnString.append(":");
-//		returnString.append(gameOverEvent.value);
+		returnString.append(":");
+		returnString.append(gameOverEvent.value);
 
 		System.out.print(returnString.toString());
 
@@ -205,13 +205,13 @@ public class ServerToClientMessage {
 			screenHeight = Double.parseDouble(attributes[13]);
 			hpClient = Integer.parseInt(attributes[14]);
 			hpServer = Integer.parseInt(attributes[15]);
-//			if(Integer.parseInt(attributes[16]) == 0){
-//				gameOverEvent = GameState.GameOverEvent.NOT_OVER;
-//			} else if(Integer.parseInt(attributes[16]) == 1) {
-//				gameOverEvent = GameState.GameOverEvent.CLIENT_WON;
-//			} else if (Integer.parseInt(attributes[16]) == 2) {
-//				gameOverEvent = GameState.GameOverEvent.SERVER_WON;
-//			}
+			if(Integer.parseInt(attributes[16]) == 0){
+				gameOverEvent = GameState.GameOverEvent.NOT_OVER;
+			} else if(Integer.parseInt(attributes[16]) == 1) {
+				gameOverEvent = GameState.GameOverEvent.SERVER_WON;
+			} else if (Integer.parseInt(attributes[16]) == 2) {
+				gameOverEvent = GameState.GameOverEvent.CLIENT_WON;
+			}
 
 
 		} catch (Exception e) {
@@ -233,5 +233,9 @@ public class ServerToClientMessage {
 
 	public boolean isGamePaused() {
 		return gamePaused;
+	}
+
+	public GameState.GameOverEvent getGameOverEvent() {
+		return gameOverEvent;
 	}
 }

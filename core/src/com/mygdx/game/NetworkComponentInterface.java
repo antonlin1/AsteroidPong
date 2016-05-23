@@ -12,7 +12,7 @@ public interface NetworkComponentInterface {
 		public void setClientToServerData(boolean gameActive, boolean gamePaused, float paddleX, float paddleY);
 
 		public void setServerToClientData(boolean gameActive , boolean gamePaused, boolean paddleCollision, boolean wallCollision, float paddleX, float paddleY, float ballX, float ballY,
-										  float ballXVelocity, float ballYVelocity, float ballVelocity, double screenWidth, double screenHeight, int hpUp, int hpDown/*, GameState.GameOverEvent gameOverEvent*/);
+										  float ballXVelocity, float ballYVelocity, float ballVelocity, double screenWidth, double screenHeight, int hpUp, int hpDown, GameState.GameOverEvent gameOverEvent);
 
 		// Get data received from other peer to update gamestate
 		public String getData();

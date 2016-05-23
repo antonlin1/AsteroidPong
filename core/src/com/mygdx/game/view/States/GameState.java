@@ -48,9 +48,7 @@ public abstract class GameState
 	protected Player playerUp;
 	protected Player playerDown;
 
-//	protected GameOverEvent gameOverEvent;
-
-
+	protected GameOverEvent gameOverEvent = GameOverEvent.NOT_OVER;
 
 	/**
 	 * Created by antonlin on 16-04-11.
@@ -66,14 +64,14 @@ public abstract class GameState
 
 	}
 
-//	public enum GameOverEvent {
-//		NOT_OVER(0), SERVER_WON(1), CLIENT_WON(2);
-//
-//		public int value;
-//		GameOverEvent(int value) {
-//			this.value = value;
-//		}
-//	}
+	public enum GameOverEvent {
+		NOT_OVER(0), SERVER_WON(1), CLIENT_WON(2);
+
+		public int value;
+		GameOverEvent(int value) {
+			this.value = value;
+		}
+	}
 
 	public GameState(MyGdxGame game, StateManager stateManager, float width, float height,
 					 PeerHelperInterface peerHelper, WifiDirectInterface wifiDirect,
@@ -251,7 +249,7 @@ public abstract class GameState
 		isPaused = false;
 	}
 
-	public void resetGameState() {
+	public void resetPlayerHp() {
 		playerUp.resetPlayer();
 		playerDown.resetPlayer();
 	}
@@ -262,7 +260,7 @@ public abstract class GameState
 			playerDown.decreaseHp();
 			if(playerDown.isDead()) {
 				Gdx.input.vibrate(1000);
-				resetGameState();
+				resetPlayerHp();
 				stateManager.push(new GameOverState(game, stateManager, wifiDirect, peerHelperInterface, false));
 				return true;
 			}
@@ -272,7 +270,7 @@ public abstract class GameState
 			playerUp.decreaseHp();
 
 			if(playerUp.isDead()) {
-				resetGameState();
+				resetPlayerHp();
 				stateManager.push(new GameOverState(game, stateManager, wifiDirect, peerHelperInterface, true));
 				return true;
 			}

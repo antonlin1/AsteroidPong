@@ -5,9 +5,8 @@ package com.mygdx.game.model;
  */
 public class ClientToServerMessage {
 
-		private boolean gameActive;
-
-	private boolean gamePaused;
+	private boolean gameActive = false;
+	private boolean gamePaused = false;
 
 	// Client device's x position
 		private float paddleX;

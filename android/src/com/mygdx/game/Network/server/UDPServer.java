@@ -5,6 +5,7 @@ import com.mygdx.game.Network.MessageHolder;
 import com.mygdx.game.NetworkComponentInterface;
 import com.mygdx.game.model.ClientToServerMessage;
 import com.mygdx.game.model.ServerToClientMessage;
+import com.mygdx.game.view.States.GameState;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -121,6 +122,7 @@ public class UDPServer extends Thread implements NetworkComponentInterface {
 										synchronized (clientAddressLock) {
 												if (clientAddress == null) {
 														clientAddress = dp.getAddress();
+														System.out.println("GOT ADDRESS!");
 														clientAddressLock.notifyAll();
 												}
 										}
@@ -147,15 +149,15 @@ public class UDPServer extends Thread implements NetworkComponentInterface {
 
 		@Override
 		public void setServerToClientData(boolean gameActive, boolean gamePaused, boolean paddleCollision,
-										  boolean wallCollision, float paddleX,float paddleY,
+										  boolean wallCollision, float paddleX, float paddleY,
 										  float ballX, float ballY, float ballXVelocity,
 										  float ballYVelocity, float ballVelocity,
-										  double screenWidth, double screenHeight, int hpUp, int hpDown) {
+										  double screenWidth, double screenHeight, int hpUp, int hpDown, GameState.GameOverEvent gameOverEvent) {
 
 				ServerToClientMessage serverToClientMessage =
 						new ServerToClientMessage(gameActive, gamePaused,paddleCollision, wallCollision,
 								paddleX,paddleY, ballX, ballY, ballXVelocity,
-						ballYVelocity, ballVelocity, screenWidth, screenHeight, hpUp, hpDown);
+						ballYVelocity, ballVelocity, screenWidth, screenHeight, hpUp, hpDown, gameOverEvent);
 
 				messageHolder.deposit(serverToClientMessage.toString());
 		}

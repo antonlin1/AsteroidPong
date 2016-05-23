@@ -5,6 +5,7 @@ import com.mygdx.game.Network.MessageHolder;
 import com.mygdx.game.NetworkComponentInterface;
 import com.mygdx.game.model.ClientToServerMessage;
 import com.mygdx.game.model.ServerToClientMessage;
+import com.mygdx.game.view.States.GameState;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -66,7 +67,7 @@ public class Server extends Thread implements NetworkComponentInterface {
 
 								//Message from either self or other phone
 								String message = messageHolder.withdraw();
-								System.out.println("Server sending: " + message);
+//								System.out.println("Server sending: " + message);
 
 								//viewModifier.setTextView(concatenatedString);
 								bw.write(message + "\n"); // Line feed ...
@@ -118,11 +119,11 @@ public class Server extends Thread implements NetworkComponentInterface {
 		}
 
 		@Override
-		public void setServerToClientData(boolean gameActive, boolean gamePaused,boolean paddleCollision, boolean wallCollision, float paddleX, float paddleY,
+		public void setServerToClientData(boolean gameActive, boolean gamePaused, boolean paddleCollision, boolean wallCollision, float paddleX, float paddleY,
 										  float ballX, float ballY, float ballXVelocity, float ballYVelocity, float ballVelocity,
-										  double screenWidth, double screenHeight, int hpUp, int hpDown) {
+										  double screenWidth, double screenHeight, int hpUp, int hpDown, GameState.GameOverEvent gameOverEvent) {
 				ServerToClientMessage serverToClientMessage = new ServerToClientMessage(gameActive, gamePaused,paddleCollision,
-						wallCollision, paddleX,paddleY, ballX, ballY, ballXVelocity, ballYVelocity, ballVelocity, screenWidth, screenHeight, hpUp, hpDown);
+						wallCollision, paddleX,paddleY, ballX, ballY, ballXVelocity, ballYVelocity, ballVelocity, screenWidth, screenHeight, hpUp, hpDown, gameOverEvent);
 				messageHolder.deposit(serverToClientMessage.toString());
 //        ClientToServerMessage clientMessage = new ClientToServerMessage(data);
 //        gameState.setPaddle2(clientMessage.getPaddleX());

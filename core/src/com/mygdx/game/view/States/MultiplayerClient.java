@@ -50,7 +50,7 @@ public class MultiplayerClient extends Multiplayer {
 				double w = Gdx.graphics.getWidth();
 				double h = Gdx.graphics.getHeight();
 				ServerToClientMessage state = wifiDirect.getNetworkComponent().getServerData();
-				otherActive = state.isGameActive();
+
 
 				if (otherActive && isActive()) {
 						countDown();
@@ -59,7 +59,9 @@ public class MultiplayerClient extends Multiplayer {
 				}
 
 				if (wifiDirect.getNetworkComponent().isClientUpdated()) {
+						otherActive = state.isGameActive();
 						System.out.println("CLIENT UUUUUPDATE");
+						gameOverEvent = state.getGameOverEvent();
 						if (countDownDone && otherActive && isActive()) {
 								long currentNanoTime = state.getNanoTime();
 								playerUp.setHp(state.getHpServer());
@@ -87,12 +89,16 @@ public class MultiplayerClient extends Multiplayer {
 						}
 				}
 
-				isDeadDown = PhysicsHelper.isDeadDown(width, height, balls);
-				isDeadUp = PhysicsHelper.isDeadUp(width, height, balls);
-				if (handlePlanetHit(isDead, isDeadUp, isDeadDown)) {
+				if (gameOverEvent.value != GameOverEvent.NOT_OVER.value && countDownDone) {
 						resetCountDown();
+						resetPlayerHp();
+					if(gameOverEvent.value == GameOverEvent.SERVER_WON.value) {
+						Gdx.input.vibrate(1000);
+					}
+					otherActive = false;
+						stateManager.push(new GameOverState(game, stateManager, wifiDirect, peerHelperInterface,
+								(gameOverEvent.value == GameOverEvent.CLIENT_WON.value)));
 				}
-
 
 				wifiDirect.getNetworkComponent().setClientToServerData(this.isActive(), this.isPaused,
 						(float) (paddle1.getX() / w), (float) (paddle1.getY() / h));
@@ -109,6 +115,8 @@ public class MultiplayerClient extends Multiplayer {
 		@Override
 		public void render(SpriteBatch spriteBatch, ShapeRenderer shapeRenderer) {
 				super.render(spriteBatch, shapeRenderer);
+
+			System.out.println("MULTIPLAYER CLIENT RENDER!!!");
 				spriteBatch.begin();
 				spriteBatch.draw(planetDown[playerDown.getHp() - 1], 0, Gdx.graphics.getHeight() - planetDown[playerDown.getHp() - 1].getHeight());
 				spriteBatch.draw(planetUp[playerUp.getHp() - 1], 0, 0);

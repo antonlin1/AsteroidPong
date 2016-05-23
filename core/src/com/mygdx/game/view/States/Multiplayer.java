@@ -50,7 +50,7 @@ public abstract class Multiplayer extends GameState {
 										drawCountDown();
 								}
 						} else {
-								countDownButton.remove();
+								stage.clear();
 								countDownDone = true;
 						}
 						prevCount = (int) deltaTime;
