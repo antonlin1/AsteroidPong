@@ -275,6 +275,6 @@ public abstract class GameState
 				return true;
 			}
 		}
-		return  false;
+		return false;
 	}
 }

@@ -10,6 +10,7 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.media.AudioManager;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.net.wifi.p2p.WifiP2pManager;
@@ -25,6 +26,7 @@ import com.badlogic.gdx.backends.android.AndroidApplication;
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
 import com.mygdx.game.Network.PeerHelper;
 import com.mygdx.game.Network.WifiDirectBroadcastReceiver;
+import com.mygdx.game.SpeechRecognizer.AudioHandler;
 import com.mygdx.game.SpeechRecognizer.ListenerActivity;
 import com.mygdx.game.SpeechRecognizer.SpeechListener;
 import com.mygdx.game.view.MyGdxGame;
@@ -51,6 +53,8 @@ public class AndroidLauncher extends ListenerActivity implements SensorEventList
     private WifiDirectBroadcastReceiver mReceiver;
     private IntentFilter mIntentFilter;
     private PeerHelper peerHelper;
+    private AudioManager audioManager;
+    private AudioHandler audioHandler;
 
     protected static boolean pause;
 
@@ -69,9 +73,13 @@ public class AndroidLauncher extends ListenerActivity implements SensorEventList
         mIntentFilter = new IntentFilter();
 
         // Launches speech recognition
+        audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
+        audioHandler = AudioHandler.getInstance(audioManager);
+
         context = getApplicationContext();
         SpeechListener.getInstance().setListener(this);
         startListening();
+        audioHandler.disableAudio();
         pause = false;
 
 
@@ -151,6 +159,7 @@ public class AndroidLauncher extends ListenerActivity implements SensorEventList
                 Sensor.TYPE_ACCELEROMETER), SensorManager.SENSOR_DELAY_GAME);
 
         startListening();
+        audioHandler.disableAudio();
 
     }
 
@@ -165,6 +174,7 @@ public class AndroidLauncher extends ListenerActivity implements SensorEventList
 
         //Stops speech recognition
         stopListening();
+        audioHandler.enableAudio();
 
     }
 
@@ -175,16 +185,17 @@ public class AndroidLauncher extends ListenerActivity implements SensorEventList
                     || c.contains("stat") || c.contains("starta") || c.contains("stark")
                     || c.contains("stars")) {
                 c = "";
-//                pause = false;
+                pause = false;
 
             } else if (c.contains("stop") || c.contains("pause") || c.contains("paws")
                     || c.contains("stock") || c.contains("stopp") || c.contains("stahp")
-                    || c.contains("pass") || c.contains("fass") || c.contains("paus")) {
+                    || c.contains("paus")) {
                 c = "";
-//                pause = true;
+                pause = true;
             }
         }
         restartListeningService();
+        audioHandler.disableAudio();
 
     }
 
@@ -204,5 +215,9 @@ public class AndroidLauncher extends ListenerActivity implements SensorEventList
 
     public void setPaused(boolean paused) {
         pause = paused;
+    }
+
+    public AudioManager getAudioManager() {
+        return audioManager;
     }
 }

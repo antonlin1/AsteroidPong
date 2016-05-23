@@ -5,9 +5,10 @@ package com.mygdx.game.SpeechRecognizer;
  */
 public interface SpeechControl {
 
-    public abstract void processVoiceCommands(String... voiceCommands);
+    abstract void processVoiceCommands(String... voiceCommands);
     // Executed when voice command found
 
-    public void restartListeningService();
+    void restartListeningService();
     // Used to keep recognition activated
+
 }

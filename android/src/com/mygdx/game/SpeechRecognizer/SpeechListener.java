@@ -6,6 +6,8 @@ import android.speech.RecognitionListener;
 import android.speech.SpeechRecognizer;
 import android.util.Log;
 
+import com.mygdx.game.AndroidLauncher;
+
 import java.util.ArrayList;
 
 /**
@@ -16,7 +18,8 @@ public class SpeechListener implements RecognitionListener {
     public static SpeechListener instance = null;
 
     SpeechControl listener;
-    AudioManager mAudioManager;
+
+    private AudioHandler audioHandler;
 
     public static SpeechListener getInstance() {
         if(instance == null) {
@@ -24,7 +27,10 @@ public class SpeechListener implements RecognitionListener {
         }
         return instance;
     }
-    private SpeechListener() { }
+    private SpeechListener() {
+        audioHandler = AudioHandler.getInstance2();
+
+    }
 
     public void setListener(SpeechControl listener) {
         this.listener = listener;
@@ -47,6 +53,7 @@ public class SpeechListener implements RecognitionListener {
 
     @Override
     public void onReadyForSpeech(Bundle params) {
+        audioHandler.enableAudio();
         Log.d("prelTAG", "onReadyForSpeech");
     }
 
@@ -75,6 +82,7 @@ public class SpeechListener implements RecognitionListener {
         Log.d("prelTAG", "error " + error);
         if(listener != null) {
             listener.restartListeningService();
+            audioHandler.disableAudio();
         }
     }
 
@@ -88,4 +96,6 @@ public class SpeechListener implements RecognitionListener {
     public void onEvent(int eventType, Bundle params) {
 
     }
+
+
 }
