@@ -64,6 +64,8 @@ public class UDPClient extends Thread implements NetworkComponentInterface {
 				reader.start();
 
 				boolean hasServerAddress = false;
+
+				//Test
 				if(serverAddress == null) {
 						synchronized (serverAddressLock) {
 								while (serverAddress == null) {
