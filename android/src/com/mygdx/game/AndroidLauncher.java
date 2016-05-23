@@ -21,7 +21,6 @@ import android.util.Log;
 import android.view.WindowManager;
 
 
-
 import com.badlogic.gdx.backends.android.AndroidApplication;
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
 import com.mygdx.game.Network.PeerHelper;
@@ -41,183 +40,182 @@ import java.util.Arrays;
 
 
 public class AndroidLauncher extends ListenerActivity implements SensorEventListener, SpeechHelperInterface {
-    private SensorManager mSensorManager;
-    // private SpeechListener sl;
+		private SensorManager mSensorManager;
+		private Sensor mAccelerometer;
 
-    private float[] mGData = new float[3];
-    private MyGdxGame game;
+		// private SpeechListener sl;
 
-    //Network stuff
-    private WifiP2pManager mManager;
-    private WifiP2pManager.Channel mChannel;
-    private WifiDirectBroadcastReceiver mReceiver;
-    private IntentFilter mIntentFilter;
-    private PeerHelper peerHelper;
-    private AudioManager audioManager;
-    private AudioHandler audioHandler;
+		private float[] mGData = new float[3];
+		private MyGdxGame game;
 
-    protected static boolean pause;
+		//Network stuff
+		private WifiP2pManager mManager;
+		private WifiP2pManager.Channel mChannel;
+		private WifiDirectBroadcastReceiver mReceiver;
+		private IntentFilter mIntentFilter;
+		private PeerHelper peerHelper;
+		private AudioManager audioManager;
+		private AudioHandler audioHandler;
 
-    private ConverterV2 accelerationConverter;
+		protected static boolean pause;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        AndroidApplicationConfiguration config = new AndroidApplicationConfiguration();
+		private ConverterV2 accelerationConverter;
 
-        mManager = (WifiP2pManager) getSystemService(Context.WIFI_P2P_SERVICE);
-        mChannel = mManager.initialize(this, getMainLooper(), null);
-        peerHelper = new PeerHelper(mManager, mChannel);
-        mReceiver = new WifiDirectBroadcastReceiver(mManager, mChannel, peerHelper);
+		@Override
+		protected void onCreate(Bundle savedInstanceState) {
+				super.onCreate(savedInstanceState);
+				AndroidApplicationConfiguration config = new AndroidApplicationConfiguration();
 
-        mIntentFilter = new IntentFilter();
+				mManager = (WifiP2pManager) getSystemService(Context.WIFI_P2P_SERVICE);
+				mChannel = mManager.initialize(this, getMainLooper(), null);
+				peerHelper = new PeerHelper(mManager, mChannel);
+				mReceiver = new WifiDirectBroadcastReceiver(mManager, mChannel, peerHelper);
 
-        // Launches speech recognition
-        audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
-        audioHandler = AudioHandler.getInstance(audioManager);
+				mIntentFilter = new IntentFilter();
 
-        context = getApplicationContext();
-        SpeechListener.getInstance().setListener(this);
-        startListening();
-        audioHandler.disableAudio();
-        pause = false;
+				// Launches speech recognition
+				audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
+				audioHandler = AudioHandler.getInstance(audioManager);
+
+				context = getApplicationContext();
+				SpeechListener.getInstance().setListener(this);
+				startListening();
+				audioHandler.disableAudio();
+				pause = false;
 
 
-        mIntentFilter.addAction(WifiP2pManager.WIFI_P2P_STATE_CHANGED_ACTION);
-        mIntentFilter.addAction(WifiP2pManager.WIFI_P2P_PEERS_CHANGED_ACTION);
-        mIntentFilter.addAction(WifiP2pManager.WIFI_P2P_CONNECTION_CHANGED_ACTION);
-        mIntentFilter.addAction(WifiP2pManager.WIFI_P2P_THIS_DEVICE_CHANGED_ACTION);
-        mIntentFilter.addAction(Intent.ACTION_SHUTDOWN);
+				mIntentFilter.addAction(WifiP2pManager.WIFI_P2P_STATE_CHANGED_ACTION);
+				mIntentFilter.addAction(WifiP2pManager.WIFI_P2P_PEERS_CHANGED_ACTION);
+				mIntentFilter.addAction(WifiP2pManager.WIFI_P2P_CONNECTION_CHANGED_ACTION);
+				mIntentFilter.addAction(WifiP2pManager.WIFI_P2P_THIS_DEVICE_CHANGED_ACTION);
+				mIntentFilter.addAction(Intent.ACTION_SHUTDOWN);
 
-        //disable screen timeout
-        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+				//disable screen timeout
+				getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
-        //hide android nav-buttons
-        config.useImmersiveMode = true;
-        // First:
-        //      7a:f8:82:ed:21:73
-        // Second:
-        //      7a:f8:82:ed:2a:88
-        mSensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
+				//hide android nav-buttons
+				config.useImmersiveMode = true;
+				// First:
+				//      7a:f8:82:ed:21:73
+				// Second:
+				//      7a:f8:82:ed:2a:88
+				mSensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
+				mAccelerometer = mSensorManager.getDefaultSensor(Sensor.TYPE_LINEAR_ACCELERATION);
+				mSensorManager.registerListener(this, mAccelerometer, SensorManager.SENSOR_DELAY_GAME);
 
-        mSensorManager.registerListener(this, mSensorManager.getDefaultSensor(
-                Sensor.TYPE_LINEAR_ACCELERATION), SensorManager.SENSOR_DELAY_GAME);
+				accelerationConverter = new ConverterV2();
 
-        accelerationConverter = new ConverterV2();
+				game = new MyGdxGame(accelerationConverter, peerHelper, mReceiver, this);
+				initialize(game, config);
 
-        game = new MyGdxGame(accelerationConverter, peerHelper, mReceiver, this);
-        initialize(game, config);
+				mReceiver.setGame(game);
 
-        mReceiver.setGame(game);
+				System.out.println("DEVICE MAC: " + getMacAddress(this));
+				mReceiver.resetNetwork();
 
-        System.out.println("DEVICE MAC: " + getMacAddress(this));
-        mReceiver.resetNetwork();
+				//   peerHelper.discover();
 
-        //   peerHelper.discover();
+				if (ContextCompat.checkSelfPermission(this,
+						Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
 
-        if (ContextCompat.checkSelfPermission(this,
-                Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
+						ActivityCompat.requestPermissions(this,
+								new String[]{Manifest.permission.RECORD_AUDIO},
+								1);
 
-            ActivityCompat.requestPermissions(this,
-                    new String[]{Manifest.permission.RECORD_AUDIO},
-                    1);
+				}
+		}
 
-        }
-    }
+		private String getMacAddress(Context context) {
+				WifiManager wimanager = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
+				String macAddress = wimanager.getConnectionInfo().getMacAddress();
+				if (macAddress == null) {
+						macAddress = "Device don't have mac address or wi-fi is disabled";
+				}
+				return macAddress;
+		}
 
-    private String getMacAddress(Context context) {
-        WifiManager wimanager = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
-        String macAddress = wimanager.getConnectionInfo().getMacAddress();
-        if (macAddress == null) {
-            macAddress = "Device don't have mac address or wi-fi is disabled";
-        }
-        return macAddress;
-    }
+		@Override
+		public void onSensorChanged(SensorEvent event) {
+				float[] data = event.values;
+				if (event.sensor.getType() == Sensor.TYPE_LINEAR_ACCELERATION) {
+						final float ALPHA = 1.0f;
+						mGData = lowPass(data, mGData, ALPHA);
+						accelerationConverter.convert(mGData, event.timestamp, game);
+				}
+		}
 
-    @Override
-    public void onSensorChanged(SensorEvent event) {
-        float[] data = event.values;
-        if (event.sensor.getType() == Sensor.TYPE_LINEAR_ACCELERATION) {
-            final float ALPHA = 1.0f;
-            mGData = lowPass(data, mGData, ALPHA);
-            accelerationConverter.convert(mGData, event.timestamp, game);
-        }
-    }
+		@Override
+		public void onAccuracyChanged(Sensor sensor, int accuracy) {
+				Log.i(AndroidLauncher.class.getName(), "onAccuracyChanged");
+		}
 
-    @Override
-    public void onAccuracyChanged(Sensor sensor, int accuracy) {
-        Log.i(AndroidLauncher.class.getName(), "onAccuracyChanged");
-    }
+		@Override
+		protected void onResume() {
+				super.onResume();
+				Log.i(AndroidLauncher.class.getName(), "onResume");
+				registerReceiver(mReceiver, mIntentFilter);
+				mSensorManager.registerListener(this, mAccelerometer, SensorManager.SENSOR_DELAY_GAME);
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        Log.i(AndroidLauncher.class.getName(), "onResume");
-        registerReceiver(mReceiver, mIntentFilter);
+				startListening();
+				audioHandler.disableAudio();
 
-        mSensorManager.registerListener(this, mSensorManager.getDefaultSensor(
-                Sensor.TYPE_ACCELEROMETER), SensorManager.SENSOR_DELAY_GAME);
+		}
 
-        startListening();
-        audioHandler.disableAudio();
+		@Override
+		protected void onPause() {
+				super.onPause();
+				Log.i(AndroidLauncher.class.getName(), "onPause");
+				unregisterReceiver(mReceiver);
 
-    }
+				// to stop the listener and save battery
+				mSensorManager.unregisterListener(this);
 
-    @Override
-    protected void onPause() {
-        super.onPause();
-        Log.i(AndroidLauncher.class.getName(), "onPause");
-        unregisterReceiver(mReceiver);
+				//Stops speech recognition
+				stopListening();
+				audioHandler.enableAudio();
 
-        // to stop the listener and save battery
-        mSensorManager.unregisterListener(this);
+		}
 
-        //Stops speech recognition
-        stopListening();
-        audioHandler.enableAudio();
+		public void processVoiceCommands(String... voiceCommands) {
 
-    }
+				for (String c : voiceCommands) {
+						if (c.contains("start") || c.contains("play") || c.contains("resume")
+								|| c.contains("stat") || c.contains("starta") || c.contains("stark")
+								|| c.contains("stars")) {
+								c = "";
+								pause = false;
 
-    public void processVoiceCommands(String... voiceCommands) {
+						} else if (c.contains("stop") || c.contains("pause") || c.contains("paws")
+								|| c.contains("stock") || c.contains("stopp") || c.contains("stahp")
+								|| c.contains("paus")) {
+								c = "";
+								pause = true;
+						}
+				}
+				restartListeningService();
+				audioHandler.disableAudio();
 
-        for (String c : voiceCommands) {
-            if (c.contains("start") || c.contains("play") || c.contains("resume")
-                    || c.contains("stat") || c.contains("starta") || c.contains("stark")
-                    || c.contains("stars")) {
-                c = "";
-                pause = false;
+		}
 
-            } else if (c.contains("stop") || c.contains("pause") || c.contains("paws")
-                    || c.contains("stock") || c.contains("stopp") || c.contains("stahp")
-                    || c.contains("paus")) {
-                c = "";
-                pause = true;
-            }
-        }
-        restartListeningService();
-        audioHandler.disableAudio();
+		protected float[] lowPass(float[] input, float[] output, final float ALPHA) {
+				if (output == null)
+						return input;
+				for (int i = 0; i < input.length; i++) {
+						output[i] = output[i] + ALPHA * (input[i] - output[i]);
+				}
+				return output;
+		}
 
-    }
+		@Override
+		public boolean isPaused() {
+				return pause;
+		}
 
-    protected float[] lowPass(float[] input, float[] output, final float ALPHA) {
-        if (output == null)
-            return input;
-        for (int i = 0; i < input.length; i++) {
-            output[i] = output[i] + ALPHA * (input[i] - output[i]);
-        }
-        return output;
-    }
+		public void setPaused(boolean paused) {
+				pause = paused;
+		}
 
-    @Override
-    public boolean isPaused() {
-        return pause;
-    }
-
-    public void setPaused(boolean paused) {
-        pause = paused;
-    }
-
-    public AudioManager getAudioManager() {
-        return audioManager;
-    }
+		public AudioManager getAudioManager() {
+				return audioManager;
+		}
 }

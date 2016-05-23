@@ -92,7 +92,7 @@ public class MyGdxGame extends ApplicationAdapter implements InputProcessor {
 
 	@Override
 	public void render() {
-		System.out.println("MAIN RENDER!");
+		//System.out.println("MAIN RENDER!");
 		Gdx.gl.glClearColor(0.075f, 0.059f, 0.188f, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
