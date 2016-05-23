@@ -79,7 +79,7 @@ public class SpeechListener implements RecognitionListener {
 
     @Override
     public void onError(int error) {
-        Log.d("prelTAG", "error " + error);
+     //   Log.d("prelTAG", "error " + error);
         if(listener != null) {
             listener.restartListeningService();
             audioHandler.disableAudio();

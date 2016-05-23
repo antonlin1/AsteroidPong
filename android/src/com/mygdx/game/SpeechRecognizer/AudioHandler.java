@@ -23,7 +23,7 @@ public class AudioHandler {
 
     public AudioHandler(AudioManager audioManager) {
         this.audioManager = audioManager;
-        volume = 0;
+        volume = audioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
     }
     public void enableAudio() {
         audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, volume, 0);
