@@ -63,6 +63,7 @@ public class UDPClient extends Thread implements NetworkComponentInterface {
 				reader = new Reader();
 				reader.start();
 
+				boolean hasServerAddress = false;
 				if(serverAddress == null) {
 						synchronized (serverAddressLock) {
 								while (serverAddress == null) {
@@ -74,8 +75,19 @@ public class UDPClient extends Thread implements NetworkComponentInterface {
 								}
 								serverAddressLock.notifyAll();
 						}
+				}else {
+						hasServerAddress = true;
 				}
 				writer = new Writer();
+
+
+				if(hasServerAddress) { // Server does not yet have our address
+						try {
+								writer.writeLine(ClientToServerMessage.DEFAULT_MESSAGE.toString());
+						} catch (IOException e) {
+								e.printStackTrace();
+						}
+				}
 				// Write Forever ...
 				try {
 						while (IS_CONNECTION_OPEN && !isInterrupted()) {
@@ -87,7 +99,6 @@ public class UDPClient extends Thread implements NetworkComponentInterface {
 						socket.close();
 				}
 				wifiDirectBroadcastReceiver.reconnectToServer();
-
 		}
 
 		private class Reader extends Thread {

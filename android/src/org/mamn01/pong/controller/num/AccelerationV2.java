@@ -31,7 +31,7 @@ public class AccelerationV2 implements SamplerV2.SampleGatheredCallback{
 		 */
 		private int nDerivative = 0;
 
-		/**
+		/**gi
 		 * The N_DERIVATIVE last samples gathered of the rate of change of acceleration.
 		 */
 		private double[] derivatives = new double[N_DERIVATIVE];
