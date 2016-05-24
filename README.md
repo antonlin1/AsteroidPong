@@ -6,6 +6,8 @@ Pong with beyond the screen interaction(full use of accelerometer)
 
 Make sure to have Android Studios **1.5.1**
 
+##Gameplay video
+https://www.youtube.com/watch?time_continue=6&v=YnaVFCdtc2A
 
 ##Game graphics
 
